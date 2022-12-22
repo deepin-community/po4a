@@ -1,0 +1,64 @@
+Source: po4a
+Section: text
+Priority: optional
+Maintainer: Martin Quinson <mquinson@debian.org>
+Uploaders: Jonas Smedegaard <dr@jones.dk>,
+           Denis Barbier <barbier@debian.org>,
+           Dr. Tobias Quathamer <toddy@debian.org>
+Standards-Version: 4.6.0
+Build-Depends-Indep: docbook,
+                     docbook-xml,
+                     docbook-xsl,
+                     gettext,
+                     libpod-parser-perl,
+                     libsgmls-perl,
+                     libterm-readkey-perl,
+                     libunicode-linebreak-perl,
+                     libyaml-tiny-perl,
+                     opensp,
+                     perl,
+                     texlive-binaries,
+                     texlive-latex-base,
+                     xsltproc
+Build-Depends:
+ debhelper-compat (= 13),
+ libmodule-build-perl
+Rules-Requires-Root: no
+Homepage: https://po4a.org/
+Vcs-Git: https://salsa.debian.org/debian/po4a.git
+Vcs-Browser: https://salsa.debian.org/debian/po4a
+
+Package: po4a
+Architecture: all
+Multi-Arch: foreign
+Depends: gettext,
+         libpod-parser-perl (>= 1.63),
+         libsgmls-perl,
+         libyaml-tiny-perl,
+         opensp,
+         ${misc:Depends},
+         ${perl:Depends}
+Recommends: liblocale-gettext-perl,
+            libterm-readkey-perl,
+            libtext-wrapi18n-perl,
+            libunicode-linebreak-perl
+Description: tools to ease the translation of documentation
+ po4a eases the translation of documentation and other textual document.
+ Even more interestingly, it makes it easy to maintain these
+ translations when the original document changes. This is done by
+ using the gettext tools in this new domain.
+ .
+ This package contains the main libraries of po4a, and the necessary
+ sub-modules to handle the following formats:
+ .
+   - Dia: uncompressed Dia diagrams.
+   - INI: the INI format
+   - KernelHelp: Help messages of each kernel compilation option.
+   - LaTeX: generic TeX or LaTeX format.
+   - Man: either roff or mdoc format.
+   - POD: Perl documentation format.
+   - SGML: either DebianDoc or DocBook DTD.
+   - RubyDoc: Ruby documentation format.
+   - Texinfo: the info page format.
+   - XML: very configurable (preconfigured for DocBook, XHTML, Guide, WML).
+   - Yaml: Yaml documents.

@@ -1,0 +1,50 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: po4a
+Upstream-Contact: Martin Quinson <mquinson@debian.org>
+Source: https://po4a.org
+
+Files: *
+Copyright: © 2002-2020 Martin Quinson <mquinson@debian.org>
+           © 2002-2020 Software in the Public Interest, Inc.
+           © 1995 David Megginson <dmeggins@aix1.uottawa.ca>
+           © 2004 Jordi Vilalta  <jvprat@gmail.com>
+           © 2005-2009 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>
+           © 2006 BitDefender
+           © 2009 Neil Williams <linux@codehelp.co.uk>
+           © 2018 Zero King (https://github.com/l2dy)
+License: GPL-2.0+
+
+Files: lib/Locale/Po4a/RubyDoc.pm
+Copyright: © 2016-2017 Francesco Poli <invernomuto@paranoici.org>
+					 © 2004 MoonWolf <moonwolf@moonwolf.com>
+					 © 2011-2012 Youhei SASAKI <uwabami@gfd-dennou.org>
+License: GPL-2.0+
+
+Files: lib/Locale/Po4a/Yaml.pm
+Copyright: © 2018 Brian Exelbierd
+License: GPL-2.0+
+
+Files: debian/*
+Copyright: © 2002-2017 Martin Quinson <mquinson@debian.org>
+					 © 2005-2009 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>
+					 © 2009 Neil Williams <linux@codehelp.co.uk>
+					 © 2003-2013 Denis Barbier <barbier@debian.org>
+					 © 2018-2020 Dr. Tobias Quathamer <toddy@debian.org>
+License: GPL-2.0+
+
+License: GPL-2.0+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".

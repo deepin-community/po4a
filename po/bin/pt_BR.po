@@ -1,0 +1,1687 @@
+# Brazilian Portuguese translation for po4a (binary)
+# Copyright (C) 2002-2O13 by SPI, inc.
+# This file is distributed under the same license as the po4a package.
+# Luiz Augusto Pereira Fernandes, 2005.
+# Goedson Teixeira Paixão <goedson@debian.org>, 2007.
+# Rafael Ferreira <rafaelf.f1@gmail.com>, 2013, 2014.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2020, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: po4a 0.45\n"
+"Report-Msgid-Bugs-To: po4a@packages.debian.org\n"
+"POT-Creation-Date: 2021-11-06 11:27+0100\n"
+"PO-Revision-Date: 2021-08-18 06:32+0000\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/po4a/"
+"po4a/pt_BR/>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.8-dev\n"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:211 ../../lib/Locale/Po4a/Man.pm:496
+#: ../../lib/Locale/Po4a/Po.pm:235 ../../lib/Locale/Po4a/RubyDoc.pm:74
+#: ../../lib/Locale/Po4a/Sgml.pm:258 ../../lib/Locale/Po4a/TeX.pm:1664
+#: ../../lib/Locale/Po4a/Text.pm:211 ../../lib/Locale/Po4a/Xml.pm:598
+#: ../../lib/Locale/Po4a/Yaml.pm:39
+#, perl-format
+msgid "Unknown option: %s"
+msgstr "Opção desconhecida: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:218
+#, perl-format
+msgid "Invalid compatibility setting: '%s'. It must be either '%s' or '%s'."
+msgstr ""
+"Configuração de compatibilidade inválida: \"%s\". Deve ser \"%s\" ou \"%s\"."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:283
+#, perl-format
+msgid "Unable to parse macro definition: %s"
+msgstr "Não foi possível analisar definição macro: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:330 ../../lib/Locale/Po4a/TeX.pm:1066
+#: ../../po4a:971 ../../po4a:1061 ../../po4a:1310 ../../po4a-translate:298
+#, perl-format
+msgid "Cannot open %s: %s"
+msgstr "Não foi possível abrir %s: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:365
+#, perl-format
+msgid ""
+"Detection of two line titles failed at %s\n"
+"Please install the Unicode::GCString module."
+msgstr ""
+"Detecção de dois títulos de linhas falhou em %s\n"
+"Instale o módulo Unicode::GCString."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:512
+#, perl-format
+msgid ""
+"'%s' seems to be a two-lines title underlined with '%s', but the underlines "
+"are too short or too long compared to the title length. You may want to fix "
+"your master document."
+msgstr ""
+"\"%s\" parece ser um título de duas linhas sublinhado com \"%s\", mas os "
+"sublinhados são muito curtos ou muito longos em comparação com o comprimento "
+"do título. Você pode querer corrigir seu documento mestre."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:991
+msgid ""
+"It seems that you are adding unindented content to an item. The standard "
+"allows this, but you may still want to change your document to use indented "
+"text to provide better visual clues to writers."
+msgstr ""
+"Parece que você está adicionando conteúdo sem recuo a um item. O padrão "
+"permite isso, mas você ainda pode querer mudar seu documento para usar texto "
+"recuado para fornecer melhores pistas visuais para os escritores."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:25
+msgid "Please provide a module name"
+msgstr "Forneça o nome de um módulo"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:50
+#, perl-format
+msgid "Unknown format type: %s."
+msgstr "Tipo de formato desconhecido: %s."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:51
+#, perl-format
+msgid "Module loading error: %s"
+msgstr "Erro ao carregar o módulo: %s"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:61
+msgid "List of valid formats:"
+msgstr "Lista de formatos válidos:"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:65
+msgid "asciidoc: AsciiDoc format."
+msgstr "asciidoc: formato AsciiDoc."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:67
+msgid "dia: uncompressed Dia diagrams."
+msgstr "dia: diagramas Dia descompactados."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:69
+msgid "docbook: DocBook XML."
+msgstr "docbook: XML de Docbook."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:71
+msgid "guide: Gentoo Linux's XML documentation format."
+msgstr "guide: formato de documentação xml do Gentoo Linux."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:73
+msgid "ini: INI format."
+msgstr "ini: formato INI."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:75
+msgid "kernelhelp: Help messages of each kernel compilation option."
+msgstr ""
+"kernelhelp: Mensagens de ajuda para cada opção de compilação do kernel."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:77
+msgid "latex: LaTeX format."
+msgstr "latex: formato LaTeX."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:79
+msgid "man: Good old manual page format."
+msgstr "man: Bom e velho formato de páginas de manual."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:81
+msgid "pod: Perl Online Documentation format."
+msgstr "pod: formato de documentação online do Perl."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:83
+msgid "rubydoc: Ruby Documentation (RD) format."
+msgstr "rubydoc: formato de documentação Ruby (RD)."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:85
+msgid "sgml: either DebianDoc or DocBook DTD."
+msgstr "sgml: DTD do DocBook ou DebianDoc."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:87
+msgid "texinfo: The info page format."
+msgstr "texinfo: formato de página do info."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:89
+msgid "tex: generic TeX documents (see also latex)."
+msgstr "tex: documentos TeX genérico (veja também latex)."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:91
+msgid "text: simple text document."
+msgstr "text: documento de texto simples."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:93
+msgid "wml: WML documents."
+msgstr "wml: documentos WML."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:95
+msgid "xhtml: XHTML documents."
+msgstr "xhtml: documentos XHTML."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:97
+msgid "xml: generic XML documents (see also docbook)."
+msgstr "xml: documentos XML genéricos (veja também docbook)."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:99
+msgid "yaml: YAML documents."
+msgstr "yaml: documentos YAML."
+
+#: ../../lib/Locale/Po4a/Common.pm:108
+#, perl-format
+msgid ""
+"%s version %s.\n"
+"Written by Martin Quinson and Denis Barbier.\n"
+"\n"
+"Copyright © 2002-2021 Software in the Public Interest, Inc.\n"
+"This is free software; see source code for copying\n"
+"conditions. There is NO warranty; not even for\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+msgstr ""
+"%s versão %s.\n"
+"escrito por Martin Quinson e Denis Barbier.\n"
+"\n"
+"Copyright © 2002-2021 Software in the Public Interest, Inc.\n"
+"Este programa é software livre; veja o código-fonte para condições\n"
+" de cópia. NÃO há garantia; nem mesmo para\n"
+"COMÉRCIO ou de ADAPTAÇÃO PARA PROPÓSITO PARTICULAR."
+
+#: ../../lib/Locale/Po4a/InProgress/Debconf.pm:178
+#, perl-format
+msgid "Translated field in master document: %s"
+msgstr "Campo traduzido no documento mestre: %s"
+
+#: ../../lib/Locale/Po4a/InProgress/NewsDebian.pm:90
+msgid "Begin of a new entry before the end of previous one"
+msgstr "Início de uma nova entrada antes do fim da anterior"
+
+#: ../../lib/Locale/Po4a/KernelHelp.pm:98
+msgid "Syntax error"
+msgstr "Erro de sintaxe"
+
+#: ../../lib/Locale/Po4a/Man.pm:513
+msgid ""
+"Invalid 'groff_code' value. Must be one of 'fail', 'verbatim', 'translate'."
+msgstr ""
+"Valor \"groff_code\" inválido. Precisa ser um dos seguintes \"fail\", "
+"\"verbatim\", \"translate\"."
+
+#: ../../lib/Locale/Po4a/Man.pm:561
+msgid ""
+"The no_wrap parameters must be a set of comma-separated begin:end couples.\n"
+msgstr ""
+"Os parâmetros no_wrap precisam ser um conjunto de pares begin:end separados "
+"por vírgula.\n"
+
+#: ../../lib/Locale/Po4a/Man.pm:608
+msgid "Invalid 'unknown_macros' value. Must be one of:\n"
+msgstr "Valor \"unknown_macros\" inválido. Deve ser um de:\n"
+
+#: ../../lib/Locale/Po4a/Man.pm:674
+msgid ""
+"This file was generated with Pod::Man. Translate the POD file with the pod "
+"module of po4a."
+msgstr ""
+"Este arquivo foi gerado com Pod::Man. Traduza o arquivo POD com o módulo pod "
+"do po4a."
+
+#: ../../lib/Locale/Po4a/Man.pm:684
+msgid ""
+"This file was generated with help2man. Translate the source file with the "
+"regular gettext."
+msgstr ""
+"Este arquivo foi gerado com help2man. Traduza o arquivo fonte com o gettext."
+
+#: ../../lib/Locale/Po4a/Man.pm:693
+msgid ""
+"This file was generated with docbook-to-man. Translate the source file with "
+"the sgml module of po4a."
+msgstr ""
+"Este arquivo foi gerado com docbook-to-man. Traduza o arquivo fonte com o "
+"módulo sgml do po4a."
+
+#: ../../lib/Locale/Po4a/Man.pm:703
+msgid ""
+"This file was generated with docbook2man. Translate the source file with the "
+"sgml module of po4a."
+msgstr ""
+"Este arquivo foi gerado com docbook2man. Traduza o arquivo fonte com o "
+"módulo sgml do po4a."
+
+#: ../../lib/Locale/Po4a/Man.pm:713 ../../lib/Locale/Po4a/Man.pm:734
+#, perl-format
+msgid ""
+"This file was generated with %s. You should translate the source file, but "
+"continuing anyway."
+msgstr ""
+"Este arquivo foi gerado com %s. Você deveria traduzir o arquivo fonte, mas "
+"continuando de qualquer forma."
+
+#: ../../lib/Locale/Po4a/Man.pm:724
+msgid ""
+"This file was generated with db2man.xsl. Translate the source file with the "
+"xml module of po4a."
+msgstr ""
+"Este arquivo foi gerado com db2man.xsl. Traduza o arquivo fonte com o módulo "
+"xml do po4a."
+
+#: ../../lib/Locale/Po4a/Man.pm:748
+#, perl-format
+msgid ""
+"This file contains the line '%s'. You should translate the source file, but "
+"continuing anyway."
+msgstr ""
+"Este arquivo contém a linha \"%s\". Você deveria traduzir o arquivo fonte, "
+"mas continuando de qualquer jeito."
+
+#: ../../lib/Locale/Po4a/Man.pm:821
+#, perl-format
+msgid ""
+"Font modifiers followed by a command may disturb po4a.  You should either "
+"remove the font modifier '%s', or integrate a \\f font modifier in the "
+"following command ('%s'), but continuing anyway."
+msgstr ""
+"Modificadores de fonte seguidos por um comando pode atrapalhar o po4a. Você "
+"deveria remover o modificador de fonte \"%s\" ou integrar um modificador de "
+"fonte \\f no seguinte comando (\"%s\"), mas continuando mesmo assim."
+
+#: ../../lib/Locale/Po4a/Man.pm:942
+msgid ""
+"The unshiftline is not supported for the man module. Please send a bug "
+"report with the groff page that generated this error."
+msgstr ""
+"O módulo man não tem suporte a unshiftline. Relate o erro com a página groff "
+"que gerou esse erro."
+
+#: ../../lib/Locale/Po4a/Man.pm:1002
+#, perl-format
+msgid ""
+"macro %s called without arguments. Even if placing the macro arguments on "
+"the next line is authorized by man(7), handling this would make the po4a "
+"parser too complicate. Please simply put the macro args on the same line."
+msgstr ""
+"macro %s chamada sem argumentos. Apesar da colocação dos argumentos de uma "
+"macro na linha seguinte seja permitido pelo man(7), tratar isso tornaria o "
+"parser do po4a muito complexo. Coloque os argumentos da macro na mesma linha."
+
+#: ../../lib/Locale/Po4a/Man.pm:1034
+msgid "Escape sequence \\c encountered. This is not completely handled yet."
+msgstr "Sequência de escape \\c encontrada. Não suporte completo a isso."
+
+#: ../../lib/Locale/Po4a/Man.pm:1209
+#, perl-format
+msgid "Unbalanced '<' and '>' in font modifier. Faulty message: %s"
+msgstr ""
+"\"<\" e \">\" não balanceados no modificador de fonte. Mensagem errônea: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1250
+#, perl-format
+msgid "Unknown '<' or '>' sequence. Faulty message: %s"
+msgstr "Sequência \"<\" e \">\" desconhecida. Mensagem errônea: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1404
+#, perl-format
+msgid "Unparsable line: %s"
+msgstr "Linha não analisável: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1487
+#, perl-format
+msgid ""
+"Unknown macro '%s'. Remove it from the document, or refer to the Locale::"
+"Po4a::Man manpage to see how po4a can handle new macros."
+msgstr ""
+"Macro desconhecida \"%s\". Remova-a do documento ou veja a página man de "
+"Locale::Po4a::Man para ver como po4a pode manipular novas macros."
+
+#: ../../lib/Locale/Po4a/Man.pm:1695
+#, perl-format
+msgid "Cannot parse command arguments: %s"
+msgstr "Não foi possível analisar os argumentos do comando: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1825
+#, perl-format
+msgid "Unsupported font in: '%s'."
+msgstr "Fonte não suportada em: \"%s\"."
+
+#: ../../lib/Locale/Po4a/Man.pm:2226
+msgid ""
+"This page defines a new macro with '.de'. Since po4a is not a real groff "
+"parser, this is not supported."
+msgstr ""
+"Essa página define uma nova macro com \".de\". Considerando que po4a não é "
+"exatamente um analisador groff, não há suporte a esta macro."
+
+#: ../../lib/Locale/Po4a/Man.pm:2303
+msgid "The .ie macro must be followed by a .el macro."
+msgstr "A macro .ie deve vir seguida por uma macro .el."
+
+#: ../../lib/Locale/Po4a/Man.pm:2331
+#, perl-format
+msgid ""
+"This page uses conditionals with '%s'. Since po4a is not a real groff "
+"parser, this is not supported."
+msgstr ""
+"Essa página usa condicionais com \"%s\". Considerando que po4a não é "
+"exatamente um analisador groff, não há suporte a essas condicionais."
+
+#: ../../lib/Locale/Po4a/Man.pm:2381
+#, perl-format
+msgid ""
+"This page includes another file with '%s'. Do not forget to translate this "
+"file ('%s')."
+msgstr ""
+"Essa página inclui outro arquivo com \"%s\". Não se esqueça de traduzir este "
+"arquivo (\"%s\")."
+
+#: ../../lib/Locale/Po4a/Man.pm:2549
+#, perl-format
+msgid ""
+"This page uses the '%s' request with the number of lines in argument. This "
+"is not supported yet."
+msgstr ""
+"Esta página usa a requisição \"%s\" com o número de linhas em argumento. Não "
+"há suporte a isso."
+
+#: ../../lib/Locale/Po4a/Man.pm:2569
+#, perl-format
+msgid ""
+"This page uses the '%s' request. This request is only supported when no "
+"argument is provided."
+msgstr ""
+"Esta página usa a requisição \"%s\". Esta requisição só tem suporte quando "
+"não há argumentos."
+
+#: ../../lib/Locale/Po4a/Po.pm:243
+#, perl-format
+msgid ""
+"Invalid value for option 'wrap-po' ('%s' is not 'no' nor 'newlines' nor a "
+"number)"
+msgstr ""
+"Valor inválido para opção \"wrap-po\" (\"%s\" não é \"no\", \"newlines\" nem "
+"um número)"
+
+#: ../../lib/Locale/Po4a/Po.pm:252
+#, perl-format
+msgid ""
+"Invalid value for option 'porefs' ('%s' is not one of 'full', 'counter', "
+"'noline', 'file' or 'never')"
+msgstr ""
+"Valor inválido para opção \"porefs\" (\"%s\" não é um dos seguinte \"full\", "
+"\"counter\", \"noline\", \"file\" ou \"never\")"
+
+#: ../../lib/Locale/Po4a/Po.pm:319
+msgid "Please provide a non-null filename"
+msgstr "Insira um nome de arquivo não-nulo"
+
+#: ../../lib/Locale/Po4a/Po.pm:332
+#, perl-format
+msgid ""
+"Invalid po file %s:\n"
+"%s"
+msgstr ""
+"Arquivo po inválido %s:\n"
+"%s"
+
+#: ../../lib/Locale/Po4a/Po.pm:340 ../../lib/Locale/Po4a/TeX.pm:963
+#: ../../lib/Locale/Po4a/TransTractor.pm:448
+#: ../../lib/Locale/Po4a/TransTractor.pm:601 ../../lib/Locale/Po4a/Xhtml.pm:140
+#, perl-format
+msgid "Cannot read from %s: %s"
+msgstr "Não foi possível ler de %s: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:417
+msgid "Messages with more than 2 plural forms are not supported."
+msgstr "Não há suporte a mais do que 2 formas de plural nas mensagens."
+
+#: ../../lib/Locale/Po4a/Po.pm:425
+#, perl-format
+msgid "Parse error at: -->%s<--"
+msgstr "Erro de análise em: -->%s<--"
+
+#: ../../lib/Locale/Po4a/Po.pm:490 ../../lib/Locale/Po4a/Po.pm:642
+#: ../../lib/Locale/Po4a/TransTractor.pm:490
+msgid "Cannot write to a file without filename"
+msgstr "Não é possível escrever em um arquivo sem nome"
+
+#: ../../lib/Locale/Po4a/Po.pm:507 ../../lib/Locale/Po4a/TransTractor.pm:506
+#, perl-format
+msgid "Cannot write to %s: %s"
+msgstr "Não é possível escrever em %s: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:580
+msgid "Cannot write PO files with more than two plural forms."
+msgstr ""
+"Não foi possível escrever arquivos PO com mais do que duas formas de plural."
+
+#: ../../lib/Locale/Po4a/Po.pm:624
+#, perl-format
+msgid "Cannot unlink %s: %s."
+msgstr "Não é possível desvincular %s: %s."
+
+#: ../../lib/Locale/Po4a/Po.pm:631 ../../lib/Locale/Po4a/Po.pm:635
+#: ../../po4a:1758
+#, perl-format
+msgid "Cannot move %s to %s: %s."
+msgstr "Não é possível mover %s para %s: %s."
+
+# O verbo gettextizar não existe, mas nem (em inglês) gettextizing. Fiz neologismo propositalmente.
+#: ../../lib/Locale/Po4a/Po.pm:677
+msgid ""
+"\n"
+"The gettextization failed (once again). Don't give up, gettextizing is a "
+"subtle art, but this is only needed once to convert a project to the "
+"gorgeous luxus offered by po4a to translators.\n"
+"Please refer to the po4a(7) documentation, the section \"HOWTO convert a pre-"
+"existing translation to po4a?\" contains several hints to help you in your "
+"task"
+msgstr ""
+"\n"
+"A gettextização falhou (novamente). Não desista, gettextizar é uma arte "
+"sutil, mas isso só é necessário uma vez para converter um projeto para o "
+"luxo maravilhoso oferecido por po4a a tradutores.\n"
+"Veja a documentação do po4a(7), a seção \"COMO converter uma tradução pré-"
+"existente para po4a?\" contém diversas dicas para ajudar você na sua tarefa"
+
+#: ../../lib/Locale/Po4a/Po.pm:693
+#, perl-format
+msgid ""
+"Original has more strings than the translation (%d>%d). Please fix it by "
+"editing the translated version to add some dummy entry."
+msgstr ""
+"Original possui mais strings do que traduções (%d>%d). Corrija esse erro "
+"editando a versão traduzida para adicionar algumas entradas de testes."
+
+#: ../../lib/Locale/Po4a/Po.pm:706
+#, perl-format
+msgid ""
+"Original has less strings than the translation (%d<%d). Please fix it by "
+"removing the extra entry from the translated file. You may need an addendum "
+"(cf po4a(7)) to reput the chunk in place after gettextization. A possible "
+"cause is that a text duplicated in the original is not translated the same "
+"way each time. Remove one of the translations, and you're fine."
+msgstr ""
+"Original possui menos strings do que traduções (%d<%d). Corrija esse erro "
+"removendo as entradas extras do arquivo traduzido. Você pode precisar de uma "
+"adendo (cf po4a(7)) para recolocar o bloco no lugar depois da gettextização. "
+"Uma causa possível é que o texto duplicado no original não está traduzido da "
+"mesma forma todas as vezes. Remova uma das traduções e está resolvido."
+
+#: ../../lib/Locale/Po4a/Po.pm:776
+#, perl-format
+msgid ""
+"po4a gettextization: Structure disparity between original and translated "
+"files:\n"
+"msgid (at %s) is of type '%s' while\n"
+"msgstr (at %s) is of type '%s'.\n"
+"Original text: %s\n"
+"Translated text: %s\n"
+"(result so far dumped to gettextization.failed.po)"
+msgstr ""
+"po4a gettextização: Disparidade de estrutura entre os arquivos original e "
+"traduzido:\n"
+"msgid (em %s) é do tipo \"%s\" enquanto\n"
+"msgstr (em %s) é do tipo \"%s\".\n"
+"Texto original: %s\n"
+"Texto traduzido: %s\n"
+"(resultado até o momento despejado em gettextization.failed.po)"
+
+#: ../../lib/Locale/Po4a/Po.pm:1020
+#, perl-format
+msgid "Evaluating the provided filter failed: %s"
+msgstr "A avaliação do filtro fornecido falhou: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:1150
+#, perl-format
+msgid ""
+"'%s' is the singular form of a message, po4a will use the msgstr[0] "
+"translation (%s)."
+msgstr ""
+"\"%s\" é a forma singular de uma mensagem, po4a vai usar a tradução de "
+"msgstr[0] (%s)."
+
+#: ../../lib/Locale/Po4a/Po.pm:1160
+#, perl-format
+msgid ""
+"'%s' is the plural form of a message, po4a will use the msgstr[1] "
+"translation (%s)."
+msgstr ""
+"\"%s\" é a forma plural de uma mensagem, po4a vai usar a tradução de "
+"msgstr[1] (%s)."
+
+#: ../../lib/Locale/Po4a/Po.pm:1388
+#, perl-format
+msgid "msgid defined twice: %s"
+msgstr "msgid definida duas vezes: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:1422
+#, perl-format
+msgid ""
+"Translations don't match for:\n"
+"%s\n"
+"-->First translation:\n"
+"%s\n"
+" Second translation:\n"
+"%s\n"
+" Old translation discarded."
+msgstr ""
+"Traduções não conferem para:\n"
+"%s\n"
+"-->Primeira tradução:\n"
+"%s\n"
+" Segunda tradução:\n"
+"%s\n"
+" Tradução antiga descartada."
+
+#: ../../lib/Locale/Po4a/Po.pm:1535
+#, perl-format
+msgid "The amount of entries differ between files: %d is not %d"
+msgstr "A quantidade de entradas diverge entre os arquivos: %d não é %d"
+
+#: ../../lib/Locale/Po4a/Po.pm:1543
+#, perl-format
+msgid "msgid declared in one file only: %s\n"
+msgstr "msgid declarado em apenas um arquivo: %s\n"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:220
+msgid ""
+"The needed module SGMLS.pm was not found and needs to be installed. It can "
+"be found on the CPAN, in package libsgmls-perl on debian, etc."
+msgstr ""
+"O módulo requerido SGMLS.pm não foi encontrado e precisará ser instalado. "
+"Ele pode ser encontrado no CPAN, no pacote libsgmls-perl do debian etc."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:265
+#, perl-format
+msgid ""
+"Unknown debug category: %s. Known categories:\n"
+"%s"
+msgstr ""
+"Categoria de depuração desconhecida: %s. Categorias conhecidas:\n"
+"%s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:297
+msgid "msgid skipped to help translators (contains only an entity)"
+msgstr "msgid ignorada para ajudar tradutores (contém somente uma entidade)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:306
+msgid "msgid skipped to help translators (contains only tags)"
+msgstr "msgid ignorada para ajudar tradutores (contém somente tags)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:319
+msgid ""
+"msgid skipped to help translators (contains only opening or closing tags of "
+"marked sections)"
+msgstr ""
+"msgid ignorada para ajudar tradutores (contém apenas tags de abertura e "
+"fechamento de seções marcadas)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:407 ../../lib/Locale/Po4a/Sgml.pm:859
+#, perl-format
+msgid "Cannot close tempfile: %s"
+msgstr "Não foi possível fechar arquivo temporário: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:413
+msgid ""
+"Error while running onsgmls -p.  Please check if onsgmls and the DTD are "
+"installed."
+msgstr ""
+"Erro enquanto executava onsgmls -p. Verifique se onsgmls e o DTD estão "
+"instalados."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:426
+msgid ""
+"Trying to handle a XML document as a SGML one. Feel lucky if it works, help "
+"us implementing a proper XML backend if it does not."
+msgstr ""
+"Tentando manipular um documento XML como um SGML. Sinta-se sortudo se isso "
+"funcionar, ajude-nos a implementar um backend XML adequado se não funcionar."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:445
+msgid ""
+"This file is not a master SGML document (no DOCTYPE). It may be a file to be "
+"included by another one, in which case it should not be passed to po4a "
+"directly. Text from included files is extracted/translated when handling the "
+"master file including them."
+msgstr ""
+"Esse arquivo não é um documento mestre SGML (nenhum DOCTYPE). Ele pode ser "
+"um arquivo a ser incluído por outro, caso em que ele não deveria ser passado "
+"para po4a diretamente. O texto de arquivos incluídos é extraído/traduzido ao "
+"se manipular o arquivo mestre que está incluindo-os."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:568
+msgid "DTD of this file is unknown, but proceeding as requested."
+msgstr "DTD deste arquivo é desconhecido, mas processando como requisitado."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:572
+msgid ""
+"DTD of this file is unknown. (supported: DebianDoc, DocBook). The prolog "
+"follows:"
+msgstr ""
+"DTD deste arquivo é desconhecido. (há suporte: DebianDoc, DocBook). O "
+"prólogo segue:"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:670 ../../lib/Locale/Po4a/Sgml.pm:754
+#, perl-format
+msgid "Cannot open %s (content of entity %s%s;): %s"
+msgstr "Não foi possível abrir %s (conteúdo de entidade %s%s;): %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:725
+#, perl-format
+msgid "unrecognized prolog inclusion entity: %%%s;"
+msgstr "Entidade de inclusão de prólogo desconhecida: %%%s;"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:864
+#, perl-format
+msgid "Cannot run onsgmls: %s"
+msgstr "Não é possível executar onsgmls: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:983
+#, perl-format
+msgid "Unknown tag %s"
+msgstr "Tag desconhecida: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1021
+#, perl-format
+msgid "bad translation '%s' for '%s' in '%s'"
+msgstr "má tradução \"%s\" para \"%s\" em \"%s\""
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1077 ../../lib/Locale/Po4a/Sgml.pm:1162
+#, perl-format
+msgid "Closing tag for a translation container missing before %s"
+msgstr "Tag de fechamento para um contêiner de tradução faltando antes de %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1247
+#, perl-format
+msgid "Unknown SGML event type: %s"
+msgstr "Tipo de evento SGML desconhecido: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1261
+msgid ""
+"Warning: onsgmls produced some errors.  This is usually caused by po4a, "
+"which modifies the input and restores it afterwards, causing the input of "
+"onsgmls to be invalid.  This is usually safe, but you may wish to verify the "
+"generated document with onsgmls -wno-valid."
+msgstr ""
+"Aviso: onsgmls produziu alguns erros. Isso normalmente é causado pelo po4a, "
+"o qual modifica a entrada e a restaura posteriormente, tornando a entrada de "
+"onsgmls inválida. Normalmente isso é seguro, mas você pode querer verificar "
+"o documento gerado com onsgmls -wno-valid."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1273
+msgid ""
+"To see the error message, rerun po4a with this additional argument:\n"
+"   -o debug=onsgmls"
+msgstr ""
+"Para ver a mensagem de erro, execute novamente o po4a com este argumento "
+"adicional:\n"
+"   -o debug=onsgmls"
+
+#: ../../lib/Locale/Po4a/TeX.pm:521 ../../lib/Locale/Po4a/TeX.pm:605
+#, perl-format
+msgid "un-balanced %s in '%s'"
+msgstr "%s desbalanceado em \"%s\""
+
+#: ../../lib/Locale/Po4a/TeX.pm:536 ../../lib/Locale/Po4a/TeX.pm:624
+#, perl-format
+msgid "Error while checking the number of arguments of the '%s' command: %s"
+msgstr "Erro enquanto verificava o número de argumentos do comando \"%s\": %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:810 ../../lib/Locale/Po4a/TeX.pm:912
+#, perl-format
+msgid "Unknown command: '%s'"
+msgstr "Comando desconhecido: \"%s\""
+
+#: ../../lib/Locale/Po4a/TeX.pm:957
+msgid "Cannot read from file without having a filename"
+msgstr "Não é possível ler de arquivo sem ter um nome de arquivo"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1001
+#, perl-format
+msgid "Cannot find %s with kpsewhich"
+msgstr "Não foi possível localizar %s com kpsewhich"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1032 ../../lib/Locale/Po4a/TransTractor.pm:473
+#: ../../lib/Locale/Po4a/Xhtml.pm:147
+#, perl-format
+msgid "Cannot close %s after reading: %s"
+msgstr "Não foi possível fechar %s depois de ler: %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1057
+#, perl-format
+msgid "kpsewhich cannot find %s"
+msgstr "kpsewhich não pôde localizar %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1103
+#, perl-format
+msgid "Cannot use an alias to the unknown command '%s'"
+msgstr ""
+"Não foi possível usa um apelido (alias) para o comando desconhecido \"%s\""
+
+#: ../../lib/Locale/Po4a/TeX.pm:1110
+#, perl-format
+msgid ""
+"You are using the old definitions format (%s).  Please update this "
+"definition line."
+msgstr ""
+"Você está usando formato de definições antigo (%s). Atualize a linha de "
+"definição."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1319 ../../lib/Locale/Po4a/TeX.pm:1572
+#, perl-format
+msgid "unknown environment: '%s'"
+msgstr "Ambiente desconhecido: \"%s\""
+
+#. a begin may have been hidden in the middle of a translated
+#. buffer. FIXME: Just warn for now.
+#: ../../lib/Locale/Po4a/TeX.pm:1342
+#, perl-format
+msgid "unmatched end of environment '%s'"
+msgstr "Fim de ambiente \"%s\" não confere"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1392 ../../lib/Locale/Po4a/TeX.pm:1501
+#, perl-format
+msgid "Wrong number of arguments for the '%s' command."
+msgstr "Número errado de argumentos para o comando \"%s\"."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1404 ../../lib/Locale/Po4a/TeX.pm:1513
+#: ../../lib/Locale/Po4a/TeX.pm:1599
+msgid "An optional argument was provided, but a mandatory one is expected."
+msgstr "Um argumento opcional foi fornecido, mas um obrigatório é esperado."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1405 ../../lib/Locale/Po4a/TeX.pm:1514
+#, perl-format
+msgid "Command '%s': %s"
+msgstr "Comando \"%s\": %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1461
+#, perl-format
+msgid "register_generic_command: unsupported format: '%s'."
+msgstr "register_generic_command: formato sem suporte: \"%s\"."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1567
+msgid "The first argument of \\begin is mandatory."
+msgstr "O primeiro argumento de \\begin é obrigatório."
+
+#: ../../lib/Locale/Po4a/Text.pm:237
+#, perl-format
+msgid "Option %s is only valid when parsing markdown files."
+msgstr "A opção %s é válida somente ao analisar arquivos de Markdown."
+
+#: ../../lib/Locale/Po4a/Text.pm:399
+#, perl-format
+msgid "Unrecognized section: %s"
+msgstr "Seção desconhecida: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:513
+#, perl-format
+msgid "Cannot close %s after writing: %s"
+msgstr "Não foi possível fechar %s depois de escrever: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:606
+#, perl-format
+msgid "Cannot read po4a header from %s."
+msgstr "Não foi possível o cabeçalho po4a de %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:611
+#, perl-format
+msgid "First line of %s does not look like a po4a header."
+msgstr "Primeira linha de %s não parece um cabeçalho po4a."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:616
+#, perl-format
+msgid "Syntax error in po4a header of %s, near \"%s\""
+msgstr "Erro de sintaxe no cabeçalho po4a de %s, perto de \"%s\""
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:632
+#, perl-format
+msgid "Invalid argument in the po4a header of %s: %s"
+msgstr "Argumento inválido no cabeçalho po4a de %s: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:638
+#, perl-format
+msgid "The po4a header of %s does not define the mode."
+msgstr "O cabeçalho po4a de %s não define o modo."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:645
+#, perl-format
+msgid ""
+"Mode invalid in the po4a header of %s: should be 'before', 'after' or 'eof'. "
+"Instead, it is '%s'."
+msgstr ""
+"Modo inválido no cabeçalho po4a de %s: deve ser \"before\", \"after\" ou "
+"\"eof\", e não \"%s\"."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:654
+#, perl-format
+msgid "The po4a header of %s does not define the position."
+msgstr "O cabeçalho po4a de %s não define a posição."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:658
+msgid "No ending boundary given in the po4a header, but mode=after."
+msgstr ""
+"Nenhum limite de finalização fornecido no cabeçalho po4a, mas modo é igual a "
+"after."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:662
+msgid "No position needed when mode=eof."
+msgstr "Nenhuma posição necessária quando mode=eof."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:666
+msgid "No ending boundary needed when mode=eof."
+msgstr "Nenhum limite de finalização necessário quando mode=eof."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:692
+msgid "Cannot apply addendum when not given the filename"
+msgstr ""
+"Não é possível aplicar adendo quando nenhum nome de arquivo é fornecido"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:695
+#, perl-format
+msgid "Addendum %s does not exist."
+msgstr "Adendo %s não existe."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:736
+#, perl-format
+msgid "No candidate position for the addendum %s."
+msgstr "Nenhuma posição candidata ao adendo %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:740
+#, perl-format
+msgid "More than one candidate position found for the addendum %s."
+msgstr "Mais do que uma posição candidata encontrada para o adendo %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:751
+#: ../../lib/Locale/Po4a/TransTractor.pm:773
+#, perl-format
+msgid "Addendum '%s' applied before this line: %s"
+msgstr "Adendo \"%s\" aplicada antes desta linha: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:779
+#, perl-format
+msgid "Addendum '%s' applied after the line: %s."
+msgstr "Adendo \"%s\" aplicada após a linha: %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:786
+#, perl-format
+msgid "Addendum '%s' applied at the end of the file."
+msgstr "Adendo \"%s\" aplicado no fim do arquivo."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:959
+#: ../../lib/Locale/Po4a/TransTractor.pm:1147
+#, perl-format
+msgid ""
+"Couldn't determine the input document's charset. Please specify it on the "
+"command line. (non-ASCII char at %s)"
+msgstr ""
+"Não foi possível determinar o conjunto de caracteres do documento de "
+"entrada. Especifique-o na linha de comando. (caractere não-ASCII em %s)"
+
+#: ../../lib/Locale/Po4a/Wml.pm:93
+#, perl-format
+msgid "Cannot create a temporary XML file: %s"
+msgstr "Não foi possível criar um arquivo XML temporário: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:119
+#, perl-format
+msgid "%s: Cannot read from %s: %s"
+msgstr "%s: Não foi possível ler de %s: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:128
+#, perl-format
+msgid "%s: Cannot close %s after reading: %s"
+msgstr "%s: Não foi possível fechar %s depois de ler: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:230
+#, perl-format
+msgid ""
+"'po4a-id=%d' in the translation does not exist in the original string (or "
+"'po4a-id=%d' used twice in the translation)."
+msgstr ""
+"\"po4a-id=%d\" da tradução não existe na string original (ou \"po4a-id=%d\" "
+"é usado duas vezes na tradução)."
+
+#: ../../lib/Locale/Po4a/Xml.pm:270
+#, perl-format
+msgid ">>> filename = '%s'"
+msgstr ">>> nome do arquivo = \"%s\""
+
+#: ../../lib/Locale/Po4a/Xml.pm:750
+#, perl-format
+msgid "Internal error: unknown type identifier '%s'."
+msgstr "Erro interno: identificador de tipo desconhecido \"%s\"."
+
+#: ../../lib/Locale/Po4a/Xml.pm:947
+#, perl-format
+msgid ""
+"Bad document type. '%s' expected. You can fix this warning with a -o doctype "
+"option, or ignore this check with -o doctype=\"\"."
+msgstr ""
+"Tipo de documento inválido. \"%s\" esperado. Você pode corrigir este aviso "
+"com uma opção -o doctype ou ignore essa verificação com -o doctype=\"\"."
+
+#: ../../lib/Locale/Po4a/Xml.pm:1044 ../../lib/Locale/Po4a/Xml.pm:1784
+#, perl-format
+msgid ""
+"Unexpected closing tag </%s> found. The main document may be wrong.  "
+"Continuing…"
+msgstr ""
+"Tag de fechamento inesperada </%s> encontrada. O documento principal pode "
+"estar errado. Continuando…"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1050 ../../lib/Locale/Po4a/Xml.pm:1793
+#, perl-format
+msgid "Unexpected closing tag </%s> found. The main document may be wrong."
+msgstr ""
+"Tag de fechamento inesperada </%s> encontrada. O documento principal pode "
+"estar errado."
+
+#: ../../lib/Locale/Po4a/Xml.pm:1431
+#, perl-format
+msgid ""
+"%s: attribute '%s' is not defined in module option 'attributes' and\n"
+"....  is not translated for the attribute path '%s'"
+msgstr ""
+"%s: o atributo \"%s\" não está definido na opção do módulo \"attributes\" e\n"
+"....  não está traduzido para o caminho do atributo \"%s\""
+
+#: ../../lib/Locale/Po4a/Xml.pm:1450
+#, perl-format
+msgid "%s: Bad attribute syntax.  Continuing…"
+msgstr "%s: Sintaxe de atributo incorreta. Continuando…"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1452
+#, perl-format
+msgid "%s: Bad attribute syntax"
+msgstr "%s: Sintaxe de atributo incorreta"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1575
+#, perl-format
+msgid ""
+"%s: translation option='%s'.\n"
+" *** the original translation option is overridden here since parent "
+"path='%s' is untranslated,"
+msgstr ""
+"%s: opção de tradução=\"%s\".\n"
+" *** a opção de tradução original é sobrescrita aqui já que o caminho pai="
+"\"%s\" não está traduzido,"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1589
+#, perl-format
+msgid "%s: foldattributes setting ignored since '%s' is not inline tag"
+msgstr ""
+"%s: configuração de foldattributes ignorada já que \"%s\" não é uma tag em "
+"linha"
+
+#: ../../lib/Locale/Po4a/Xml.pm:2015
+#, perl-format
+msgid ""
+"Invalid placeholder in the translation (the 'type' and 'id' must be present, "
+"in this order).\n"
+"%s\n"
+"\n"
+"Please fix your translation."
+msgstr ""
+"O espaço reservado inválido na tradução (o \"type\" e o \"id\" devem estar "
+"presentes, nesta ordem).\n"
+"%s\n"
+"\n"
+"Por favor, conserte a sua tradução."
+
+#: ../../lib/Locale/Po4a/Xml.pm:2102 ../../lib/Locale/Po4a/Xml.pm:2117
+#, perl-format
+msgid ""
+"The '%s' option is deprecated. Please use the translated/untranslated and/or "
+"break/inline/placeholder categories."
+msgstr ""
+"A opção \"%s\" está obsoleta. Use as categorias translated/untranslated e/ou "
+"break/inline/placeholder."
+
+#: ../../lib/Locale/Po4a/Xml.pm:2280 ../../lib/Locale/Po4a/Xml.pm:2287
+#: ../../lib/Locale/Po4a/Xml.pm:2290 ../../lib/Locale/Po4a/Xml.pm:2293
+#: ../../lib/Locale/Po4a/Xml.pm:2298 ../../lib/Locale/Po4a/Xml.pm:2301
+#: ../../lib/Locale/Po4a/Xml.pm:2306
+#, perl-format
+msgid "Tag '%s' both in the %s and %s categories."
+msgstr "Tag \"%s\" tanto nas categorias %s e %s."
+
+#. Argument checking
+#: ../../msguntypot:163 ../../msguntypot:165
+#, perl-format
+msgid "Mandatory argument '%s' missing."
+msgstr "Argumento obrigatório \"%s\" faltando."
+
+#. Check file existence
+#: ../../msguntypot:164 ../../msguntypot:166 ../../po4a:949
+#: ../../po4a-gettextize:386 ../../po4a-normalize:176 ../../po4a-translate:239
+#: ../../po4a-translate:240 ../../po4a-updatepo:274
+#, perl-format
+msgid "File %s does not exist."
+msgstr "Arquivo %s não existe."
+
+#: ../../msguntypot:174
+#, perl-format
+msgid ""
+"The new and old POT files have different amount of strings (%d != %d). "
+"Something's seriously wrong here."
+msgstr ""
+"Os arquivos POT novo e antigo possuem quantidade de strings diferente (%d != "
+"%d). Alguma coisa está seriamente errada aqui."
+
+#: ../../msguntypot:192
+#, perl-format
+msgid "Found %d modified entries."
+msgstr "Encontradas %d entradas modificadas."
+
+#: ../../msguntypot:203 ../../po4a:1623
+#, perl-format
+msgid "Cannot create a temporary PO file: %s"
+msgstr "Não foi possível criar um arquivo PO temporário: %s"
+
+#: ../../msguntypot:208
+#, perl-format
+msgid "Handling %s"
+msgstr "Manipulando %s"
+
+#: ../../msguntypot:212 ../../po4a-updatepo:309
+#, perl-format
+msgid "Could not run msgmerge: %s"
+msgstr "Não foi possível executar msgmerge: %s"
+
+#: ../../msguntypot:234
+#, perl-format
+msgid "Modified %d entries in %d files."
+msgstr "%d entradas modificadas em %d arquivos."
+
+#: ../../po4a:832 ../../po4a:836
+#, perl-format
+msgid "Option %s invalid. Directory %s does not exist (current directory: %s)."
+msgstr "Opção %s inválida. Diretório %s não existe. (diretório atual: %s)."
+
+#. TRANSLATOR: There is two chunks in the following:  opt:"--keep 20" opt:"-o nowrap"
+#: ../../po4a:872
+#, perl-format
+msgid "Unparsable option chunk '%s' (%s)."
+msgstr "Bloco de opção não analisável \"%s\" (%s)."
+
+#: ../../po4a:881
+#, perl-format
+msgid "Skipping option chunk '%s'."
+msgstr "Ignorando bloco de opção \"%s\"."
+
+#: ../../po4a:930
+#, perl-format
+msgid "failed to execute '%s': %s."
+msgstr "falha ao executar \"%s\": %s."
+
+#: ../../po4a:933
+#, perl-format
+msgid "'%s' died with signal %d, with coredump."
+msgstr "\"%s\" terminou com sinal %d, com coredump."
+
+#: ../../po4a:935
+#, perl-format
+msgid "'%s' died with signal %d, without coredump."
+msgstr "\"%s\" terminou com sinal %d, sem coredump."
+
+#: ../../po4a:938
+#, perl-format
+msgid "'%s' exited with value %d."
+msgstr "\"%s\" saiu com valor %d."
+
+#: ../../po4a:941
+#, perl-format
+msgid "Error: %s"
+msgstr "Erro: %s"
+
+#: ../../po4a:984 ../../po4a:1070 ../../po4a:1320
+#, perl-format
+msgid "Unknown variable: %s"
+msgstr "Variável desconhecida: %s"
+
+#: ../../po4a:994
+#, perl-format
+msgid "Syntax error: %s"
+msgstr "Erro de sintaxe: %s"
+
+#: ../../po4a:1025 ../../po4a:1088
+#, perl-format
+msgid "'%s' redeclared"
+msgstr "\"%s\" redeclarado"
+
+#: ../../po4a:1033
+#, perl-format
+msgid ""
+"Your POT file '%s' file name does not end with the 'pot' extension. This is "
+"unusual and will trouble the translators."
+msgstr ""
+"O nome do arquivo do seu arquivo POT \"%s\" não termina com a extensão \".pot"
+"\". Isso é incomum e vai incomodar os tradutores."
+
+#: ../../po4a:1041
+#, perl-format
+msgid ""
+"No PO file provided as subsequent parameters to '%s'. Your documentation "
+"will not be translated."
+msgstr ""
+"Nenhum arquivo PO fornecido como parâmetros subsequentes para \"%s\". Sua "
+"documentação não será traduzida."
+
+#: ../../po4a:1046
+#, perl-format
+msgid "Unparsable argument '%s'."
+msgstr "Argumento não analisável \"%s\"."
+
+#: ../../po4a:1093
+msgid "The list of languages cannot be set twice."
+msgstr "A lista de idiomas não pode ser definida duas vezes."
+
+#: ../../po4a:1095
+msgid "The POT file cannot be set twice."
+msgstr "O arquivo POT não pode ser definido duas vezes."
+
+#: ../../po4a:1107 ../../po4a:1123
+#, perl-format
+msgid "Using '%s' as a %s."
+msgstr "Usando \"%s\" como um %s."
+
+#: ../../po4a:1109
+#, perl-format
+msgid "'%s' is not a directory (current dir: %s)"
+msgstr "\"%s\" não é um diretório (diretório atual: %s)"
+
+#: ../../po4a:1114
+#, perl-format
+msgid "Cannot list the '%s' directory"
+msgstr "Não foi possível listar o diretório \"%s\""
+
+#: ../../po4a:1128
+#, perl-format
+msgid "Cannot list directory '%s' in '%s' "
+msgstr "Não foi possível listar um diretório \"%s\" em \"%s\" "
+
+#: ../../po4a:1134
+#, perl-format
+msgid "Directory '%s' not found in '%s'."
+msgstr "Diretório \"%s\" não encontrado em \"%s\"."
+
+#: ../../po4a:1137 ../../po4a:1140
+#, perl-format
+msgid "Directory '%s' not found in '%s' nor in '%s'."
+msgstr "Diretório \"%s\" não encontrado em \"%s\" ou em \"%s\"."
+
+#: ../../po4a:1144
+#, perl-format
+msgid "Directory '%s' not found in '%s' nor in '%s' nor in '%s'."
+msgstr "Diretório \"%s\" não encontrado em \"%s\" ou em \"%s\" ou em \"%s\"."
+
+#: ../../po4a:1155
+#, perl-format
+msgid "Language '%s' found twice in '%s' and '%s'."
+msgstr "Idioma \"%s\" encontrado duas vezes em \"%s\" e \"%s\"."
+
+#: ../../po4a:1159
+#, perl-format
+msgid "Found language '%s' in the provided po_directory: %s"
+msgstr "Localizado idioma \"%s\" no po_directory fornecido: %s"
+
+#: ../../po4a:1163
+#, perl-format
+msgid "%s:%d: too many POT files: '%s' and '%s'."
+msgstr "%s:%d: arquivos POT demais: \"%s\" e \"%s\"."
+
+#: ../../po4a:1167
+#, perl-format
+msgid "Found POT file '%s' in the provided po_directory."
+msgstr "Encontrado arquivo POT \"%s\" no po_directory fornecido."
+
+#: ../../po4a:1177
+#, perl-format
+msgid "No PO files found in '%s'/'%s'."
+msgstr "Nenhum arquivo PO encontrado em \"%s\"/\"%s\"."
+
+#: ../../po4a:1180 ../../po4a:1183
+#, perl-format
+msgid "No PO files found in '%s'/'%s' nor in '%s'/'%s'."
+msgstr "Nenhum arquivo PO encontrado em \"%s\"/\"%s\" nem em \"%s\"/\"%s\"."
+
+#: ../../po4a:1187
+#, perl-format
+msgid "No PO files found in '%s'/'%s' nor in '%s'/'%s' nor in '%s'/'%s'."
+msgstr ""
+"Nenhum arquivo PO encontrado em \"%s\"/\"%s\" nem em \"%s\"/\"%s\" nem em "
+"\"%s\"/\"%s\"."
+
+#: ../../po4a:1191
+msgid "Your project will not be translated to any language."
+msgstr "Seu projeto será traduzido para nenhuma idioma."
+
+#: ../../po4a:1197
+#, perl-format
+msgid "No POT files found in '%s'/'%s'."
+msgstr "Nenhum arquivo POT encontrado em \"%s\"/\"%s\"."
+
+#: ../../po4a:1200 ../../po4a:1203
+#, perl-format
+msgid "No POT files found in '%s'/'%s' nor in '%s'/'%s'."
+msgstr "Nenhum arquivo POT encontrado em \"%s\"/\"%s\" nem em \"%s\"/\"%s\"."
+
+#: ../../po4a:1207
+#, perl-format
+msgid "No POT files found in '%s'/'%s' nor in '%s'/'%s' nor in '%s'/'%s'."
+msgstr ""
+"Nenhum arquivo POT encontrado em \"%s\"/\"%s\" nem em \"%s\"/\"%s\" nem em "
+"\"%s\"/\"%s\"."
+
+#: ../../po4a:1211
+msgid ""
+"Please create an empty file with the 'pot' extension (e.g. 'myproject.pot')."
+msgstr ""
+"Crie um arquivo vazio com a extensão \"pot\" (por exempo, \"meuprojeto.pot"
+"\")."
+
+#: ../../po4a:1221
+#, perl-format
+msgid ""
+"The master file '%s' was specified earlier in the configuration file. This "
+"may cause problems with options."
+msgstr ""
+"O arquivo mestre \"%s\" foi especificado mais cedo no arquivo de "
+"configuração. Isso pode causar problemas com opções."
+
+#: ../../po4a:1226
+#, perl-format
+msgid "The master file '%s' does not exist."
+msgstr "O arquivo mestre \"%s\" não existe."
+
+#: ../../po4a:1270
+msgid ""
+"Option 'master:file' is deprecated. Please use 'pot' instead for the same "
+"effect."
+msgstr ""
+
+#: ../../po4a:1292
+#, perl-format
+msgid "Unparsable argument '%s' (%s)."
+msgstr "Argumento não analisável \"%s\" (%s)."
+
+#: ../../po4a:1295
+msgid "The translated and master file are the same."
+msgstr "O arquivo mestre e traduzido são o mesmo."
+
+#: ../../po4a:1337
+#, perl-format
+msgid "Translation of %s in %s redefined"
+msgstr "Tradução de %s em %s redefinida"
+
+#: ../../po4a:1357
+#, perl-format
+msgid "Unparsable command '%s'."
+msgstr "Comando não analisável \"%s\"."
+
+#. don't care about error here
+#: ../../po4a:1363
+msgid ""
+"'po4a_paths' is not defined in the configuration file. Where are the POT and "
+"PO files?"
+msgstr ""
+"\"po4a_paths\" não definido no arquivo de configuração. Onde estão os "
+"arquivos POT e PO?"
+
+#: ../../po4a:1379
+#, perl-format
+msgid "Cannot parse option line (missing >%s<?): %s"
+msgstr "Não foi possível analisar a opção na linha (faltando >%s<?): %s"
+
+#: ../../po4a:1407
+#, perl-format
+msgid "Split mode, creating a temporary POT:"
+msgstr "Modo dividido, criando um POT temporário:"
+
+#: ../../po4a:1410
+msgid "Disabling --translate-only option, it is not supported in split mode"
+msgstr ""
+"Desabilitando a opção --translate-only, pois o modo dividido não oferece "
+"suporte a ela"
+
+#: ../../po4a:1459
+#, perl-format
+msgid "NOT updating %s as requested (--no-update)."
+msgstr "NÃO atualizando %s como requisitado (--no-update)."
+
+#: ../../po4a:1463 ../../po4a:1680 ../../po4a-updatepo:302
+#, perl-format
+msgid "Updating %s:"
+msgstr "Atualizando %s:"
+
+#: ../../po4a:1467
+#, perl-format
+msgid "NOT creating %s as requested (--no-update)."
+msgstr "NÃO criando %s como requisitado (--no-update)."
+
+#: ../../po4a:1470 ../../po4a-updatepo:315
+#, perl-format
+msgid "Creating %s:"
+msgstr "Criando %s:"
+
+#: ../../po4a:1542 ../../po4a:1590 ../../po4a:1712 ../../po4a-updatepo:284
+#, perl-format
+msgid "Cannot create a temporary POT file: %s"
+msgstr "Não foi possível criar um arquivo POT temporário: %s"
+
+#: ../../po4a:1552
+#, perl-format
+msgid " (%d entries)"
+msgstr " (%d entradas)"
+
+#: ../../po4a:1555
+#, perl-format
+msgid "POT file %s already up to date."
+msgstr "Arquivo POT %s já está atualizado."
+
+#: ../../po4a:1595 ../../po4a:1663 ../../po4a:1750
+#, perl-format
+msgid "Cannot create directory '%s': %s"
+msgstr "Não foi possível criar um diretório \"%s\": %s"
+
+#: ../../po4a:1603
+#, perl-format
+msgid ""
+"msggrep did not create '%s'. Used command:\n"
+"  %s\n"
+"Please report that bug, along the information allowing to reproduce it.\n"
+msgstr ""
+"msggrep não criou '%s'. Comando usado:\n"
+"  %s\n"
+"Relate este bug, junto com as informações permitindo reproduzi-lo.\n"
+
+#: ../../po4a:1634
+#, perl-format
+msgid ""
+"The translation of master file '%s' in language '%s' is missing (file: %s) "
+"-- skipping."
+msgstr ""
+"A tradução do arquivo mestre \"%s\" no idioma \"%s\" está faltando (arquivo: "
+"%s) -- ignorando."
+
+#: ../../po4a:1678
+#, perl-format
+msgid "Updating the translation in language %s:"
+msgstr "Atualizando a tradução no idioma %s:"
+
+#: ../../po4a:1788
+#, perl-format
+msgid "PO file for language %s is missing -- skipping."
+msgstr "Arquivo PO para o idioma %s está faltando -- ignorando."
+
+#: ../../po4a:1790
+#, perl-format
+msgid "PO file %s for language %s is missing -- skipping."
+msgstr "Arquivo PO %s para o idioma %s está faltando -- ignorando."
+
+#: ../../po4a:1829
+#, perl-format
+msgid "%s doesn't need to be updated."
+msgstr "%s não precisa ser atualizada."
+
+#: ../../po4a:1885
+#, perl-format
+msgid "Discard %s (%s of %s strings; only %s%% translated; need %s%%)."
+msgstr ""
+"Descartar %s (%s de %s strings; somente %s%% traduzidas; precisa %s%%)."
+
+#: ../../po4a:1895
+#, perl-format
+msgid "Timestamp %s created."
+msgstr "Timestamp %s criado."
+
+#: ../../po4a:1906
+#, perl-format
+msgid "Timestamp %s removed."
+msgstr "Timestamp %s removido."
+
+#: ../../po4a:1920
+#, perl-format
+msgid "Addendum %s does NOT apply to %s (translation discarded)."
+msgstr "Adendo %s NÃO se aplica a %s (tradução descartada)."
+
+#: ../../po4a:1929
+#, perl-format
+msgid "%s is 100%% translated (%s strings)."
+msgstr "%s está 100%% traduzido (%s strings)."
+
+#: ../../po4a:1933 ../../po4a-translate:275
+#, perl-format
+msgid "%s is %s%% translated (%s of %s strings)."
+msgstr "%s está %s%% traduzido (%s de %s strings)."
+
+#: ../../po4a-normalize:177
+#, perl-format
+msgid "Options %s and %s cannot be provided together"
+msgstr "As opções %s e %s não podem ser fornecidas ao mesmo tempo"
+
+#: ../../po4a-normalize:199
+#, perl-format
+msgid "Write the normalized document to %s."
+msgstr "Escrever o documento normalizado para %s."
+
+#: ../../po4a-normalize:202
+#, perl-format
+msgid "Write the normalized PO file to %s."
+msgstr "Escrever o arquivo PO normalizado para %s."
+
+#: ../../po4a-translate:280
+#, perl-format
+msgid "Discard the translation of %s (only %s%% translated; need %s%%)."
+msgstr "Descartar a tradução de %s (apenas %s%% traduzidas; precisa de %s%%)."
+
+#: ../../po4a-translate:318
+#, perl-format
+msgid "Discard the translation of %s (addendum %s does not apply)."
+msgstr "Descartar a tradução de %s (adendo %s não se aplica)."
+
+#: ../../po4a-translate:328
+#, perl-format
+msgid ""
+"Your input po file %s seems outdated (%s). Please consider running po4a-"
+"updatepo to refresh it."
+msgstr ""
+"Seu arquivo po %s parece desatualizado (%s). Considere executar po4a-"
+"updatepo para atualizá-lo."
+
+#: ../../po4a-updatepo:275
+msgid "po4a-updatepo can't take the input PO from stdin."
+msgstr "po4a-updatepo não pode levar PO de entrada da entrada padrão (stdin)."
+
+#: ../../po4a-updatepo:286
+msgid "Parse input files… "
+msgstr "Analisar arquivos de entrada… "
+
+#: ../../po4a-updatepo:298
+msgid "done."
+msgstr "concluído."
+
+#: ../../po4a-updatepo:318
+#, perl-format
+msgid "Could not copy the PO file (%s → %s): %s"
+msgstr "Não foi possível copiar o arquivo PO (%s → %s): %s"
+
+#~ msgid "Error while running msgmerge: %s"
+#~ msgstr "Erro ao executar msgmerge: %s"
+
+#~ msgid "Apply addendum: %s"
+#~ msgstr "Aplicar adendo: %s"
+
+#~ msgid "Done addendum: %s"
+#~ msgstr "Adendo concluído: %s"
+
+#~ msgid "Can't open %s: %s"
+#~ msgstr "Não foi possível abrir %s: %s"
+
+#~ msgid "Call treat_options"
+#~ msgstr "Chamar treat_options"
+
+#~ msgid "Eval failure: %s"
+#~ msgstr "Falha na avaliação: %s"
+
+#~ msgid "%s: type=%s <%s%s%s%s%s>"
+#~ msgstr "%s: tipo=%s <%s%s%s%s%s>"
+
+#~ msgid "%s: type='%s'"
+#~ msgstr "%s: tipo=\"%s\""
+
+#~ msgid "%s: path='%s', translation option='%s'"
+#~ msgstr "%s: caminho=\"%s\", opção de tradução=\"%s\""
+
+#~ msgid "%s: path='%s', translation option='%s' (no translation)"
+#~ msgstr "%s: caminho=\"%s\", opção de tradução=\"%s\" (sem tradução)"
+
+#~ msgid "%s: translation option='%s' (valid)"
+#~ msgstr "%s: opção de tradução=\"%s\" (válida)"
+
+#~ msgid "Chdir %s (srcdir)"
+#~ msgstr "Chdir %s (srcdir)"
+
+#~ msgid "Call readpo(%s)"
+#~ msgstr "Chamar readpo(%s)"
+
+#~ msgid "Done readpo(%s)"
+#~ msgstr "Concluído readpo(%s)"
+
+#~ msgid "Call read(%s)"
+#~ msgstr "Chamar read(%s)"
+
+#~ msgid "Done read(%s)"
+#~ msgstr "Concluído read(%s)"
+
+#~ msgid "Call parse()"
+#~ msgstr "Chamar parse()"
+
+#~ msgid "Done parse()"
+#~ msgstr "Concluído parse()"
+
+#~ msgid "Call addendum(%s)"
+#~ msgstr "Chamar addendum(%s)"
+
+#~ msgid "Done addendum(%s)"
+#~ msgstr "Concluído addendum(%s)"
+
+#~ msgid "Call write(%s)"
+#~ msgstr "Chamar write(%s)"
+
+#~ msgid "Done write(%s)"
+#~ msgstr "Concluído write(%s)"
+
+#~ msgid "Call writepo(%s)"
+#~ msgstr "Chamar writepo(%s)"
+
+#~ msgid "Done writepo(%s)"
+#~ msgstr "Concluído writepo(%s)"
+
+#~ msgid "Chdir %s (calldir)"
+#~ msgstr "Chdir %s (calldir)"
+
+#~ msgid "Content of attribute %s excluded: %s"
+#~ msgstr "Conteúdo do atributo %s excluído: %s"
+
+#~ msgid "Content of tag %s excluded: %s"
+#~ msgstr "Conteúdo da %s excluído: %s"
+
+#~ msgid "asciidoc option deprecated, use asciidoc format instead of text"
+#~ msgstr "Opção asciidoc obsoleta, use formato asciidoc ao invés de texto"
+
+#~ msgid ""
+#~ "\n"
+#~ "po4a-build - po4a frontend\n"
+#~ "\n"
+#~ "Syntax: po4a-build\n"
+#~ "        po4a-build --pot-only\n"
+#~ "\n"
+#~ "Commands:\n"
+#~ "-?|-h|--help|--version:     print this help message and exit\n"
+#~ "--pot-only:                 only create the POT file\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "-f|--file FILE:             po4a-build.conf config file path\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "po4a-build - frontend do po4a\n"
+#~ "\n"
+#~ "Syntax: po4a-build\n"
+#~ "        po4a-build --pot-only\n"
+#~ "\n"
+#~ "Commands:\n"
+#~ "-?|-h|--help|--version:     print this help message and exit\n"
+#~ "--pot-only:                 only create the POT file\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "-f|--file FILE:             po4a-build.conf config file path\n"
+#~ "\n"
+
+#~ msgid "Unrecognised command: $com"
+#~ msgstr "Comando desconhecido: $com"
+
+#~ msgid "Cannot find config file! '$FILE'"
+#~ msgstr "Não foi possível localizar o arquivo de configuração! \"$FILE\""
+
+#~ msgid "Internal po4a from $OURS being used instead of /usr/bin/"
+#~ msgstr "po4a interno de $OURS sendo usado ao invés de /usr/bin/"
+
+#~ msgid "Processing untranslated files for $X (1). . ."
+#~ msgstr "Processando arquivos não traduzidos de $X (1). . ."
+
+#~ msgid "Processing untranslated files for $X3 (3). . ."
+#~ msgstr "Processando arquivos não traduzidos de $X3 (3). . ."
+
+#~ msgid "Processing untranslated files for $file (1) . . ."
+#~ msgstr "Processando arquivos não traduzidos de $file (1) . . ."
+
+#~ msgid "Processing untranslated files for $name (3) . . ."
+#~ msgstr "Processando arquivos não traduzidos de $name (3) . . ."
+
+#~ msgid "Processing untranslated files for $file (5) . . ."
+#~ msgstr "Processando arquivos não traduzidos de $file (5) . . ."
+
+#~ msgid "Processing untranslated files for $file (7) . . ."
+#~ msgstr "Processando arquivos não traduzidos de $file (7) . . ."
+
+#~ msgid "Processing $l translations for $X (1). . ."
+#~ msgstr "Processando $l traduções de $X (1). . ."
+
+#~ msgid "Processing $l translations for $X3 (3). . ."
+#~ msgstr "Processando $l traduções de $X3 (3). . ."
+
+#~ msgid "Processing $l translations for $file (1). . ."
+#~ msgstr "Processando $l traduções de $file (1). . ."
+
+#~ msgid "Processing $l translations for $name (3). . ."
+#~ msgstr "Processando $l traduções de $name (3). . ."
+
+#~ msgid "Processing $l translations for $file (5). . ."
+#~ msgstr "Processando $l traduções de $file (5). . ."
+
+#~ msgid "Processing $l translations for $file (7). . ."
+#~ msgstr "Processando $l traduções de $file (7). . ."
+
+#~ msgid "Unable to parse attribute list: [%s]"
+#~ msgstr "Não foi possível analisar a lista de atributos: [%s]"
+
+#, fuzzy
+#~ msgid "Can't copy %s to %s: %s."
+#~ msgstr "Não é possível abrir %s: %s"
+
+#, fuzzy
+#~ msgid "Can't create a temporary xml file: %s"
+#~ msgstr "Impossível gravar em %s: %s"
+
+#, fuzzy
+#~ msgid "Can't create a temporary pot file: %s"
+#~ msgstr "Impossível gravar em %s: %s"
+
+#~ msgid ""
+#~ "This page seems to be a mdoc(7) formatted one. This is not supported "
+#~ "(yet)."
+#~ msgstr ""
+#~ "Esta página aparenta ser formatada em mdoc(7). Este formato (ainda) não é "
+#~ "suportado."

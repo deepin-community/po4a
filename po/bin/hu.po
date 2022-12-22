@@ -1,0 +1,1593 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the po4a package.
+# Balázs Úr <balazs@urbalazs.hu>, 2020, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: po4a 0.56\n"
+"Report-Msgid-Bugs-To: po4a@packages.debian.org\n"
+"POT-Creation-Date: 2021-11-06 11:27+0100\n"
+"PO-Revision-Date: 2021-10-27 22:11+0000\n"
+"Last-Translator: Balázs Úr <balazs@urbalazs.hu>\n"
+"Language-Team: Hungarian <https://hosted.weblate.org/projects/po4a/po4a/hu/"
+">\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.9-dev\n"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:211 ../../lib/Locale/Po4a/Man.pm:496
+#: ../../lib/Locale/Po4a/Po.pm:235 ../../lib/Locale/Po4a/RubyDoc.pm:74
+#: ../../lib/Locale/Po4a/Sgml.pm:258 ../../lib/Locale/Po4a/TeX.pm:1664
+#: ../../lib/Locale/Po4a/Text.pm:211 ../../lib/Locale/Po4a/Xml.pm:598
+#: ../../lib/Locale/Po4a/Yaml.pm:39
+#, perl-format
+msgid "Unknown option: %s"
+msgstr "Ismeretlen kapcsoló: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:218
+#, perl-format
+msgid "Invalid compatibility setting: '%s'. It must be either '%s' or '%s'."
+msgstr ""
+"Érvénytelen kompatibilitási beállítás: „%s”. Csak a következők egyike lehet: "
+"„%s” vagy „%s”."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:283
+#, perl-format
+msgid "Unable to parse macro definition: %s"
+msgstr "Nem lehet feldolgozni a makró meghatározást: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:330 ../../lib/Locale/Po4a/TeX.pm:1066
+#: ../../po4a:971 ../../po4a:1061 ../../po4a:1310 ../../po4a-translate:298
+#, perl-format
+msgid "Cannot open %s: %s"
+msgstr "A(z) %s nem nyitható meg: %s"
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:365
+#, perl-format
+msgid ""
+"Detection of two line titles failed at %s\n"
+"Please install the Unicode::GCString module."
+msgstr ""
+"A kétsoros címek felismerése sikertelen itt: %s\n"
+"Telepítse a Unicode::GCString modult."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:512
+#, perl-format
+msgid ""
+"'%s' seems to be a two-lines title underlined with '%s', but the underlines "
+"are too short or too long compared to the title length. You may want to fix "
+"your master document."
+msgstr ""
+"Úgy tűnik, hogy a(z) „%s” egy kétsoros cím „%s” aláhúzással, de az "
+"aláhúzások túl rövidek vagy túl hosszúak a cím hosszához képest. Érdemes "
+"lenne kijavítania a mesterdokumentumát."
+
+#: ../../lib/Locale/Po4a/AsciiDoc.pm:991
+msgid ""
+"It seems that you are adding unindented content to an item. The standard "
+"allows this, but you may still want to change your document to use indented "
+"text to provide better visual clues to writers."
+msgstr ""
+"Úgy tűnik, hogy behúzatlan tartalmat ad egy elemhez. A szabvány megengedi "
+"ezt, de akkor is érdemes megváltoztatnia a dokumentumot a behúzott szöveg "
+"használatával, hogy jobb látható jeleket biztosítson az íróknak."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:25
+msgid "Please provide a module name"
+msgstr "Adjon meg egy modulnevet"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:50
+#, perl-format
+msgid "Unknown format type: %s."
+msgstr "Ismeretlen formátumtípus: %s."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:51
+#, perl-format
+msgid "Module loading error: %s"
+msgstr "Modulbetöltési hiba: %s"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:61
+msgid "List of valid formats:"
+msgstr "Érvényes formátumok listája:"
+
+#: ../../lib/Locale/Po4a/Chooser.pm:65
+msgid "asciidoc: AsciiDoc format."
+msgstr "asciidoc: AsciiDoc formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:67
+msgid "dia: uncompressed Dia diagrams."
+msgstr "dia: tömörítetlen Dia diagramok."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:69
+msgid "docbook: DocBook XML."
+msgstr "docbook: DocBook XML."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:71
+msgid "guide: Gentoo Linux's XML documentation format."
+msgstr "guide: a Gentoo Linux XML dokumentációjának formátuma."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:73
+msgid "ini: INI format."
+msgstr "ini: INI formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:75
+msgid "kernelhelp: Help messages of each kernel compilation option."
+msgstr "kernelhelp: az egyes kernelfordítási kapcsolók súgóüzenetei."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:77
+msgid "latex: LaTeX format."
+msgstr "latex: LaTeX formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:79
+msgid "man: Good old manual page format."
+msgstr "man: a régi, jó kézikönyvoldal formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:81
+msgid "pod: Perl Online Documentation format."
+msgstr "pod: Perl online dokumentáció formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:83
+msgid "rubydoc: Ruby Documentation (RD) format."
+msgstr "rubydoc: Ruby dokumentáció (RD) formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:85
+msgid "sgml: either DebianDoc or DocBook DTD."
+msgstr "sgml: vagy DebianDoc vagy DocBook DTD."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:87
+msgid "texinfo: The info page format."
+msgstr "texinfo: az információs oldal formátum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:89
+msgid "tex: generic TeX documents (see also latex)."
+msgstr "tex: általános TeX dokumentumok (lásd még: latex)."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:91
+msgid "text: simple text document."
+msgstr "text: egyszerű szöveges dokumentum."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:93
+msgid "wml: WML documents."
+msgstr "wml: WML dokumentumok."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:95
+msgid "xhtml: XHTML documents."
+msgstr "xhtml: XHTML dokumentumok."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:97
+msgid "xml: generic XML documents (see also docbook)."
+msgstr "xml: általános XML dokumentumok (lásd még: docbook)."
+
+#: ../../lib/Locale/Po4a/Chooser.pm:99
+msgid "yaml: YAML documents."
+msgstr "yaml: YAML dokumentumok."
+
+#: ../../lib/Locale/Po4a/Common.pm:108
+#, perl-format
+msgid ""
+"%s version %s.\n"
+"Written by Martin Quinson and Denis Barbier.\n"
+"\n"
+"Copyright © 2002-2021 Software in the Public Interest, Inc.\n"
+"This is free software; see source code for copying\n"
+"conditions. There is NO warranty; not even for\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+msgstr ""
+"%s, verzió: %s.\n"
+"Írta: Martin Quinson és Denis Barbier.\n"
+"\n"
+"Copyright © 2002-2021 Software in the Public Interest, Inc.\n"
+"Ez egy szabad szoftver. Nézze meg a forráskódot a másolási\n"
+"feltételekért. Nincs SEMMIFÉLE GARANCIA, az ELADHATÓSÁGRA\n"
+"vagy VALAMELY CÉLRA VALÓ ALKALMAZHATÓSÁGRA sem."
+
+#: ../../lib/Locale/Po4a/InProgress/Debconf.pm:178
+#, perl-format
+msgid "Translated field in master document: %s"
+msgstr "Lefordított mező a mesterdokumentumban: %s"
+
+#: ../../lib/Locale/Po4a/InProgress/NewsDebian.pm:90
+msgid "Begin of a new entry before the end of previous one"
+msgstr "Kezdjen egy új bejegyzést az előző bejegyzés vége előtt"
+
+#: ../../lib/Locale/Po4a/KernelHelp.pm:98
+msgid "Syntax error"
+msgstr "Szintaktikai hiba"
+
+#: ../../lib/Locale/Po4a/Man.pm:513
+msgid ""
+"Invalid 'groff_code' value. Must be one of 'fail', 'verbatim', 'translate'."
+msgstr ""
+"Érvénytelen „groff_code” érték. A következők egyike kell legyen: „fail”, "
+"„verbatim”, „translate”."
+
+#: ../../lib/Locale/Po4a/Man.pm:561
+msgid ""
+"The no_wrap parameters must be a set of comma-separated begin:end couples.\n"
+msgstr ""
+"A no_wrap paramétereknek vesszővel elválasztott kezdés:befejezés párosok "
+"halmazának kell lennie.\n"
+
+#: ../../lib/Locale/Po4a/Man.pm:608
+msgid "Invalid 'unknown_macros' value. Must be one of:\n"
+msgstr ""
+"Érvénytelen „unknown_macros” érték. A következők egyikének kell lennie:\n"
+
+#: ../../lib/Locale/Po4a/Man.pm:674
+msgid ""
+"This file was generated with Pod::Man. Translate the POD file with the pod "
+"module of po4a."
+msgstr ""
+"Ezt a fájlt a Pod::Man használatával állították elő. Fordítsa le a POD fájlt "
+"a po4a pod moduljával."
+
+#: ../../lib/Locale/Po4a/Man.pm:684
+msgid ""
+"This file was generated with help2man. Translate the source file with the "
+"regular gettext."
+msgstr ""
+"Ezt a fájlt a help2man használatával állították elő. Fordítsa le a "
+"forrásfájlt a szokásos gettext használatával."
+
+#: ../../lib/Locale/Po4a/Man.pm:693
+msgid ""
+"This file was generated with docbook-to-man. Translate the source file with "
+"the sgml module of po4a."
+msgstr ""
+"Ezt a fájlt a docbook-to-man használatával állították elő. Fordítsa le a "
+"forrásfájlt a po4a sgml moduljával."
+
+#: ../../lib/Locale/Po4a/Man.pm:703
+msgid ""
+"This file was generated with docbook2man. Translate the source file with the "
+"sgml module of po4a."
+msgstr ""
+"Ezt a fájlt a docbook2man használatával állították elő. Fordítsa le a "
+"forrásfájlt a po4a sgml moduljával."
+
+#: ../../lib/Locale/Po4a/Man.pm:713 ../../lib/Locale/Po4a/Man.pm:734
+#, perl-format
+msgid ""
+"This file was generated with %s. You should translate the source file, but "
+"continuing anyway."
+msgstr ""
+"Ezt a fájlt a(z) %s használatával állították elő. Le kell fordítania a "
+"forrásfájlt, de folytassa mindenképp."
+
+#: ../../lib/Locale/Po4a/Man.pm:724
+msgid ""
+"This file was generated with db2man.xsl. Translate the source file with the "
+"xml module of po4a."
+msgstr ""
+"Ezt a fájlt a db2man.xsl használatával állították elő. Fordítsa le a "
+"forrásfájlt a po4a xml moduljával."
+
+#: ../../lib/Locale/Po4a/Man.pm:748
+#, perl-format
+msgid ""
+"This file contains the line '%s'. You should translate the source file, but "
+"continuing anyway."
+msgstr ""
+"Ez a fájl a következő sort tartalmazza: „%s”. Le kell fordítania a "
+"forrásfájlt, de folytassa mindenképp."
+
+#: ../../lib/Locale/Po4a/Man.pm:821
+#, perl-format
+msgid ""
+"Font modifiers followed by a command may disturb po4a.  You should either "
+"remove the font modifier '%s', or integrate a \\f font modifier in the "
+"following command ('%s'), but continuing anyway."
+msgstr ""
+"Egy parancs után következő betűkészlet-módosítók megzavarhatják a po4a "
+"programot. Vagy távolítsa el a(z) „%s” betűkészlet-módosítót, vagy tegyen "
+"bele egy \\f betűkészlet-módosítót a következő parancsba (%s), de folytassa "
+"mindenképp."
+
+#: ../../lib/Locale/Po4a/Man.pm:942
+msgid ""
+"The unshiftline is not supported for the man module. Please send a bug "
+"report with the groff page that generated this error."
+msgstr ""
+"Az unshiftline nem támogatott a man modulnál. Küldjön hibajelentést azzal a "
+"groff oldallal, amely ezt a hibát előidézte."
+
+#: ../../lib/Locale/Po4a/Man.pm:1002
+#, perl-format
+msgid ""
+"macro %s called without arguments. Even if placing the macro arguments on "
+"the next line is authorized by man(7), handling this would make the po4a "
+"parser too complicate. Please simply put the macro args on the same line."
+msgstr ""
+"A(z) %s makró argumentumok nélkül lett meghívva. Még akkor is, ha a man(7) "
+"engedélyezi a makró argumentumainak a következő sorba helyezését, ennek "
+"kezelése túlságosan bonyolulttá tenné a po4a feldolgozót. Egyszerűen "
+"helyezze a makró argumentumait ugyanabba a sorba."
+
+#: ../../lib/Locale/Po4a/Man.pm:1034
+msgid "Escape sequence \\c encountered. This is not completely handled yet."
+msgstr "Egy \\c elfedési sorozat található. Ez még nincs teljesen lekezelve."
+
+#: ../../lib/Locale/Po4a/Man.pm:1209
+#, perl-format
+msgid "Unbalanced '<' and '>' in font modifier. Faulty message: %s"
+msgstr ""
+"Nem egyforma számú „<” és „>” a betűkészlet-módosítóban. Hibaüzenet: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1250
+#, perl-format
+msgid "Unknown '<' or '>' sequence. Faulty message: %s"
+msgstr "Ismeretlen „<” vagy „>” sorozat. Hibaüzenet: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1404
+#, perl-format
+msgid "Unparsable line: %s"
+msgstr "Feldolgozhatatlan sor: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1487
+#, perl-format
+msgid ""
+"Unknown macro '%s'. Remove it from the document, or refer to the Locale::"
+"Po4a::Man manpage to see how po4a can handle new macros."
+msgstr ""
+"Ismeretlen „%s” makró. Távolítsa el a dokumentumból, vagy nézze meg a "
+"Locale::Po4a::Man kézikönyvoldalt annak megtekintéséhez, hogy a po4a hogyan "
+"tudja kezelni az új makrókat."
+
+#: ../../lib/Locale/Po4a/Man.pm:1695
+#, perl-format
+msgid "Cannot parse command arguments: %s"
+msgstr "Nem lehet feldolgozni a parancs argumentumait: %s"
+
+#: ../../lib/Locale/Po4a/Man.pm:1825
+#, perl-format
+msgid "Unsupported font in: '%s'."
+msgstr "Nem támogatott betűkészlet ebben: „%s”."
+
+#: ../../lib/Locale/Po4a/Man.pm:2226
+msgid ""
+"This page defines a new macro with '.de'. Since po4a is not a real groff "
+"parser, this is not supported."
+msgstr ""
+"Ez az oldal új makrót határoz meg ezzel: „.de”. Mivel a po4a nem igazi groff "
+"feldolgozó, ezért ez nem támogatott."
+
+#: ../../lib/Locale/Po4a/Man.pm:2303
+msgid "The .ie macro must be followed by a .el macro."
+msgstr "Az .ie makrót egy .el makrónak kell követnie."
+
+#: ../../lib/Locale/Po4a/Man.pm:2331
+#, perl-format
+msgid ""
+"This page uses conditionals with '%s'. Since po4a is not a real groff "
+"parser, this is not supported."
+msgstr ""
+"Ez az oldal feltételeseket használ ezzel: „%s”. Mivel a po4a nem igazi groff "
+"feldolgozó, ezért ez nem támogatott."
+
+#: ../../lib/Locale/Po4a/Man.pm:2381
+#, perl-format
+msgid ""
+"This page includes another file with '%s'. Do not forget to translate this "
+"file ('%s')."
+msgstr ""
+"Ez az oldal beágyaz egy másik fájlt ezzel: „%s”. Ne felejtse el lefordítani "
+"ezt a fájlt (%s)."
+
+#: ../../lib/Locale/Po4a/Man.pm:2549
+#, perl-format
+msgid ""
+"This page uses the '%s' request with the number of lines in argument. This "
+"is not supported yet."
+msgstr ""
+"Ez az oldal a(z) „%s” kérést használja a sorok számával az argumentumban. Ez "
+"még nem támogatott."
+
+#: ../../lib/Locale/Po4a/Man.pm:2569
+#, perl-format
+msgid ""
+"This page uses the '%s' request. This request is only supported when no "
+"argument is provided."
+msgstr ""
+"Ez az oldal a(z) „%s” kérést használja. Ez a kérés csak akkor támogatott, ha "
+"nincs argumentum megadva."
+
+#: ../../lib/Locale/Po4a/Po.pm:243
+#, perl-format
+msgid ""
+"Invalid value for option 'wrap-po' ('%s' is not 'no' nor 'newlines' nor a "
+"number)"
+msgstr ""
+"Érvénytelen érték a „wrap-po” kapcsolónál („%s” nem „no”, nem „newlines” "
+"vagy nem szám)"
+
+#: ../../lib/Locale/Po4a/Po.pm:252
+#, perl-format
+msgid ""
+"Invalid value for option 'porefs' ('%s' is not one of 'full', 'counter', "
+"'noline', 'file' or 'never')"
+msgstr ""
+"Érvénytelen érték a „porefs” kapcsolónál („%s” nem a következők egyike: "
+"„full”, „counter”, „noline”, „file” vagy „never”)"
+
+#: ../../lib/Locale/Po4a/Po.pm:319
+msgid "Please provide a non-null filename"
+msgstr "Adjon meg egy nem üres fájlnevet"
+
+#: ../../lib/Locale/Po4a/Po.pm:332
+#, perl-format
+msgid ""
+"Invalid po file %s:\n"
+"%s"
+msgstr ""
+"Érvénytelen PO fájl (%s):\n"
+"%s"
+
+#: ../../lib/Locale/Po4a/Po.pm:340 ../../lib/Locale/Po4a/TeX.pm:963
+#: ../../lib/Locale/Po4a/TransTractor.pm:448
+#: ../../lib/Locale/Po4a/TransTractor.pm:601 ../../lib/Locale/Po4a/Xhtml.pm:140
+#, perl-format
+msgid "Cannot read from %s: %s"
+msgstr "Nem lehet olvasni ebből: %s: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:417
+msgid "Messages with more than 2 plural forms are not supported."
+msgstr ""
+"A kettőnél több többes számú alakkal rendelkező üzenetek nem támogatottak."
+
+#: ../../lib/Locale/Po4a/Po.pm:425
+#, perl-format
+msgid "Parse error at: -->%s<--"
+msgstr "Feldolgozási hiba itt: -->%s<--"
+
+#: ../../lib/Locale/Po4a/Po.pm:490 ../../lib/Locale/Po4a/Po.pm:642
+#: ../../lib/Locale/Po4a/TransTractor.pm:490
+msgid "Cannot write to a file without filename"
+msgstr "Nem lehet írni egy fájlba fájlnév nélkül"
+
+#: ../../lib/Locale/Po4a/Po.pm:507 ../../lib/Locale/Po4a/TransTractor.pm:506
+#, perl-format
+msgid "Cannot write to %s: %s"
+msgstr "Nem lehet írni ebbe: %s: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:580
+msgid "Cannot write PO files with more than two plural forms."
+msgstr "Nem lehet kiírni a PO fájlokat kettőnél több többes számú alakkal."
+
+#: ../../lib/Locale/Po4a/Po.pm:624
+#, perl-format
+msgid "Cannot unlink %s: %s."
+msgstr "Nem lehet eltávolítani: %s: %s."
+
+#: ../../lib/Locale/Po4a/Po.pm:631 ../../lib/Locale/Po4a/Po.pm:635
+#: ../../po4a:1758
+#, perl-format
+msgid "Cannot move %s to %s: %s."
+msgstr "Nem lehet áthelyezni: %s -> %s: %s."
+
+#: ../../lib/Locale/Po4a/Po.pm:677
+msgid ""
+"\n"
+"The gettextization failed (once again). Don't give up, gettextizing is a "
+"subtle art, but this is only needed once to convert a project to the "
+"gorgeous luxus offered by po4a to translators.\n"
+"Please refer to the po4a(7) documentation, the section \"HOWTO convert a pre-"
+"existing translation to po4a?\" contains several hints to help you in your "
+"task"
+msgstr ""
+"\n"
+"A gettextesítés nem sikerült (ismételten). Ne adja fel, a gettextesítés "
+"rafinált művészet, de erre csak egyetlen alkalommal van szükség, hogy egy "
+"projektet átalakítson ahhoz a nagyszerű luxushoz, amelyet a po4a nyújt a "
+"fordítóknak.\n"
+"Nézze meg a po4a(7) dokumentációjában a „HOWTO convert a pre-existing "
+"translation to po4a?” szakaszt, amely számos tippet tartalmaz, hogy segítsen "
+"a feladat elvégzésében."
+
+#: ../../lib/Locale/Po4a/Po.pm:693
+#, perl-format
+msgid ""
+"Original has more strings than the translation (%d>%d). Please fix it by "
+"editing the translated version to add some dummy entry."
+msgstr ""
+"Az eredeti több karakterláncot tartalmaz mint a fordítás (%d>%d). Javítsa ki "
+"a lefordított verzió szerkesztésével néhány üres bejegyzés hozzáadásához."
+
+#: ../../lib/Locale/Po4a/Po.pm:706
+#, perl-format
+msgid ""
+"Original has less strings than the translation (%d<%d). Please fix it by "
+"removing the extra entry from the translated file. You may need an addendum "
+"(cf po4a(7)) to reput the chunk in place after gettextization. A possible "
+"cause is that a text duplicated in the original is not translated the same "
+"way each time. Remove one of the translations, and you're fine."
+msgstr ""
+"Az eredeti kevesebb karakterláncot tartalmaz mint a fordítás (%d<%d). "
+"Javítsa ki a felesleges bejegyzés eltávolításával a lefordított fájlból. "
+"Szüksége lehet egy függelékre (cf po4a(7)), hogy újra helyére tegye a "
+"darabot a gettextesítés után. Egy lehetséges ok, hogy egy, az eredetiben "
+"kettőzött szöveg nem minden alkalommal lett lefordítva hasonló módon. "
+"Távolítsa el a fordítások egyikét, és rendben lesz."
+
+#: ../../lib/Locale/Po4a/Po.pm:776
+#, perl-format
+msgid ""
+"po4a gettextization: Structure disparity between original and translated "
+"files:\n"
+"msgid (at %s) is of type '%s' while\n"
+"msgstr (at %s) is of type '%s'.\n"
+"Original text: %s\n"
+"Translated text: %s\n"
+"(result so far dumped to gettextization.failed.po)"
+msgstr ""
+"po4a gettextesítés: szerkezeti különbség az eredeti és a lefordított fájlok "
+"között:\n"
+"az msgid (itt: %s) „%s” típusú, míg\n"
+"az msgstr (itt: %s) „%s” típusú.\n"
+"Eredeti szöveg: %s\n"
+"Lefordított szöveg: %s\n"
+"(az eddigi eredmény a gettextization.failed.po fájlba lett kiírva)"
+
+#: ../../lib/Locale/Po4a/Po.pm:1020
+#, perl-format
+msgid "Evaluating the provided filter failed: %s"
+msgstr "A megadott szűrő kiértékelése sikertelen: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:1150
+#, perl-format
+msgid ""
+"'%s' is the singular form of a message, po4a will use the msgstr[0] "
+"translation (%s)."
+msgstr ""
+"A(z) „%s” egy üzenet egyes számú alakja, a po4a az msgstr[0] fordítást (%s) "
+"fogja használni."
+
+#: ../../lib/Locale/Po4a/Po.pm:1160
+#, perl-format
+msgid ""
+"'%s' is the plural form of a message, po4a will use the msgstr[1] "
+"translation (%s)."
+msgstr ""
+"A(z) „%s” egy üzenet többes számú alakja, a po4a az msgstr[1] fordítást (%s) "
+"fogja használni."
+
+#: ../../lib/Locale/Po4a/Po.pm:1388
+#, perl-format
+msgid "msgid defined twice: %s"
+msgstr "Az msgid kétszer van meghatározva: %s"
+
+#: ../../lib/Locale/Po4a/Po.pm:1422
+#, perl-format
+msgid ""
+"Translations don't match for:\n"
+"%s\n"
+"-->First translation:\n"
+"%s\n"
+" Second translation:\n"
+"%s\n"
+" Old translation discarded."
+msgstr ""
+"A fordítások nem egyeznek ennél:\n"
+"%s\n"
+"-->Első fordítás:\n"
+"%s\n"
+" Második fordítás:\n"
+"%s\n"
+" A régi fordítás eldobva."
+
+#: ../../lib/Locale/Po4a/Po.pm:1535
+#, perl-format
+msgid "The amount of entries differ between files: %d is not %d"
+msgstr "A bejegyzések mennyisége eltérő a fájlok között: %d nem %d"
+
+#: ../../lib/Locale/Po4a/Po.pm:1543
+#, perl-format
+msgid "msgid declared in one file only: %s\n"
+msgstr "Az msgid csak egy fájlban van meghatározva: %s\n"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:220
+msgid ""
+"The needed module SGMLS.pm was not found and needs to be installed. It can "
+"be found on the CPAN, in package libsgmls-perl on debian, etc."
+msgstr ""
+"A szükséges SGMLS.pm modul nem található, és telepíteni szükséges. "
+"Megtalálható a CPAN tárolóban, a libsgmls-perl Debian csomagban, stb."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:265
+#, perl-format
+msgid ""
+"Unknown debug category: %s. Known categories:\n"
+"%s"
+msgstr ""
+"Ismeretlen hibakeresési kategória: %s. Ismert kategóriák:\n"
+"%s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:297
+msgid "msgid skipped to help translators (contains only an entity)"
+msgstr ""
+"Az msgid kihagyva a fordítók segítéséhez (csak egy bejegyzést tartalmaz)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:306
+msgid "msgid skipped to help translators (contains only tags)"
+msgstr "Az msgid kihagyva a fordítók segítéséhez (csak címkéket tartalmaz)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:319
+msgid ""
+"msgid skipped to help translators (contains only opening or closing tags of "
+"marked sections)"
+msgstr ""
+"Az msgid kihagyva a fordítók segítéséhez (csak a megjelölt szakaszok nyitó "
+"vagy záró címkéit tartalmazza)"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:407 ../../lib/Locale/Po4a/Sgml.pm:859
+#, perl-format
+msgid "Cannot close tempfile: %s"
+msgstr "Nem lehet lezárni az átmeneti fájlt: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:413
+msgid ""
+"Error while running onsgmls -p.  Please check if onsgmls and the DTD are "
+"installed."
+msgstr ""
+"Hiba az onsgmls -p futtatásakor. Ellenőrizze, hogy az onsgmls és a DTD "
+"telepítve van-e."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:426
+msgid ""
+"Trying to handle a XML document as a SGML one. Feel lucky if it works, help "
+"us implementing a proper XML backend if it does not."
+msgstr ""
+"Egy XML dokumentum SGML dokumentumként való kezelésének kísérlete. Érezze "
+"szerencsésnek magát, ha működik. Segítsen nekünk egy megfelelő XML "
+"háttérprogram megvalósításában, ha nem működne."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:445
+msgid ""
+"This file is not a master SGML document (no DOCTYPE). It may be a file to be "
+"included by another one, in which case it should not be passed to po4a "
+"directly. Text from included files is extracted/translated when handling the "
+"master file including them."
+msgstr ""
+"Ez a fájl nem egy mester SGML dokumentum (nincs DOCTYPE). Ez talán egy olyan "
+"fájl, amelyet egy másik fájl ágyaz be. Ebben az esetben ezt nem kell "
+"közvetlenül átadni a po4a programnak. A beágyazott fájlokból származó szöveg "
+"az azt beágyazó mesterfájl kezelésekor lesz kinyerve és lefordítva."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:568
+msgid "DTD of this file is unknown, but proceeding as requested."
+msgstr ""
+"Ennek a fájlnak a DTD-je ismeretlen, de folytatom a kérésnek megfelelően."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:572
+msgid ""
+"DTD of this file is unknown. (supported: DebianDoc, DocBook). The prolog "
+"follows:"
+msgstr ""
+"Ennek a fájlnak a DTD-je ismeretlen (támogatott: DebianDoc, DocBook). Az "
+"előszó a következő:"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:670 ../../lib/Locale/Po4a/Sgml.pm:754
+#, perl-format
+msgid "Cannot open %s (content of entity %s%s;): %s"
+msgstr "A(z) „%s” (%s%s; entitás tartalma) nem nyitható meg: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:725
+#, perl-format
+msgid "unrecognized prolog inclusion entity: %%%s;"
+msgstr "felismerhetetlen előszó-beágyazási egyed: %%%s;"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:864
+#, perl-format
+msgid "Cannot run onsgmls: %s"
+msgstr "Az onsgmls nem futtatható: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:983
+#, perl-format
+msgid "Unknown tag %s"
+msgstr "Ismeretlen címke: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1021
+#, perl-format
+msgid "bad translation '%s' for '%s' in '%s'"
+msgstr "rossz fordítás („%s”) ehhez: „%s”, itt: „%s”"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1077 ../../lib/Locale/Po4a/Sgml.pm:1162
+#, perl-format
+msgid "Closing tag for a translation container missing before %s"
+msgstr "Egy fordítási konténer záró címkéje hiányzik ez előtt: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1247
+#, perl-format
+msgid "Unknown SGML event type: %s"
+msgstr "Ismeretlen SGML eseménytípus: %s"
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1261
+msgid ""
+"Warning: onsgmls produced some errors.  This is usually caused by po4a, "
+"which modifies the input and restores it afterwards, causing the input of "
+"onsgmls to be invalid.  This is usually safe, but you may wish to verify the "
+"generated document with onsgmls -wno-valid."
+msgstr ""
+"Figyelmeztetés: az onsgmls hibákat hozott létre. Ezt általában a po4a "
+"okozza, amely módosítja a bemenetet, majd később visszaállítja. Ez azt "
+"okozza, hogy az onsgmls bemenete érvénytelen lesz, ami általában "
+"biztonságos, de érdemes ellenőriznie az előállított dokumentumot az onsgmls -"
+"wno-valid paranccsal."
+
+#: ../../lib/Locale/Po4a/Sgml.pm:1273
+msgid ""
+"To see the error message, rerun po4a with this additional argument:\n"
+"   -o debug=onsgmls"
+msgstr ""
+"A hibaüzenet megtekintéséhez futtassa újra a po4a parancsot ezzel a további "
+"argumentummal:\n"
+"   -o debug=onsgmls"
+
+#: ../../lib/Locale/Po4a/TeX.pm:521 ../../lib/Locale/Po4a/TeX.pm:605
+#, perl-format
+msgid "un-balanced %s in '%s'"
+msgstr "kiegyensúlyozatlan %s itt: „%s”"
+
+#: ../../lib/Locale/Po4a/TeX.pm:536 ../../lib/Locale/Po4a/TeX.pm:624
+#, perl-format
+msgid "Error while checking the number of arguments of the '%s' command: %s"
+msgstr "Hiba a(z) „%s” parancs argumentumai számának ellenőrzésekor: %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:810 ../../lib/Locale/Po4a/TeX.pm:912
+#, perl-format
+msgid "Unknown command: '%s'"
+msgstr "Ismeretlen parancs: „%s”"
+
+#: ../../lib/Locale/Po4a/TeX.pm:957
+msgid "Cannot read from file without having a filename"
+msgstr "Nem lehet olvasni egy fájlból fájlnév nélkül"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1001
+#, perl-format
+msgid "Cannot find %s with kpsewhich"
+msgstr "A(z) %s nem található a kpsewhich használatával"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1032 ../../lib/Locale/Po4a/TransTractor.pm:473
+#: ../../lib/Locale/Po4a/Xhtml.pm:147
+#, perl-format
+msgid "Cannot close %s after reading: %s"
+msgstr "A(z) %s nem zárható le olvasás után: %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1057
+#, perl-format
+msgid "kpsewhich cannot find %s"
+msgstr "A kpsewhich nem találja ezt: %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1103
+#, perl-format
+msgid "Cannot use an alias to the unknown command '%s'"
+msgstr "Nem lehet álnevet használni az ismeretlen parancshoz: „%s”"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1110
+#, perl-format
+msgid ""
+"You are using the old definitions format (%s).  Please update this "
+"definition line."
+msgstr ""
+"A régi meghatározások formátumát használja (%s). Frissítse ezt a "
+"meghatározási sort."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1319 ../../lib/Locale/Po4a/TeX.pm:1572
+#, perl-format
+msgid "unknown environment: '%s'"
+msgstr "ismeretlen környezet: „%s”"
+
+#. a begin may have been hidden in the middle of a translated
+#. buffer. FIXME: Just warn for now.
+#: ../../lib/Locale/Po4a/TeX.pm:1342
+#, perl-format
+msgid "unmatched end of environment '%s'"
+msgstr "a(z) „%s” környezet nem illeszkedő vége"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1392 ../../lib/Locale/Po4a/TeX.pm:1501
+#, perl-format
+msgid "Wrong number of arguments for the '%s' command."
+msgstr "Hibás argumentumszám a(z) „%s” parancsnál."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1404 ../../lib/Locale/Po4a/TeX.pm:1513
+#: ../../lib/Locale/Po4a/TeX.pm:1599
+msgid "An optional argument was provided, but a mandatory one is expected."
+msgstr ""
+"Egy elhagyható argumentum lett megadva, de egy kötelező argumentum az elvárt."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1405 ../../lib/Locale/Po4a/TeX.pm:1514
+#, perl-format
+msgid "Command '%s': %s"
+msgstr "„%s” parancs: %s"
+
+#: ../../lib/Locale/Po4a/TeX.pm:1461
+#, perl-format
+msgid "register_generic_command: unsupported format: '%s'."
+msgstr "register_generic_command: nem támogatott formátum: „%s”."
+
+#: ../../lib/Locale/Po4a/TeX.pm:1567
+msgid "The first argument of \\begin is mandatory."
+msgstr "A \\begin első argumentuma kötelező."
+
+#: ../../lib/Locale/Po4a/Text.pm:237
+#, perl-format
+msgid "Option %s is only valid when parsing markdown files."
+msgstr "A(z) %s kapcsoló csak markdown fájlok feldolgozásakor érvényes."
+
+#: ../../lib/Locale/Po4a/Text.pm:399
+#, perl-format
+msgid "Unrecognized section: %s"
+msgstr "Felismerhetetlen szakasz: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:513
+#, perl-format
+msgid "Cannot close %s after writing: %s"
+msgstr "A(z) %s nem zárható le írás után: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:606
+#, perl-format
+msgid "Cannot read po4a header from %s."
+msgstr "Nem olvasható a po4a fejléc innen: %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:611
+#, perl-format
+msgid "First line of %s does not look like a po4a header."
+msgstr "A(z) %s első sora nem néz ki po4a fejlécnek."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:616
+#, perl-format
+msgid "Syntax error in po4a header of %s, near \"%s\""
+msgstr "Szintaktikai hiba a(z) %s po4a fejlécében, „%s” közelében"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:632
+#, perl-format
+msgid "Invalid argument in the po4a header of %s: %s"
+msgstr "Érvénytelen argumentum a(z) %s po4a fejlécében: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:638
+#, perl-format
+msgid "The po4a header of %s does not define the mode."
+msgstr "A(z) %s po4a fejléce nem határozza meg a módot."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:645
+#, perl-format
+msgid ""
+"Mode invalid in the po4a header of %s: should be 'before', 'after' or 'eof'. "
+"Instead, it is '%s'."
+msgstr ""
+"A mód érvénytelen a(z) %s po4a fejlécében: csak „before”, „after” vagy „eof” "
+"lehet. Ehelyett ez „%s”."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:654
+#, perl-format
+msgid "The po4a header of %s does not define the position."
+msgstr "A(z) %s po4a fejléce nem határozza meg a pozíciót."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:658
+msgid "No ending boundary given in the po4a header, but mode=after."
+msgstr "Nincs végződéshatároló megadva a po4a fejlécben, de a mód „after”."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:662
+msgid "No position needed when mode=eof."
+msgstr "Nem szükséges pozíció, ha a mód „eof”."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:666
+msgid "No ending boundary needed when mode=eof."
+msgstr "Nem szükséges végződéshatároló, ha a mód „eof”."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:692
+msgid "Cannot apply addendum when not given the filename"
+msgstr "Nem lehet alkalmazni a függeléket, ha nincs megadva a fájlnév"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:695
+#, perl-format
+msgid "Addendum %s does not exist."
+msgstr "A(z) %s függelék nem létezik."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:736
+#, perl-format
+msgid "No candidate position for the addendum %s."
+msgstr "Nincs jelölt pozíció a(z) %s függeléknél."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:740
+#, perl-format
+msgid "More than one candidate position found for the addendum %s."
+msgstr "Egynél több jelölt pozíció található a(z) %s függeléknél."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:751
+#: ../../lib/Locale/Po4a/TransTractor.pm:773
+#, perl-format
+msgid "Addendum '%s' applied before this line: %s"
+msgstr "A(z) „%s” függelék alkalmazva ezen sor előtt: %s"
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:779
+#, perl-format
+msgid "Addendum '%s' applied after the line: %s."
+msgstr "A(z) „%s” függelék alkalmazva ezen sor után: %s."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:786
+#, perl-format
+msgid "Addendum '%s' applied at the end of the file."
+msgstr "A(z) „%s” függelék alkalmazva a fájl végénél."
+
+#: ../../lib/Locale/Po4a/TransTractor.pm:959
+#: ../../lib/Locale/Po4a/TransTractor.pm:1147
+#, perl-format
+msgid ""
+"Couldn't determine the input document's charset. Please specify it on the "
+"command line. (non-ASCII char at %s)"
+msgstr ""
+"Nem sikerült meghatározni a bemeneti dokumentum karakterkészletét (nem ASCII "
+"karakter itt: %s). Adja meg a parancssorban."
+
+#: ../../lib/Locale/Po4a/Wml.pm:93
+#, perl-format
+msgid "Cannot create a temporary XML file: %s"
+msgstr "Nem lehet létrehozni egy átmeneti XML fájlt: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:119
+#, perl-format
+msgid "%s: Cannot read from %s: %s"
+msgstr "%s: Nem lehet olvasni ebből: %s: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:128
+#, perl-format
+msgid "%s: Cannot close %s after reading: %s"
+msgstr "%s: A(z) %s nem zárható le olvasás után: %s"
+
+#: ../../lib/Locale/Po4a/Xml.pm:230
+#, perl-format
+msgid ""
+"'po4a-id=%d' in the translation does not exist in the original string (or "
+"'po4a-id=%d' used twice in the translation)."
+msgstr ""
+"A „po4a-id=%d” a fordításban nem létezik az eredeti karakterláncban (vagy a "
+"„po4a-id=%d” kétszer van használva a fordításban)."
+
+#: ../../lib/Locale/Po4a/Xml.pm:270
+#, perl-format
+msgid ">>> filename = '%s'"
+msgstr ">>> fájlnév = „%s”"
+
+#: ../../lib/Locale/Po4a/Xml.pm:750
+#, perl-format
+msgid "Internal error: unknown type identifier '%s'."
+msgstr "Belső hiba: ismeretlen típusazonosító: „%s”."
+
+#: ../../lib/Locale/Po4a/Xml.pm:947
+#, perl-format
+msgid ""
+"Bad document type. '%s' expected. You can fix this warning with a -o doctype "
+"option, or ignore this check with -o doctype=\"\"."
+msgstr ""
+"Rossz dokumentumtípus. „%s” az elvárt. Ezt a hibát javíthatja egy -o doctype "
+"kapcsolóval, vagy mellőzze ezt az ellenőrzést a -o doctype=\"\" "
+"használatával."
+
+#: ../../lib/Locale/Po4a/Xml.pm:1044 ../../lib/Locale/Po4a/Xml.pm:1784
+#, perl-format
+msgid ""
+"Unexpected closing tag </%s> found. The main document may be wrong.  "
+"Continuing…"
+msgstr ""
+"Váratlan lezáró címke (</%s>) található. A fődokumentum rossz lehet. "
+"Folytatás…"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1050 ../../lib/Locale/Po4a/Xml.pm:1793
+#, perl-format
+msgid "Unexpected closing tag </%s> found. The main document may be wrong."
+msgstr "Váratlan lezáró címke (</%s>) található. A fődokumentum rossz lehet."
+
+#: ../../lib/Locale/Po4a/Xml.pm:1431
+#, perl-format
+msgid ""
+"%s: attribute '%s' is not defined in module option 'attributes' and\n"
+"....  is not translated for the attribute path '%s'"
+msgstr ""
+"%s: a(z) „%s” attribútum nincs meghatározva az „attributes” modulkapcsolóban "
+"és\n"
+"....  nincs lefordítva a(z) „%s” attribútum-útvonalnál"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1450
+#, perl-format
+msgid "%s: Bad attribute syntax.  Continuing…"
+msgstr "%s: Rossz attribútumszintaxis. Folytatás…"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1452
+#, perl-format
+msgid "%s: Bad attribute syntax"
+msgstr "%s: Rossz attribútumszintaxis"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1575
+#, perl-format
+msgid ""
+"%s: translation option='%s'.\n"
+" *** the original translation option is overridden here since parent "
+"path='%s' is untranslated,"
+msgstr ""
+"%s: fordítási kapcsoló = „%s”.\n"
+" *** az eredeti fordítási kapcsoló felül van bírálva itt, mivel a "
+"szülőútvonal = „%s” nincs lefordítva,"
+
+#: ../../lib/Locale/Po4a/Xml.pm:1589
+#, perl-format
+msgid "%s: foldattributes setting ignored since '%s' is not inline tag"
+msgstr ""
+"%s: a foldattributes beállítás figyelmen kívül van hagyva, mivel a(z) „%s” "
+"nem sorközi címke"
+
+#: ../../lib/Locale/Po4a/Xml.pm:2015
+#, perl-format
+msgid ""
+"Invalid placeholder in the translation (the 'type' and 'id' must be present, "
+"in this order).\n"
+"%s\n"
+"\n"
+"Please fix your translation."
+msgstr ""
+"Érvénytelen helykitöltő a fordításban (a „type” és az „id” változóknak ebben "
+"a sorrendben kell szerepelniük).\n"
+"%s\n"
+"\n"
+"Javítsa a fordítását."
+
+#: ../../lib/Locale/Po4a/Xml.pm:2102 ../../lib/Locale/Po4a/Xml.pm:2117
+#, perl-format
+msgid ""
+"The '%s' option is deprecated. Please use the translated/untranslated and/or "
+"break/inline/placeholder categories."
+msgstr ""
+"A(z) „%s” kapcsoló elavult. Használja a translated/untranslated és/vagy a "
+"break/inline/placeholder kategóriákat."
+
+#: ../../lib/Locale/Po4a/Xml.pm:2280 ../../lib/Locale/Po4a/Xml.pm:2287
+#: ../../lib/Locale/Po4a/Xml.pm:2290 ../../lib/Locale/Po4a/Xml.pm:2293
+#: ../../lib/Locale/Po4a/Xml.pm:2298 ../../lib/Locale/Po4a/Xml.pm:2301
+#: ../../lib/Locale/Po4a/Xml.pm:2306
+#, perl-format
+msgid "Tag '%s' both in the %s and %s categories."
+msgstr "A(z) „%s” címke mindkét kategóriában szerepel (%s és %s)."
+
+#. Argument checking
+#: ../../msguntypot:163 ../../msguntypot:165
+#, perl-format
+msgid "Mandatory argument '%s' missing."
+msgstr "A(z) „%s” kötelező argumentum hiányzik."
+
+#. Check file existence
+#: ../../msguntypot:164 ../../msguntypot:166 ../../po4a:949
+#: ../../po4a-gettextize:386 ../../po4a-normalize:176 ../../po4a-translate:239
+#: ../../po4a-translate:240 ../../po4a-updatepo:274
+#, perl-format
+msgid "File %s does not exist."
+msgstr "A(z) %s fájl nem létezik."
+
+#: ../../msguntypot:174
+#, perl-format
+msgid ""
+"The new and old POT files have different amount of strings (%d != %d). "
+"Something's seriously wrong here."
+msgstr ""
+"Az új és a régi POT fájlok eltérő mennyiségű karakterlánccal rendelkeznek "
+"(%d != %d). Valami komoly baj van itt."
+
+#: ../../msguntypot:192
+#, perl-format
+msgid "Found %d modified entries."
+msgstr "%d módosított bejegyzés található."
+
+#: ../../msguntypot:203 ../../po4a:1623
+#, perl-format
+msgid "Cannot create a temporary PO file: %s"
+msgstr "Nem lehet létrehozni egy átmeneti PO fájlt: %s"
+
+#: ../../msguntypot:208
+#, perl-format
+msgid "Handling %s"
+msgstr "%s kezelése"
+
+#: ../../msguntypot:212 ../../po4a-updatepo:309
+#, perl-format
+msgid "Could not run msgmerge: %s"
+msgstr "Az msgmerge nem futtatható: %s"
+
+#: ../../msguntypot:234
+#, perl-format
+msgid "Modified %d entries in %d files."
+msgstr "%d bejegyzés módosítva %d fájlban."
+
+#: ../../po4a:832 ../../po4a:836
+#, perl-format
+msgid "Option %s invalid. Directory %s does not exist (current directory: %s)."
+msgstr ""
+"A(z) %s kapcsoló érvénytelen. A(z) %s könyvtár nem létezik (jelenlegi "
+"könyvtár: %s)."
+
+#. TRANSLATOR: There is two chunks in the following:  opt:"--keep 20" opt:"-o nowrap"
+#: ../../po4a:872
+#, perl-format
+msgid "Unparsable option chunk '%s' (%s)."
+msgstr "Feldolgozhatatlan kapcsolódarab: „%s” (%s)."
+
+#: ../../po4a:881
+#, perl-format
+msgid "Skipping option chunk '%s'."
+msgstr "A(z) „%s” kapcsolódarab kihagyása."
+
+#: ../../po4a:930
+#, perl-format
+msgid "failed to execute '%s': %s."
+msgstr "nem sikerült végrehajtani: „%s”: %s."
+
+#: ../../po4a:933
+#, perl-format
+msgid "'%s' died with signal %d, with coredump."
+msgstr "A(z) „%s” meghalt %d jelzővel, memóriakiírással."
+
+#: ../../po4a:935
+#, perl-format
+msgid "'%s' died with signal %d, without coredump."
+msgstr "A(z) „%s” meghalt %d jelzővel, memóriakiírás nélkül."
+
+#: ../../po4a:938
+#, perl-format
+msgid "'%s' exited with value %d."
+msgstr "A(z) „%s” kilépett %d értékkel."
+
+#: ../../po4a:941
+#, perl-format
+msgid "Error: %s"
+msgstr "Hiba: %s"
+
+#: ../../po4a:984 ../../po4a:1070 ../../po4a:1320
+#, perl-format
+msgid "Unknown variable: %s"
+msgstr "Ismeretlen változó: %s"
+
+#: ../../po4a:994
+#, perl-format
+msgid "Syntax error: %s"
+msgstr "Szintaktikai hiba: %s"
+
+#: ../../po4a:1025 ../../po4a:1088
+#, perl-format
+msgid "'%s' redeclared"
+msgstr "A(z) „%s” újra meg lett határozva"
+
+#: ../../po4a:1033
+#, perl-format
+msgid ""
+"Your POT file '%s' file name does not end with the 'pot' extension. This is "
+"unusual and will trouble the translators."
+msgstr ""
+"A(z) „%s” POT fájljának fájlneve nem a „pot” kiterjesztéssel végződik. Ez "
+"szokatlan, és gondot fog okozni a fordítóknak."
+
+#: ../../po4a:1041
+#, perl-format
+msgid ""
+"No PO file provided as subsequent parameters to '%s'. Your documentation "
+"will not be translated."
+msgstr ""
+"Nem lett PO fájl megadva következő paraméterként ehhez: „%s”. A "
+"dokumentációja nem lesz lefordítva."
+
+#: ../../po4a:1046
+#, perl-format
+msgid "Unparsable argument '%s'."
+msgstr "Feldolgozhatatlan argumentum: „%s”."
+
+#: ../../po4a:1093
+msgid "The list of languages cannot be set twice."
+msgstr "A nyelvek listája nem állítható be kétszer."
+
+#: ../../po4a:1095
+msgid "The POT file cannot be set twice."
+msgstr "A POT fájl nem állítható be kétszer."
+
+#: ../../po4a:1107 ../../po4a:1123
+#, perl-format
+msgid "Using '%s' as a %s."
+msgstr "„%s” használata mint egy %s."
+
+#: ../../po4a:1109
+#, perl-format
+msgid "'%s' is not a directory (current dir: %s)"
+msgstr "A(z) „%s” nem könyvtár (jelenlegi könyvtár: %s)"
+
+#: ../../po4a:1114
+#, perl-format
+msgid "Cannot list the '%s' directory"
+msgstr "Nem lehet felsorolni a(z) „%s” könyvtárat"
+
+#: ../../po4a:1128
+#, perl-format
+msgid "Cannot list directory '%s' in '%s' "
+msgstr "Nem lehet felsorolni a(z) „%s” könyvtárat itt: „%s” "
+
+#: ../../po4a:1134
+#, perl-format
+msgid "Directory '%s' not found in '%s'."
+msgstr "A(z) „%s” könyvtár nem található itt: „%s”."
+
+#: ../../po4a:1137 ../../po4a:1140
+#, perl-format
+msgid "Directory '%s' not found in '%s' nor in '%s'."
+msgstr "A(z) „%s” könyvtár nem található itt: „%s” és itt sem: „%s”."
+
+#: ../../po4a:1144
+#, perl-format
+msgid "Directory '%s' not found in '%s' nor in '%s' nor in '%s'."
+msgstr ""
+"A(z) „%s” könyvtár nem található itt: „%s”, sem itt: „%s” és itt sem: „%s”."
+
+#: ../../po4a:1155
+#, perl-format
+msgid "Language '%s' found twice in '%s' and '%s'."
+msgstr "A(z) „%s” nyelv kétszer található itt: „%s” és „%s”."
+
+#: ../../po4a:1159
+#, perl-format
+msgid "Found language '%s' in the provided po_directory: %s"
+msgstr "A(z) „%s” nyelv található a megadott po_directory változóban: %s"
+
+#: ../../po4a:1163
+#, perl-format
+msgid "%s:%d: too many POT files: '%s' and '%s'."
+msgstr "%s:%d: túl sok POT fájl: „%s” és „%s”."
+
+#: ../../po4a:1167
+#, perl-format
+msgid "Found POT file '%s' in the provided po_directory."
+msgstr "A(z) „%s” POT fájl megtalálva a megadott po_directory könyvtárban."
+
+#: ../../po4a:1177
+#, perl-format
+msgid "No PO files found in '%s'/'%s'."
+msgstr "Nem találhatók PO fájlok itt: „%s”/„%s”."
+
+#: ../../po4a:1180 ../../po4a:1183
+#, perl-format
+msgid "No PO files found in '%s'/'%s' nor in '%s'/'%s'."
+msgstr "Nem találhatók PO fájlok itt: „%s”/„%s” és itt sem: „%s”/„%s”."
+
+#: ../../po4a:1187
+#, perl-format
+msgid "No PO files found in '%s'/'%s' nor in '%s'/'%s' nor in '%s'/'%s'."
+msgstr ""
+"Nem találhatók PO fájlok itt: „%s”/„%s”, sem itt: „%s”/„%s” és itt sem: „%s”/"
+"„%s”."
+
+#: ../../po4a:1191
+msgid "Your project will not be translated to any language."
+msgstr "A projektje nem lesz lefordítva egyetlen nyelvre sem."
+
+#: ../../po4a:1197
+#, perl-format
+msgid "No POT files found in '%s'/'%s'."
+msgstr "Nem találhatók POT fájlok itt: „%s”/„%s”."
+
+#: ../../po4a:1200 ../../po4a:1203
+#, perl-format
+msgid "No POT files found in '%s'/'%s' nor in '%s'/'%s'."
+msgstr "Nem találhatók POT fájlok itt: „%s”/„%s” és itt sem: „%s”/„%s”."
+
+#: ../../po4a:1207
+#, perl-format
+msgid "No POT files found in '%s'/'%s' nor in '%s'/'%s' nor in '%s'/'%s'."
+msgstr ""
+"Nem találhatók POT fájlok itt: „%s”/„%s”, sem itt: „%s”/„%s” és itt sem: "
+"„%s”/„%s”."
+
+#: ../../po4a:1211
+msgid ""
+"Please create an empty file with the 'pot' extension (e.g. 'myproject.pot')."
+msgstr ""
+"Hozzon létre egy üres fájlt „pot” kiterjesztéssel (például „sajatprojekt."
+"pot”)."
+
+#: ../../po4a:1221
+#, perl-format
+msgid ""
+"The master file '%s' was specified earlier in the configuration file. This "
+"may cause problems with options."
+msgstr ""
+"A(z) „%s” mesterfájl korábban lett megadva a beállítófájlban. Ez problémákat "
+"okozhat a kapcsolókkal."
+
+#: ../../po4a:1226
+#, perl-format
+msgid "The master file '%s' does not exist."
+msgstr "A(z) „%s” mesterfájl nem létezik."
+
+#: ../../po4a:1270
+msgid ""
+"Option 'master:file' is deprecated. Please use 'pot' instead for the same "
+"effect."
+msgstr ""
+
+#: ../../po4a:1292
+#, perl-format
+msgid "Unparsable argument '%s' (%s)."
+msgstr "Feldolgozhatatlan argumentum: „%s” (%s)."
+
+#: ../../po4a:1295
+msgid "The translated and master file are the same."
+msgstr "A lefordított és a mesterfájl ugyanaz."
+
+#: ../../po4a:1337
+#, perl-format
+msgid "Translation of %s in %s redefined"
+msgstr "A(z) %s fordítása újra meg van határozva itt: %s"
+
+#: ../../po4a:1357
+#, perl-format
+msgid "Unparsable command '%s'."
+msgstr "Feldolgozhatatlan parancs: „%s”."
+
+#. don't care about error here
+#: ../../po4a:1363
+msgid ""
+"'po4a_paths' is not defined in the configuration file. Where are the POT and "
+"PO files?"
+msgstr ""
+"A „po4a_paths” nincs meghatározva a beállítófájlban. Hol vannak a POT és a "
+"PO fájlok?"
+
+#: ../../po4a:1379
+#, perl-format
+msgid "Cannot parse option line (missing >%s<?): %s"
+msgstr "Nem lehet feldolgozni a kapcsolósort (hiányzó >%s<?): %s"
+
+#: ../../po4a:1407
+#, perl-format
+msgid "Split mode, creating a temporary POT:"
+msgstr "Felosztás mód, egy átmeneti POT létrehozása:"
+
+#: ../../po4a:1410
+msgid "Disabling --translate-only option, it is not supported in split mode"
+msgstr ""
+"A --translate-only kapcsoló letiltása, ez nem támogatott felosztás módban"
+
+#: ../../po4a:1459
+#, perl-format
+msgid "NOT updating %s as requested (--no-update)."
+msgstr "NINCS frissítve a(z) %s, ahogy kérte (--no-update)."
+
+#: ../../po4a:1463 ../../po4a:1680 ../../po4a-updatepo:302
+#, perl-format
+msgid "Updating %s:"
+msgstr "%s frissítése:"
+
+#: ../../po4a:1467
+#, perl-format
+msgid "NOT creating %s as requested (--no-update)."
+msgstr "NINCS létrehozva a(z) %s, ahogy kérte (--no-update)."
+
+#: ../../po4a:1470 ../../po4a-updatepo:315
+#, perl-format
+msgid "Creating %s:"
+msgstr "%s létrehozása:"
+
+#: ../../po4a:1542 ../../po4a:1590 ../../po4a:1712 ../../po4a-updatepo:284
+#, perl-format
+msgid "Cannot create a temporary POT file: %s"
+msgstr "Nem lehet létrehozni egy átmeneti POT fájlt: %s"
+
+#: ../../po4a:1552
+#, perl-format
+msgid " (%d entries)"
+msgstr " (%d bejegyzés)"
+
+#: ../../po4a:1555
+#, perl-format
+msgid "POT file %s already up to date."
+msgstr "A(z) %s POT fájl már naprakész."
+
+#: ../../po4a:1595 ../../po4a:1663 ../../po4a:1750
+#, perl-format
+msgid "Cannot create directory '%s': %s"
+msgstr "Nem lehet létrehozni a(z) „%s” könyvtárat: %s"
+
+#: ../../po4a:1603
+#, perl-format
+msgid ""
+"msggrep did not create '%s'. Used command:\n"
+"  %s\n"
+"Please report that bug, along the information allowing to reproduce it.\n"
+msgstr ""
+"Az msggrep nem hozta létre ezt: „%s”. A használt parancs:\n"
+"  %s\n"
+"Jelentse ezt a hibát azon információkkal együtt, amelyek lehetővé teszik a "
+"hiba ismételt előidézését.\n"
+
+#: ../../po4a:1634
+#, perl-format
+msgid ""
+"The translation of master file '%s' in language '%s' is missing (file: %s) "
+"-- skipping."
+msgstr ""
+"A(z) „%s” mesterfájl fordítása „%s” nyelven hiányzik (fájl: %s) – kihagyás."
+
+#: ../../po4a:1678
+#, perl-format
+msgid "Updating the translation in language %s:"
+msgstr "A fordítás frissítése %s nyelven:"
+
+#: ../../po4a:1788
+#, perl-format
+msgid "PO file for language %s is missing -- skipping."
+msgstr "A PO fájl %s nyelven hiányzik – kihagyás."
+
+#: ../../po4a:1790
+#, perl-format
+msgid "PO file %s for language %s is missing -- skipping."
+msgstr "A(z) %s PO fájl %s nyelven hiányzik – kihagyás."
+
+#: ../../po4a:1829
+#, perl-format
+msgid "%s doesn't need to be updated."
+msgstr "A(z) %s frissítése nem szükséges."
+
+#: ../../po4a:1885
+#, perl-format
+msgid "Discard %s (%s of %s strings; only %s%% translated; need %s%%)."
+msgstr ""
+"A(z) %s eldobása (%s / %s karakterlánc; csak %s%% van lefordítva; %s%% "
+"szükséges)."
+
+#: ../../po4a:1895
+#, perl-format
+msgid "Timestamp %s created."
+msgstr "A(z) %s időbélyeg létrehozva."
+
+#: ../../po4a:1906
+#, perl-format
+msgid "Timestamp %s removed."
+msgstr "A(z) %s időbélyeg eltávolítva."
+
+#: ../../po4a:1920
+#, perl-format
+msgid "Addendum %s does NOT apply to %s (translation discarded)."
+msgstr "A(z) %s függelék NINCS alkalmazva erre: %s (fordítás eldobva)."
+
+#: ../../po4a:1929
+#, perl-format
+msgid "%s is 100%% translated (%s strings)."
+msgstr "A(z) %s 100%%-ban van lefordítva (%s karakterlánc)."
+
+#: ../../po4a:1933 ../../po4a-translate:275
+#, perl-format
+msgid "%s is %s%% translated (%s of %s strings)."
+msgstr "A(z) %s %s%%-ban van lefordítva (%s / %s karakterlánc)."
+
+#: ../../po4a-normalize:177
+#, perl-format
+msgid "Options %s and %s cannot be provided together"
+msgstr "A(z) %s és %s kapcsolókat nem lehet együtt megadni"
+
+#: ../../po4a-normalize:199
+#, perl-format
+msgid "Write the normalized document to %s."
+msgstr "A normalizált dokumentum kiírása ebbe: %s."
+
+#: ../../po4a-normalize:202
+#, perl-format
+msgid "Write the normalized PO file to %s."
+msgstr "A normalizált PO fájl kiírása ebbe: %s."
+
+#: ../../po4a-translate:280
+#, perl-format
+msgid "Discard the translation of %s (only %s%% translated; need %s%%)."
+msgstr ""
+"A(z) %s fordításának eldobása (csak %s%% van lefordítva; %s%% szükséges)."
+
+#: ../../po4a-translate:318
+#, perl-format
+msgid "Discard the translation of %s (addendum %s does not apply)."
+msgstr "A(z) %s fordításának eldobása (%s függelék nincs alkalmazva)."
+
+#: ../../po4a-translate:328
+#, perl-format
+msgid ""
+"Your input po file %s seems outdated (%s). Please consider running po4a-"
+"updatepo to refresh it."
+msgstr ""
+"A bemeneti %s PO fájl elavultnak tűnik (%s). Fontolja meg a po4a-updatepo "
+"futtatását a frissítéséhez."
+
+#: ../../po4a-updatepo:275
+msgid "po4a-updatepo can't take the input PO from stdin."
+msgstr ""
+"A po4a-updatepo nem tudja átvenni a bemeneti PO fájlt a szabványos "
+"bemenetről."
+
+#: ../../po4a-updatepo:286
+msgid "Parse input files… "
+msgstr "Bemeneti fájlok feldolgozása… "
+
+#: ../../po4a-updatepo:298
+msgid "done."
+msgstr "kész."
+
+#: ../../po4a-updatepo:318
+#, perl-format
+msgid "Could not copy the PO file (%s → %s): %s"
+msgstr "Nem sikerült másolni a PO fájlt (%s → %s): %s"
+
+#~ msgid "Error while running msgmerge: %s"
+#~ msgstr "Hiba az msgmerge futtatása közben: %s"
+
+#~ msgid "Apply addendum: %s"
+#~ msgstr "Függelék alkalmazása: %s"
+
+#~ msgid "Done addendum: %s"
+#~ msgstr "Függelék kész: %s"
+
+#~ msgid "Can't open %s: %s"
+#~ msgstr "A(z) %s nem nyitható meg: %s"
+
+#~ msgid "Call treat_options"
+#~ msgstr "A treat_options hívása"
+
+#~ msgid "Eval failure: %s"
+#~ msgstr "Kiértékelési hiba: %s"
+
+#~ msgid "%s: type=%s <%s%s%s%s%s>"
+#~ msgstr "%s: típus = %s <%s%s%s%s%s>"
+
+#~ msgid "%s: type='%s'"
+#~ msgstr "%s: típus = „%s”"
+
+#~ msgid "%s: path='%s', translation option='%s'"
+#~ msgstr "%s: útvonal = „%s”, fordítási kapcsoló = „%s”"
+
+#~ msgid "%s: path='%s', translation option='%s' (no translation)"
+#~ msgstr "%s: útvonal = „%s”, fordítási kapcsoló = „%s” (nincs fordítás)"
+
+#~ msgid "%s: translation option='%s' (valid)"
+#~ msgstr "%s: fordítási kapcsoló = „%s” (érvényes)"
+
+#~ msgid "Chdir %s (srcdir)"
+#~ msgstr "Könyvtárváltás: %s (forráskönyvtár)"
+
+#~ msgid "Call readpo(%s)"
+#~ msgstr "A readpo(%s) hívása"
+
+#~ msgid "Done readpo(%s)"
+#~ msgstr "A readpo(%s) kész"
+
+#~ msgid "Call read(%s)"
+#~ msgstr "A read(%s) hívása"
+
+#~ msgid "Done read(%s)"
+#~ msgstr "A read(%s) kész"
+
+#~ msgid "Call parse()"
+#~ msgstr "A parse() hívása"
+
+#~ msgid "Done parse()"
+#~ msgstr "A parse() kész"
+
+#~ msgid "Call addendum(%s)"
+#~ msgstr "Az addendum(%s) hívása"
+
+#~ msgid "Done addendum(%s)"
+#~ msgstr "Az addendum(%s) kész"
+
+#~ msgid "Call write(%s)"
+#~ msgstr "A write(%s) hívása"
+
+#~ msgid "Done write(%s)"
+#~ msgstr "A write(%s) kész"
+
+#~ msgid "Call writepo(%s)"
+#~ msgstr "A writepo(%s) hívása"
+
+#~ msgid "Done writepo(%s)"
+#~ msgstr "A writepo(%s) kész"
+
+#~ msgid "Chdir %s (calldir)"
+#~ msgstr "Könyvtárváltás: %s (hívókönyvtár)"

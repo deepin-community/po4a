@@ -1,0 +1,888 @@
+po4a (0.65-1) unstable; urgency=medium
+
+  * New upstream release.
+    - po4a: Allow one to group several files per POT in split mode.
+    - Many bug fixes to AsciiDoc, pod, Tex, yaml and core.
+    - Many translation updates.
+  * Versioned depends on libpod-parser-perl (>= 1.63) to ease upgrades
+    from Buster (Closes: #990507). Thanks Andreas for noticing.
+  * Update Standards-Version to 4.6.0, no changes needed.
+
+ -- Martin Quinson <mquinson@debian.org>  Sun, 14 Nov 2021 13:55:07 +0100
+
+po4a (0.62-1) unstable; urgency=medium
+
+  * New upstream version 0.62
+  * Update Standards-Version to 4.5.1, no changes needed
+  * Add Rules-Requires-Root: no to d/rules
+  * Move libmodule-build-perl from Build-Depends-Indep to Build-Depends
+  * Include upstream's NEWS file (Closes: #965139)
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Wed, 09 Dec 2020 13:48:42 +0100
+
+po4a (0.61-1) unstable; urgency=medium
+
+  * New upstream version 0.61
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Wed, 05 Aug 2020 17:53:28 +0200
+
+po4a (0.60-1) unstable; urgency=medium
+
+  * New upstream version 0.60
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Thu, 16 Jul 2020 10:26:59 +0200
+
+po4a (0.59.1-1) unstable; urgency=medium
+
+  [ Martin Quinson ]
+  * gitlab-ci: disable job build-any.
+
+  [ Dr. Tobias Quathamer ]
+  * New upstream version 0.59.1
+    - po4a tool: Really fix --srcdir and --destdir handling
+      (Closes: #960892 again). Even with the previous fix,
+      the aptitude package was still broken.
+    - Sgml: Sort the attributes. Without this, msgids are
+      randomly fuzzied. (Closes: #725931, #810988)
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Mon, 25 May 2020 19:09:59 +0200
+
+po4a (0.59-1) unstable; urgency=medium
+
+  [ Niko Tyni ]
+  * Add dependencies on libpod-parser-perl.
+    This anticipates changes in Perl 5.32: Pod::Parser has been removed
+    from the core distribution in the 5.31 series and is being packaged
+    separately for Debian.
+    The Perl 5.30 package in Debian already Provides libpod-parser-perl,
+    so the dependencies don't need to wait for the separate package.
+
+  [ Dr. Tobias Quathamer ]
+  * New upstream version 0.59
+    - po4a tool: Fix --srcdir handling. This bug was breaking the build
+      of several packages, including dpkg. (Closes: #960892)
+    - Addendum: New mode 'eof' to easily add at the end of the file
+      (Closes: #960949).
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Wed, 20 May 2020 10:23:43 +0200
+
+po4a (0.58.1-1) unstable; urgency=medium
+
+  * New upstream version 0.58.1
+    - Remove patch, applied upstream
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Mon, 11 May 2020 15:09:50 +0200
+
+po4a (0.58-1) unstable; urgency=medium
+
+  * New upstream version 0.58
+    - Do not touch source dir when --destdir is provided (Closes: #602387)
+    - Add support for addendum path in po4a_paths (Closes: #823189)
+    - Use UTF-8 by default (the 20th century is over)
+      po4a used to prefer ascii unless it proved impossible. But the
+      underlying detection would fail, possibly for document containing
+      UTF-8 chars composed on printable ascii chars only. (Closes: #862460)
+    - Add new patch to fix FTBFS.
+      Cherry-picked from upstream commit 5db0060.
+  * Update d/copyright
+  * d/copyright: Remove unneeded license paragraph for GPL-3.0+
+  * Use debhelper v13
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Thu, 07 May 2020 10:14:38 +0200
+
+po4a (0.57-2) unstable; urgency=medium
+
+  * Source-only upload. Closes: #956544
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Wed, 15 Apr 2020 15:16:30 +0200
+
+po4a (0.57-1) unstable; urgency=medium
+
+  * New upstream release version 0.57
+    - Many new and updated translations.
+    - Impove AsciiDoc support.
+  * Bump to debhelper 12
+  * Update Standards-Version to 4.5.0, no changes needed
+  * d/copyright: share/po4a-build was removed a few releases ago
+
+ -- Martin Quinson <mquinson@debian.org>  Fri, 20 Mar 2020 00:01:47 +0100
+
+po4a (0.55-1) unstable; urgency=medium
+
+  * New upstream version 0.55
+    - Failing HTML test has been removed upstream
+    - Sgml: Avoid deprecated unescaped left brace in regex to get ready
+      for Perl 5.32. (Closes: #903735)
+    - TransTractor: Ensure to split lines before addendum operation without
+      loss or addition of newline. With this change, addendum behavior is
+      more intuitive. (Closes: #518218)
+    - Xml, Docbook: Document XML tag behavior customization with example
+      to help use case specific customization. (Closes: #515763)
+  * Add texlive-latex-base to Build-Depends. The latex test needs the
+    file 'article.cls' which is included in that package.
+  * Add two more files to package's documentation
+  * Update Standards-Version to 4.2.1, no changes needed
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sun, 09 Dec 2018 22:15:54 +0100
+
+po4a (0.54-1) unstable; urgency=medium
+
+  * New upstream version 0.54
+    - Remove patches, all have been applied upstream
+    - Remove workaround in d/rules to create empty files
+    - Texinfo: Fix handling of spaces in menu descriptions
+      (Closes: #758851).
+    - Text: Support pandoc's bibliographic information (title, author, date)
+      at the beginning of a markdown file. Also fix a trailing newline
+      in some markdown titles (Closes: #894977).
+    - Man: Support .MT and .ME macros for e-mail address
+      markup (Closes: #900965).
+    - Text: Fix the parsing of fortunes files, which had been broken since
+      v0.43. The handling has changed a bit, all msgids are now marked as
+      "no-wrap", because the word wrap in fortunes files usually matters.
+      This upstream fix has already been cherry-picked for the
+      Debian upload of 0.53-2.
+  * Use wrap-and-sort
+  * Do not run failing HTML module test
+  * Remove some example files, no longer distributed
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sat, 30 Jun 2018 11:42:00 +0200
+
+po4a (0.53-2) unstable; urgency=medium
+
+  * Fix fortunes handling. (Closes: #900649)
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Thu, 07 Jun 2018 10:42:29 +0200
+
+po4a (0.53-1) unstable; urgency=medium
+
+  [ Martin Quinson ]
+  * d/control: Point Vcs fields to salsa
+
+  [ Dr. Tobias Quathamer ]
+  * New upstream version 0.53
+    - New module Yaml, by Brian Exelbierd.
+    - Improve new Yaml module with a few patches from upstream.
+      These patches are cherry-picked from upstream's git
+      repository. They will be included in the next upstream
+      release 0.54 and can be dropped then.
+    - Add libyaml-tiny-perl to Depends for new Yaml submodule
+    - Add Yaml to package description
+    - Includes updated Dutch translation. Closes: #877248
+  * Update URL for homepage
+  * Update d/watch for new github location
+  * Use debhelper v11
+  * Remove obsolete debian/NEWS file
+  * Update to Standards-Version 4.1.4
+    - Convert d/copyright to machine readable version
+    - Replace the shebang line in perl scripts to comply
+      with Policy 10.4
+  * Remove version check from d/rules, seems not needed anymore
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sun, 27 May 2018 22:40:34 +0200
+
+po4a (0.52-1) unstable; urgency=medium
+
+  * New upstream release.
+    - New module RubyDoc, by Francesco Poli (Closes: #827936)
+    - po4a-translate complains on outdated input po files (Closes: #637288)
+    - po4a: new option --no-update (Closes: #599179)
+    - Plus various small bug fixes and improvements
+    - Many translations updated (Closes: #862923, #859029, #860073)
+
+  * d/control: Remove Simon Paillard from uploaders. Thanks for the fish!
+    (Closes: #873268)
+  * d/control: bump the Standards-Version to 4.0.1. No change needed.
+
+ -- Martin Quinson <mquinson@debian.org>  Sat, 26 Aug 2017 22:29:44 +0200
+
+po4a (0.51-1) unstable; urgency=medium
+
+  * New upstream release:
+    * XML:
+      - Add an option to escape all quotes, for android.
+        Thanks to Josh Dubois for the patch (Alioth's #315353).
+    * po4a:
+      - Checking po file is fine. Failing if the file does not exist isn't.
+        It makes apt to FTBFS! (Closes: #858934)
+    * other:
+      - Third attempt at installing the manpages to the right location.
+
+  * d/changelog: fix some spelling errors reported by lintian.
+
+ -- Martin Quinson <mquinson@debian.org>  Tue, 28 Mar 2017 23:22:25 +0200
+
+po4a (0.50-1) unstable; urgency=medium
+
+  * New upstream 0.49 release:
+    * AsciiDoc:
+      - Fix various bugs, thanks to Brian Exelbierd (GitHub's #1, #2).
+      - Correctly handle list literal paragraph (GitHub's #9).
+    * Man:
+      - Add support for the tab(<character>) global option inside .TS/.TE.
+        Also tidy up trailing newline handling in text blocks: Since that
+        trailing newling must be there, no need to translate it explicitly.
+        Many thanks to Colin Watson for the report, patch and tests.
+        (Closes: #847754).
+      - WARNING: this will fuzz your existing translations, but unfuzzing
+        will be rather easy so I push this change anyway.
+    * Translations:
+      - Update Italian, thanks to Marco Ciampa.
+      - Update Indonesian, thanks to Izharul Haq (Closes: #835050).
+      - Update Japanese, thanks to Takuma Yamada (Closes: #818949).
+      - Update French, thanks Alban Vidal (Closes: #856188).
+    * Other:
+      - Ensure that files in the archive are writable (Closes: #728602)
+  * New upstream 0.50 release:
+    * AsciiDoc:
+      - Further bug fixing to handle the git documentation (GitHub's #9).
+        - Before, we did not mark enough list blocks as verbatim.
+        - Now, we may mark a few too much of them.
+        - This should not do any harm, beyond some fuzzy translation.
+      - Fix some bugs, around style macros (Alioth's #314919)
+        Thanks to Alexander Golubev for the patch.
+    * XML:
+      - Add an option to not wrap attributes (GitHub's #6)
+        Contributed by Ineiev, committed by dbarbier, thanks.
+    * Text:
+      - debianchangelog: Accept timezone names on multiple chars
+        (Closes: #792416)
+      - Add a neverwrap option to prevent any wrapping
+        (Closes: #824753)
+    * po4a:
+      - Check the validity of po files before using them (Closes: #855431)
+
+  * Take over the package again, as Nicolas resigned from Debian
+    (Closes: #832382). Thanks Nicolas for you work all these years!
+  * Remove Neil Williams from the uploaders, as he asked.
+  * Install upstream NEWS in the package.
+  * d/compat: bump our dh compat level to 10.
+
+ -- Martin Quinson <mquinson@debian.org>  Tue, 28 Mar 2017 08:23:17 +0200
+
+po4a (0.48-1) unstable; urgency=medium
+
+  * New upstream release:
+    - Integrate Debian's patch for opensp
+    - New Japanese translation, thanks to Takuma Yamada
+      (Closes: #826292, #818949)
+
+ -- Martin Quinson <mquinson@debian.org>  Fri, 17 Jun 2016 11:25:03 +0200
+
+po4a (0.47-2) unstable; urgency=medium
+
+  [ Neil Roeth ]
+  * Changed dependency on sp to opensp (Closes: #809477, #280882)
+    - README: Changed description of sp to opensp
+    - README.tests: Changed sp to opensp, added libmodule-build-perl.
+    - d/control: Changed Build-Depends-Indep and Depends to opensp.
+    - lib/Locale/Po4a/Sgml.pm: Changed nsgmls to onsgmls.
+
+  [ Martin Quinson ]
+  * po/pod/pt.po: Fix a formatting error in /usr/share/man/pt/man7/po4a.7.gz
+    (Thanks Lintian for noticing)
+
+ -- Martin Quinson <mquinson@debian.org>  Tue, 05 Jan 2016 17:46:23 +0100
+
+po4a (0.47-1) unstable; urgency=medium
+
+  * New upstream release: Three months are gone already.
+    - Fix: don't add supirious lines around \# lines (Closes: #786642)
+    - Doc fix: poref is a command line option (Closes: #775707)
+    - Port our regex to Perl 5.22 (Closes: #788706)
+
+ -- Martin Quinson <mquinson@debian.org>  Fri, 28 Aug 2015 19:17:23 +0200
+
+po4a (0.46-2) unstable; urgency=medium
+
+  * d/control: fix the git browse URL.
+  * d/control: Build-dep on libmodule-build-perl to fix a FTBFS
+    (Closes: #789639)
+
+ -- Martin Quinson <mquinson@debian.org>  Sun, 28 Jun 2015 13:19:25 +0200
+
+po4a (0.46-1) unstable; urgency=medium
+
+  * New upstream release.
+    This is a long awaited release after almost 2 years!
+    The most impressive is not the release content, but the fact that
+    I'm back up to speed to maintain and release the po4a project.
+    More releases should follow soon.
+
+    - Closes: #744366 (man module mangles preprocessor line)
+      Thanks to Robert Luberda for the patch.
+    - Closes: #748601 (Man module splits tbl's textblocks into separate lines)
+      Thanks to Robert Luberda for the patch.
+    - Closes: #779435 (Useless use of greediness modifier)
+    - Closes: #782393 (Dutch po file for the po4a package)
+    - Closes: #735644 (Brazilian Portuguese PO translation of bin, pod and web)
+    - Closes: #776896 (Update Vietnamese program translation)
+  * d/control: update VCS fields now that we moved the package to git.
+  * d/control: bump the Standards-Version to 3.9.6. No change needed.
+
+ -- Martin Quinson <mquinson@debian.org>  Thu, 21 May 2015 00:49:44 +0200
+
+po4a (0.45-1) unstable; urgency=low
+
+  * New upstream release.
+    - Closes: #564245
+      clash of $master in splitted mode
+    - Closes: #684137
+      Incorrect handling of <beginpage> in docbook, should be inline?
+    - Closes: #693266
+      Couldn't determine the input document's charset
+    - Closes: #696992
+      [ini] Include key/parameter as PO comments
+    - Closes: #696997
+      po4a-gettextize doesn't work with localised ini
+    - Closes: #710695
+      po4a-gettextize: wrong timezone in POT-Creation-Date
+    - Closes: #718675
+      Uninformative error message when '<' is left alone in a HTML file
+
+  [ Updated program translations ]
+  * Brazilian Portuguese, by Rafael Ferreira (Closes: #706591)
+
+ -- Denis Barbier <barbier@debian.org>  Wed, 21 Aug 2013 20:02:52 +0200
+
+po4a (0.44-1) experimental; urgency=low
+
+  * New upstream release.
+    - Closes: #664741
+      errors with gettextize some NetBSD man pages
+    - Closes: #661708
+      po4a --msgmerge-opt should also affect the POT file
+  * Remove lintian override, it is no more needed.
+
+  [ Updated program translations ]
+  * German, by Helge Kreutzmann
+  * Spanish, by Omar Campagne
+  * French, by David Prévot
+  * Slovenian, by Andrej Žnidaršič
+  * Korean, by Chel Hee Lee
+  * Danish, by Joe Hansen (Closes: #689775)
+  * Russian, by Yuri Kozlov (Closes: #689786)
+  * Czech, by Michal Simunek (Closes: #689799)
+  * Ukrainian, by Yuri Chornoivan
+  * Indonesian, by T. Surya Fajri
+  * Esperanto, by Joop Eggen
+  * Vietnamese, by Nguyễn Vũ Hưng
+  * Basque, by Iñaki Larrañaga Murgoitio (Closes: #690433)
+  * Estonian, by Annika Ennok
+  * Bengali, Hebrew, Kurdish, Occitan (post 1500), and Uzbek removed
+
+  [ Updated documentation translations ]
+  * German, by Helge Kreutzmann
+  * Spanish, by Omar Campagne
+  * French, by David Prévot
+  * Portuguese, by António Moreira (Closes: #690570)
+
+ -- Denis Barbier <barbier@debian.org>  Sun, 21 Oct 2012 01:09:13 +0200
+
+po4a (0.42-1) unstable; urgency=low
+
+  * Team upload.
+  * New upstream release.
+    + po4a: Allow adding command-line options after config file.
+      Closes: #660953
+    + msguntypot: Do not remove obsolete entries from PO files.
+      Closes: #653525
+    + Text: Add support for control files.
+
+  [ Denis Barbier ]
+  * Now that #605696 is fixed, Spanish manual pages will work
+    fine with lexgrog/apropos (Closes: #605637)
+  * debian/rules: Fix shebang line to hardcode /usr/bin/perl in
+    installed Perl scripts (Closes: #651120)
+
+  [ New documentation translations ]
+  * German, by Helge Kreutzmann (Closes: #646197)
+
+  [ Updated documentation translations ]
+  * Spanish, by Omar Campagne
+  * French, by David Prévot
+  * Japanese, by KURASAWA Nozomu
+  * Polish, by Robert Luberda
+
+  [ David Prévot ]
+  * Fix typos spotted by Helge Kreutzmann (Closes: #646173)
+  * debian/control:
+    + Standards-Version bumped to 3.9.3.
+    + Add Multi-Arch: foreign.
+    + Remove duplicate Build-Depends-Indep.
+  * debian/rules: Fix debian-rules-missing-recommended-target.
+
+ -- David Prévot <taffit@debian.org>  Wed, 16 May 2012 20:37:49 -0400
+
+po4a (0.41-1) unstable; urgency=low
+
+  [ Denis Barbier ]
+  * New upstream release.
+    + Remove trailing newline from titles in asciidoc.
+      Closes: #595946
+    + Remove Debconf, Html and NewsDebian modules,
+      they are not considered as stable and the two
+      latter have better alternatives (Xhtml and Text).
+    + No more generate backups for PO files.
+
+  [ Simon Paillard ]
+  * debian/NEWS: mention asciidoc titles will be fuzzied (related to #595946)
+  * debian/{rules,control}: run test suite at build
+
+  [ Jonas Smedegaard ]
+  * Add myself as uploader
+  * Fix preserve force-break (trailing space) in markdown mode of Text module.
+
+ -- Simon Paillard <spaillard@debian.org>  Thu, 14 Apr 2011 22:40:39 +0200
+
+po4a (0.40.2-1) unstable; urgency=low
+
+  [ Updated documentation translations ]
+  * Spanish, by Omar Campagne
+  * French, by David Prévot
+  * Japanese, by KURASAWA Nozomu
+  * Polish, by Robert Luberda
+
+  [ Updated program translations ]
+  * Vietnamese, by Clytie Siddall (Closes: #598560)
+  * Slovenian, by Andrej Žnidaršič
+  * Basque, by Iñaki Larrañaga Murgoitio (Closes: #603381)
+  * French, by David Prévot
+  * Japanese, by KURASAWA Nozomu
+  * Czech, by Michal Šimůnek (Closes: #604685)
+  * German, by Thomas Müller (Closes: #604729)
+  * Ukrainian, by Yuri Chornoivan
+  * Esperanto, by Joop Eggen
+  * Estonian, by Annika Ennok
+  * Russian, by Yuri Kozlov (Closes: #604104)
+  * Arabic removed (only one translated string)
+  * Danish added, by Joe Hansen (Closes: #605321)
+
+  [ Simon Paillard ]
+  * Picked from po4a 0.41, fix po4a-updatepo, this script did not call
+    msgmerge with --previous flag.  Closes: #596525
+  * Add myself to uploaders.
+
+ -- Simon Paillard <spaillard@debian.org>  Sat, 04 Dec 2010 01:05:46 +0100
+
+po4a (0.40.1-1) unstable; urgency=low
+
+  [ Denis Barbier ]
+  * New upstream release.
+    + Style update in documentation.
+    + Mention po4a-build in po4a(1). Closes: #565422
+    + Use 'Software in the Public Interest'. Closes: #590502
+    + Change header entry in PO files to be consistent with
+      xgettext when creating POT files.
+    + Trailing spaces must not be removed from translations
+      if they are escaped.  Closes: #593106
+  * debian/control: Upstream repository has switched
+    from CVS to SVN, update Vcs-* fields.
+
+  [ Updated program translations ]
+
+  * French, by David Prévot
+  * Spanish, by Omar Campagne
+  * Japanese, by KURASAWA Nozomu
+  * Esperanto, by Joop Eggen
+  * Swedish, by Martin Bagge
+  * Russian, by Yuri Kozlov (Closes: #592041)
+  * Estonian, by Annika
+  * Ukrainian, by Yuri Chornoivan
+  * Czech, by Michal Šimůnek (Closes: #592330)
+  * Portuguese, by António Moreira
+  * German, by Thomas Müller (Closes: #594258)
+
+  [ Updated documentation translations ]
+
+  * French, by David Prévot
+  * Spanish, by Omar Campagne
+  * Japanese, by KURASAWA Nozomu
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed, 25 Aug 2010 23:16:59 +0200
+
+po4a (0.40-1) unstable; urgency=low
+
+  [ Nicolas FRANCOIS (Nekral) ]
+  * New upstream release.
+    + Fix failures "Unknown option: copyright-holder". Closes: #573283
+    + In Locale::Po4a::Man, let do_fonts() handle all font modifiers.
+    + In Locale::Po4a::Man, add support for .TQ macro.  Patch by
+      James Vega, thanks.  Closes: #588879
+    + Fix strange warning message when file_in_name is empty with Text
+      and Sgml modules. Closes: #566182
+    + New EXAMPLE section in po4a(1), contributed by Helge Kreutzmann.
+      Closes: #571740
+    + When po4a-gettextize fails, recode msgstr into current charset
+      before printing it.  Closes: #556296
+
+  [ Denis Barbier ]
+  * debian/control: Remove Pierre Machard from Uploaders. Closes: #576556
+
+  [ Updated program translations ]
+
+  * Spanish, by Omar Campagne
+  * Polish, by Robert Luberda
+  * French, by Denis Barbier
+  * Russian, by Yuri Kozlov (Closes: #585700)
+  * Esperanto, by Joop Eggen
+  * Czech, by Michal Šimůnek (Closes: #589935)
+  * Swedish, by Martin Bagge (Closes: #589910)
+  * Japanese, by KURASAWA Nozomu
+  * Portuguese, by António Moreira
+  * German, by Thomas Müller (Closes: #590603)
+
+  [ Updated documentation translations ]
+
+  * Spanish, by Omar Campagne
+  * Polish, by Robert Luberda
+  * Japanese, by KURASAWA Nozomu
+  * French, by David Prévot
+
+ -- Martin Quinson <mquinson@debian.org>  Tue, 27 Jul 2010 21:50:46 +0200
+
+po4a (0.39-1) unstable; urgency=low
+
+  * New upstream release.
+    + Indicate the name of the module instead of the name of a format in
+      po4a(7). Closes: #563541
+  * debian/control: Fixed typo: misc:depends -> misc:Depends
+  * debian/control: Standards-Version bumped to 3.8.4.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue, 02 Feb 2010 01:07:52 +0100
+
+po4a (0.38-1) unstable; urgency=low
+
+  * New upstream release.
+    - Fix handling of multi-lines placeholder tags. Closes: #561416
+    - Fix typo in Locale::Po4a::Text (nobullet). Closes: #558301
+    - New Xml option: addlang. Closes: #263733, #534105
+    - po4a: Exit with an error if master file specified in a po4a
+      configuration file does not exist. Closes: #563917
+  * debian/watch: Support upstream tar ball with a -v<version> or -<version>
+    suffix.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Thu, 14 Jan 2010 23:26:34 +0100
+
+po4a (0.37.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Neil Williams <codehelp@debian.org>  Sun, 22 Nov 2009 13:02:27 +0000
+
+po4a (0.37.0-1) unstable; urgency=low
+
+  * New upstream release
+  * Add xml build-deps for new po4a-build script.
+  * Add myself as uploader for po4a-build development.
+  * Update copyright for po4a-build (GPL-3+)
+  * Add lintian overrides for #555330
+  * Adapt rules to use of po4a-build internally.
+  * Add docbook-xml to build-deps for XML manpage generation.
+  * Add watch file (based on QOF which also uses alioth)
+  * Package the po4a-build example files.
+
+ -- Neil Williams <codehelp@debian.org>  Fri, 20 Nov 2009 08:55:36 +0000
+
+po4a (0.36.6-1) unstable; urgency=low
+
+  * New upstream release.
+    + Updated Czech translation. Closes: #549092
+    + Updated German translation. Closes: #545909
+    + Updated Spanish translation. Closes: #554771
+    + Fixed bashism in po4apod-display-po. Closes: #547757, #546601
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed, 30 Sep 2009 21:02:22 +0200
+
+po4a (0.36.5-1) unstable; urgency=low
+
+  * New upstream release.
+    + Updated German translation. Closes: #545909
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Thu, 10 Sep 2009 22:52:47 +0200
+
+po4a (0.36.4-1) unstable; urgency=low
+
+  * New upstream release.
+    + Updated Basque translation. Closes: #543826
+    + Updated Czech translation. Closes: #543513
+    + Updated Spanish translation. Closes: #541785, #542766
+    + Updated Russian translation. Closes: #544136
+    + Updated Swedish translation. Closes: #543410
+    + Added option --srcdir and --destdir to po4a. Closes: #538136
+  * debian/control: Standards-Version bumped to 3.8.3.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 30 Aug 2009 16:33:49 +0200
+
+po4a (0.36.3-1) unstable; urgency=low
+
+  * New upstream bugfix release.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed, 22 Jul 2009 13:06:37 +0200
+
+po4a (0.36.2-1) unstable; urgency=low
+
+  * New upstream release:
+    + Markdown: Improved support. Closes: #530574
+    + Markdown: Avoid translation of some markups: title and horizontal rules.
+      Closes: #537570
+    + po4apod-display-po: Added new script to display previews of POD
+    translations. Closes: #445693
+    + po4a-gettextize: Added options --msgid-bugs-address, --copyright-holder,
+      --package-name, --package-version to control the generation of the PO
+      header. Closes: #537245
+    + Wml: Added option customtag. Closes: #537236
+  * debian/control: Updated Vcs-Browser URL. Closes: #528303
+  * debian/control: Standards-Version bumped to 3.8.2. No changes.
+  * debian/control: Fixed Vcs-Cvs field.
+  * debian/control, debian/rules, debian/compat: switch to debhelper 7.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue, 21 Jul 2009 19:05:55 +0200
+
+po4a (0.36.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 05 Apr 2009 13:45:49 +0200
+
+po4a (0.36-3) unstable; urgency=low
+
+  * pod: Do not generate =encoding headers with no encoding. Closes: #520942
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Mon, 23 Mar 2009 21:47:07 +0100
+
+po4a (0.36-2) unstable; urgency=low
+
+  * Upload to unstable.
+  * Include upstream changes for the TeX and LaTeX modules:
+    - Fix support for inline customization of separators.
+    - Added support for the tabularx environment.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Mon, 16 Mar 2009 21:35:10 +0100
+
+po4a (0.36-1) experimental; urgency=low
+
+  * New upstream release.
+    - New presentation of placeholders in the Xml module. Closes: #513716
+    - Updated po4a.7 manpage so that file names in the ASCII art chart match
+      command line and text. Closes: #513791
+    - Added "HOWTO customize po4a" section to po4a(7). Closes: #501180
+    - The XML module and derivatives do not fail when the doctype does not
+      match the expected one. Closes: #514828
+    - Use kpsewhich instead of directly using TEXINPUTS to find the included
+      files. Closes: #509553
+  * debian/examples/compare-msgids.pl: Added script to output wdiffs between
+    the new msgid and the old ones (generated when --previous) is used.
+    Closes: #514755
+  * debian/rules, debian/po4a.examples: Install examples.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 14 Feb 2009 13:29:03 +0100
+
+po4a (0.35-1) experimental; urgency=low
+
+  * New upstream release.
+    - Docbook module:
+      + <acronym> moved to the inline section. Closes: #500448
+      + <glossterm> removed from the inline section. This make them
+        translatable. Closes: #492485
+      + <ackno> added to the tags section. CLoses: #501204
+      + <option> moved to the inline section. Closes: #494607
+      + <code> moved to the inline section. Closes: #513708
+      + <footnote> moved to the placeholder section. (see #513716)
+    - Fix typos and formatting in the Locale:Po4a:XML man page. Closes: #494626
+    - Updated dependency on perl-modules (>= 5.10.0-16) because the utf8
+      option of Pod::Man is needed.
+    - Xml has support for placeholders and the conflicts handling was
+      improved. Closes: #495947
+    - Manpages are now generated in utf-8.
+    - New support for asciidoc format (except tables) in the text module.
+      Closes: #498094
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue, 10 Feb 2009 00:42:19 +0100
+
+po4a (0.34-2) unstable; urgency=low
+
+  * debian/control: Bump Standards-Version to 3.8.0. No changes.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 20 Jul 2008 23:05:29 +0200
+
+po4a (0.34-1) unstable; urgency=low
+
+  * New upstream release.
+    - Added support for the Halibut format. Closes: #483647
+    - Added support for the Markdown format, as used with Ikiwiki.
+      Closes: #484030
+    - Do not end re-wrapped lines with a space. Closes: #484026
+    - text module: Make sure files are not mixed together when gettextized at
+      the same time. Closes: #484023
+    - The tex module name is now supported. Closes: #483528
+    - Fix failures experienced with big SGML files (not read completely by
+      nsgmls -p), which caused "broken pipe" errors.  Closes: #477458
+    - Fix build failures with old Module::Build versions.
+      CLoses: #485737, #491398
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 20 Jul 2008 18:55:04 +0200
+
+po4a (0.33.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * debian/copyright: Update copyright informations and link to GPL.
+  * debian/control: Add the Homepage, Vcs-Cvs, and Vcs-Browser fields.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed, 02 Apr 2008 22:43:45 +0200
+
+po4a (0.33.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * gettext is needed at build time. po4a 0.33.2 requires gettext 0.16.
+  * The manpages are now installed in UTF-8. This fix the encoding of the
+    manpages header (Po4a Tools). Closes: #471402
+  * Add the Wml module to the Description, and sort the modules.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue, 01 Apr 2008 00:00:53 +0200
+
+po4a (0.33.1-1) unstable; urgency=low
+
+  * New upstream release.
+    - [man] Do not translate - to \- inside \*[...]. Closes: #470849
+    - Updated Russian translation. Thanks to Yuri Kozlov. Closes: #471043
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 15 Mar 2008 00:45:53 +0100
+
+po4a (0.33-1) unstable; urgency=low
+
+  * New upstream release.
+    - Fix failures with perl 5.10. Closes: #459451
+    - [man] Die on unrecognised '<' sequences in msgstr strings.
+      Closes: #450892
+    - [man] The Locale::Po4a::Man(3pm) manpage describes how an author can
+      write specify that some parts are not to be translated.
+      Closes: #443054
+    - Added support for PO files with plural form messages.
+      The support is still not complete, but po4a should warn or die when
+      needed.
+      Closes: #439842
+    - Fix the handling of header comments in msguntypot. Closes: #447656
+    - [docbook] Added support for the <keyword> elements. Thanks
+      to W. Martin Borgert <debacle@debian.org>. Closes: #463387
+    - inline tags are now extracted, even if there is no text outside the
+      inline tags.  Closes: #464543
+  * debian/control: Updated to Standards: 3.7.3.0 (checked, no changes needed)
+  * debian/rules: Something changed. I need to specify create_packlist=0 to
+    avoid the .packlist to be created.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun, 13 Jan 2008 21:49:23 +0100
+
+po4a (0.32-1) unstable; urgency=low
+
+  * New upstream release.
+    - Infinite loop fixed when an option argument specified in a config file
+      contain single quotes. Note that single quotes are still supported
+      inside an option argument if this argument is protected by escaped
+      double quotes. Closes: #431162
+    - Fix handling of tags with argument on multiple lines. Closes: #430792
+    - Fix typo in po4a(7). Closes: #428193
+    - Xml is now really in the list of modules displayed by
+      po4a-gettextize --help-format (note however that you may prefer to use
+      instantiated modules like docbook). Closes: #398711
+    - The text module should work nicely with README.Debian files. With the
+      debianchangelog option, translation of NEWS.DEBIAN files should be
+      supported. Closes: #189641
+    - The warning which was (nearly) always displayed with the sgml module
+      is now only present in verbose mode. Closes: #428199
+    - New xml module's option: includeexternal. Closes: #425531
+  * debian/rules: Removed commented debhelper calls.
+  * debian/rules: Distribute upstream NEWS file.
+  * debian/rules: Recode ü and é to groff characters in the English manpages.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Wed, 15 Aug 2007 22:07:48 +0200
+
+po4a (0.31-1) unstable; urgency=low
+
+  * New upstream release.
+    - New options for po4a: --msgid-bugs-address and --copyright-holder.
+      Options can also be set in the configuration files. Closes: #415643
+    - gettext (>= 0.16) is needed (use of the --previous flag).
+  * Fix symlink attacks in /tmp vulnerability. Thanks to Javier
+    Fernández-Sanguino Peña. Closes: #429160
+    (CVE-2007-4462)
+  * Update the FSF address.
+  * Update the debian/copyright to mention the actual copyrights and the
+    upstream location
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 24 Mar 2007 21:19:01 +0100
+
+po4a (0.30-1) unstable; urgency=low
+
+  * New upstream release.
+    - Update of the list of module displayed by po4a-gettextize --help-format
+      Xml is now in this list. Closes: #398711
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sat, 30 Dec 2006 19:03:55 +0100
+
+po4a (0.29-1) unstable; urgency=low
+
+  * New upstream release.
+  * Better rendering of <cmdsynopsis> with Sgml manpages. The cmdsynopsis
+    sections will be verbatim. Closes: #369778
+  * Convert UTF-8 strings to Perl's "logical character" before wrapping the
+    text. This helps the length calculation needed for wrapping lines. Thanks
+    to Yuri Kozlov. Closes: #389200
+  * New mdoc option for the man module, to select a stricter support of the
+    mdoc format. Also document how this section can be translated with an
+    addendum. Closes: #378245
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Sun,  8 Oct 2006 01:10:57 +0200
+
+po4a (0.28-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Thu, 17 Aug 2006 00:34:25 +0200
+
+po4a (0.27.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * If only one page matches the given section, use this file (even multiple
+    pages were found by man -aw). Closes: #381552
+  * Man module fixed. It generated \\fB instead of B<...>, and thus fuzzied a
+    lot of translations. Closes: #381939
+
+ -- Nicolas FRANCOIS (Nekral) <nicolas.francois@centraliens.net>  Tue,  8 Aug 2006 00:09:03 +0200
+
+po4a (0.27.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Martin Quinson <mquinson@debian.org>  Fri,  4 Aug 2006 23:32:41 +0200
+
+po4a (0.27-1) unstable; urgency=low
+
+  [Florentin Duneau]
+  * Fix typos in the French translation of the documentation. Closes: #378246
+
+  [Nicolas François]
+  * Keep the \\f font modifiers with the inline macros' arguments (E<...>).
+    Closes: #378622
+  * Set myself as the Maintainer
+
+ -- Martin Quinson <mquinson@debian.org>  Fri,  4 Aug 2006 21:57:40 +0200
+
+po4a (0.26-1) unstable; urgency=low
+
+  The changes for the releases prior to 0.26 are described in
+  /usr/share/doc/po4a/changelog.gz.  It includes upstream changes and
+  changes in the Debian package.
+
+  [Nicolas François]
+  * bump Standards-Version. No changes needed.
+  * move debhelper to Build-Depends, even if no architecture-dependent
+    packages are built, because it is run in the clean target.
+  * Replace the c with cedilla by \[,c] (fix some lintian warnings)
+
+  New upstream release
+  * po4aman-display-po improvements. Closes: #368997
+  * Updated Russian translation. Thanks to Yuri Kozlov. Closes: #373618
+  * Updated Swedish translation. Thanks to Daniel Nylander. Closes: #374896
+
+ -- Martin Quinson <mquinson@debian.org>  Sun, 25 Jun 2006 20:15:32 +0200
