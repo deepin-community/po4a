@@ -399,13 +399,13 @@ sub parse_file {
         my ( $tmpfh, $tmpfile ) = File::Temp::tempfile(
             "po4a-XXXX",
             SUFFIX => ".sgml",
-            DIR    => $ENV{TMPDIR} || "/tmp",
+            DIR    => File::Spec->tmpdir(),
             UNLINK => 0
         );
         print $tmpfh $origfile;
         close $tmpfh
           or die wrap_mod( "po4a::sgml", dgettext( "po4a", "Cannot close tempfile: %s" ), $! );
-        if ( system("onsgmls -p < $tmpfile") ) {
+        if ( system("onsgmls -p $tmpfile") ) {
             unlink($tmpfile);
             die wrap_mod(
                 "po4a::sgml",
@@ -434,7 +434,7 @@ sub parse_file {
     # Get the prolog
     {
         $prolog = $origfile;
-        my $lvl;    # number of '<' seen without matching '>'
+        my $lvl;        # number of '<' seen without matching '>'
         my $pos = 0;    # where in the document (in chars) while detecting prolog boundaries
 
         unless ( $prolog =~ s/^(.*<!DOCTYPE).*$/$1/is ) {
@@ -773,7 +773,7 @@ sub parse_file {
             while ( $origfile =~ /^(.*?)&$key(;.*$|[^-_:.A-Za-z0-9].*$|$)/s ) {
 
                 # Since we will include a new file, we
-                #Â must do a new round of substitutions.
+                # must do a new round of substitutions.
                 $dosubstitution = 1;
                 my ( $begin, $end ) = ( $1, $2 );
                 $end = "" unless ( defined $end );
@@ -789,7 +789,7 @@ sub parse_file {
                 # add the refs
                 my $len  = $entincl{$key}{'length'};    # number added by the inclusion
                 my $pre  = ( $begin =~ tr/\n/\n/ );     # number of \n
-                my $post = ( $end =~ tr/\n/\n/ );
+                my $post = ( $end   =~ tr/\n/\n/ );
                 print "XX Add a ref. pre=$pre; len=$len; post=$post\n"
                   if $debug{'refs'};
 
@@ -852,13 +852,13 @@ sub parse_file {
     my ( $tmpfh, $tmpfile ) = File::Temp::tempfile(
         "po4a-XXXX",
         SUFFIX => ".sgml",
-        DIR    => $ENV{TMPDIR} || "/tmp",
+        DIR    => File::Spec->tmpdir(),
         UNLINK => 0
     );
     print $tmpfh $origfile;
     close $tmpfh or die wrap_mod( "po4a::sgml", dgettext( "po4a", "Cannot close tempfile: %s" ), $! );
 
-    my $cmd = "onsgmls -l -E 0 -wno-valid < $tmpfile" . ( $debug{'onsgmls'} ? "" : " 2>/dev/null" ) . " |";
+    my $cmd = "onsgmls -l -E 0 -wno-valid $tmpfile" . ( $debug{'onsgmls'} ? "" : " 2>/dev/null" ) . " |";
     print STDERR "CMD=$cmd\n" if ( $debug{'generic'} or $debug{'onsgmls'} );
 
     open( IN, $cmd ) || die wrap_mod( "po4a::sgml", dgettext( "po4a", "Cannot run onsgmls: %s" ), $! );

@@ -1,3 +1,38 @@
+po4a (0.69-1) unstable; urgency=medium
+
+  [ Jean-Noël Avila ]
+  * control: Add Asciidoc format to supported formats
+
+  [ Dr. Tobias Quathamer ]
+  * New upstream version 0.69
+  * Update Standards-Version to 4.6.2, no changes needed
+  * Update d/copyright
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Tue, 03 Jan 2023 15:13:10 +0100
+
+po4a (0.67-2) unstable; urgency=medium
+
+  * Add libsyntax-keyword-try-perl as a runtime dependency too.
+
+ -- Martin Quinson <mquinson@debian.org>  Fri, 15 Jul 2022 19:52:35 +0200
+
+po4a (0.67-1) unstable; urgency=medium
+
+  * New upstream release. Many bug fixes and improvements to AsciiDoc,
+    Man, Markdown, xHTML, etc.
+  * Update Standards-Version to 4.6.1, no changes needed.
+
+ -- Martin Quinson <mquinson@debian.org>  Thu, 14 Jul 2022 15:42:45 +0200
+
+po4a (0.66-1) unstable; urgency=medium
+
+  * New upstream release.
+    - asciidoc: properly deal with empty cells (Closes: #1002303).
+    - yaml: new option 'key' to select the translated elements.
+    - plus the usual bug fixes and translation updates.
+
+ -- Martin Quinson <mquinson@debian.org>  Sun, 02 Jan 2022 01:57:28 +0100
+
 po4a (0.65-1) unstable; urgency=medium
 
   * New upstream release.

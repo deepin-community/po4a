@@ -7,6 +7,7 @@ IF (A > 3) {
 ~~~~~~~~~~~~~~~~
 ~~~~~~~~~~
 CODE INCLUDING TILDES
+LINE2
 ~~~~~~~~~~
 ~~~~~~~~~~~~~~~~
 
@@ -17,7 +18,9 @@ QSORT (X:XS) = QSORT (FILTER (< X) XS) ++ [X] ++
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~haskell
-QSORT [] = []
+QSORT []     = []
+QSORT (X:XS) = QSORT (FILTER (< X) XS) ++ [X] ++
+               QSORT (FILTER (>= X) XS)
 ~~~
 
 ```````
@@ -29,6 +32,7 @@ IF (A > 3) {
 ````````````````
 ``````````
 CODE INCLUDING BACKTICKS
+LINE2
 ``````````
 ````````````````
 
@@ -39,5 +43,26 @@ QSORT (X:XS) = QSORT (FILTER (< X) XS) ++ [X] ++
 `````````````````````````````````````````````````
 
 ```haskell
-QSORT [] = []
+QSORT []     = []
+QSORT (X:XS) = QSORT (FILTER (< X) XS) ++ [X] ++
+               QSORT (FILTER (>= X) XS)
 ```
+
+tHIS FIRST PANDOC FENCED DIV IS NON-NESTED.
+
+::::: {#special .sidebar}
+hERE IS A PARAGRAPH.
+
+aND ANOTHER.
+:::::
+tHE SECOND PANDOC FENCED DIV IS NESTED.
+
+::: Warning ::::::
+tHIS IS A WARNING.
+
+::: Danger
+tHIS IS A WARNING WITHIN A WARNING.
+:::
+::::::::::::::::::
+
+sOME EXTRA TEXT.

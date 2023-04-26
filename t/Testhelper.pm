@@ -44,7 +44,7 @@
 #   setup          (opt): array of shell commands to run before running the test
 #   teardown       (opt): array of shell commands to run after running the test
 #   closed_path    (opt): a shell pattern to pass to chmod to close the other directories.
-#                         If provided, setup/teardown commands are generated to:
+#                         If provided, setup/teardown commands are generated to (unless on windows):
 #                           - 'chmod 0' the directories marked 'closed_path'
 #                           - 'chmod +r-w+x' the test directory
 #                           - 'chmod +r-w' all files in the test directory
@@ -82,6 +82,7 @@ use strict;
 use warnings;
 use Test::More 'no_plan';
 use File::Path qw(make_path remove_tree);
+use File::Copy;
 use Cwd qw(cwd);
 
 use Exporter qw(import);
@@ -94,8 +95,10 @@ $ENV{'COLUMNS'} = "80";
 # Path to the tested executables. AUTOPKGTEST_TMP is set on salsa CI for Debian packages.
 my $execpath = defined $ENV{AUTOPKGTEST_TMP} ? "/usr/bin" : "perl ..";
 
+# msginit annoyances, see https://github.com/mquinson/po4a/issues/338
 my $PODIFF =
-  "-I'Copyright (C) 20.. Free Software Foundation, Inc.' -I'^# Automatically generated, 20...' -I'^\"Project-Id-Version:' -I'^\"POT-Creation-Date:' -I'^\"PO-Revision-Date:'";
+    "-I'^\"Project-Id-Version:' -I'^\"POT-Creation-Date:' -I'^\"PO-Revision-Date:' "
+  . "-I'^# [^[:blank:]]* translations for ' -I'^# Language [^[:blank:]]* translations for ' -I'Copyright (C) 20.. Free Software Foundation, Inc.' -I'^# This file is distributed under the same license as the' -I'^# Automatically generated, 20...' ";
 
 sub show_files {
     my $basename = shift;
@@ -120,8 +123,7 @@ sub system_failed {
     my ( $cmd, $doc, $expected_exit_status ) = @_;
     $expected_exit_status //= 0;
     my $exit_status = system($cmd);
-    $cmd =~
-      s/diff -u -I'Copyright .C. 20.. Free Software Foundation, Inc.' -I'.. Automatically generated, 20...' -I'."Project-Id-Version:' -I'."POT-Creation-Date:' -I'."PO-Revision-Date:'/PODIFF/g;
+    $cmd =~ s/diff -u $PODIFF /PODIFF/g;
     $cmd =~ s{$root_dir/}{BUILDPATH/}g;
     $cmd =~ s{t/../po4a}{po4a};
 
@@ -140,6 +142,16 @@ sub system_failed {
         note("FAILED command: $cmd");
         return 1;
     }
+}
+
+# Remove that directory if it exists, and rebuild it fresh
+sub remake_path {
+    my $path = shift;
+    if ( -e $path ) {
+        remove_tree("$path") || die "Cannot cleanup $path/ on startup: $!";
+    }
+
+    make_path($path) || die "Cannot create $path/: $!";
 }
 
 sub teardown {
@@ -184,7 +196,7 @@ sub run_one_po4aconf {
     my $options          = "--verbose " . ( $t->{'options'} // "" );
     my $closed_path      = $t->{'closed_path'};
     my $doc              = $t->{'doc'};
-    my $expected_files   = $t->{'expected_files'} // "";
+    my $expected_files   = $t->{'expected_files'}   // "";
     my $expected_retcode = $t->{'expected_retcode'} // 0;
 
     fail("Broken test: 'tests' is not an array as expected") if exists $t->{tests} && ref $t->{tests} ne 'ARRAY';
@@ -195,7 +207,7 @@ sub run_one_po4aconf {
 
     fail("Broken test: path $path does not exist") unless -e $path;
 
-    if ($closed_path) {
+    if ( $closed_path && $^O ne 'MSWin32' ) {
         push @setup,    "chmod -r-w-x " . $closed_path;    # Don't even look at the closed path
         push @teardown, "chmod +r+w+x " . $closed_path;    # Restore permissions
         push @setup,    "chmod +r+x    $path";             # Look into the path of this test
@@ -221,14 +233,13 @@ sub run_one_po4aconf {
     } elsif ( $mode eq 'curdir' ) {
         $tmppath .= '-cur';
         push @setup, "cp -r $path/* $tmppath";
-        push @setup, "chmod +w -R $tmppath";
+        push @setup, "chmod +w -R $tmppath" unless $^O eq 'MSWin32';
         $run_from = $tmppath;
     } else {
         die "Malformed test: mode $mode unknown\n";
     }
 
-    system("rm -rf $tmppath/")   && die "Cannot cleanup $tmppath/ on startup: $!";
-    system("mkdir -p $tmppath/") && die "Cannot create $tmppath/: $!";
+    remake_path($tmppath);
     unless ( setup( \@setup ) ) {    # Failed
         teardown( \@teardown );
         return;
@@ -291,6 +302,7 @@ sub run_one_po4aconf {
     $expected{'output'}      = 1;
     $expected{'diff_output'} = 1;
   FILE: foreach my $file ( glob("$tmppath/*") ) {
+        note("Seen file $file");
         $file =~ s|$tmppath/||;
         if ( not $expected{$file} ) {
             if ( ( $mode eq 'srcdir' || $mode eq 'dstdir' || $mode eq 'srcdstdir' ) ) {
@@ -344,7 +356,7 @@ sub run_one_po4aconf {
 sub run_one_format {
     my ( $test, $input ) = @_;
 
-    my $doc = $test->{'doc'} // "Format testing '$input'";
+    my $doc   = $test->{'doc'}   // "Format testing '$input'";
     my $error = $test->{'error'} // 0;    # Whether a normalization error is expected to interrupt the test
 
     my %valid_options;
@@ -387,7 +399,7 @@ sub run_one_format {
         }
     }
 
-    system("mkdir -p tmp/$path/") && die "Cannot create tmp/$path/: $!";
+    remake_path("tmp/$path");
     my $tmpbase = "tmp/$path/$basename";
     my $cwd     = cwd();
     $execpath = defined $ENV{AUTOPKGTEST_TMP} ? "/usr/bin" : "perl $cwd/..";
@@ -395,7 +407,7 @@ sub run_one_format {
     # Normalize the document
     my $real_stderr = "$cwd/tmp/$path/$basename.norm.stderr";
     my $cmd =
-        "${execpath}/po4a-normalize -f $format --quiet "
+        "${execpath}/po4a-normalize --no-deprecation -f $format --quiet "
       . "--pot $cwd/${tmpbase}.pot --localized $cwd/${tmpbase}.norm $options $basename.$ext"
       . " > $real_stderr 2>&1";
 
@@ -423,15 +435,15 @@ sub run_one_format {
 
     }
 
-    push @tests, "diff -uN $norm_stderr $real_stderr";
-    push @tests, "PODIFF  $potfile  $tmpbase.pot" unless $error;
+    push @tests, "diff -uNwB $norm_stderr $real_stderr";
+    push @tests, "PODIFF  $potfile  $tmpbase.pot"  unless $error;
     push @tests, "diff -u $output   $tmpbase.norm" unless $error;
 
     unless ($error) {
 
         # Translate the document
         $cmd =
-            "${execpath}/po4a-translate -f $format $options --master $basename.$ext"
+            "${execpath}/po4a-translate --no-deprecation -f $format $options --master $basename.$ext"
           . " --po $cwd/$pofile --localized $cwd/${tmpbase}.trans"
           . " > $cwd/$tmpbase.trans.stderr 2>&1";
 
@@ -443,13 +455,13 @@ sub run_one_format {
             }
             note("(end of command output)\n");
         }
-        push @tests, "diff -uN $trans_stderr $tmpbase.trans.stderr";
+        push @tests, "diff -uNwB $trans_stderr $tmpbase.trans.stderr";
         push @tests, "diff -uN $transfile $tmpbase.trans";
 
         # Update PO
-        system("cp $cwd/$pofile $cwd/${tmpbase}.po_updated") && fail "Cannot copy $pofile before updating it";
+        copy( "$cwd/$pofile", "$cwd/${tmpbase}.po_updated" ) || fail "Cannot copy $pofile before updating it";
         $cmd =
-            "${execpath}/po4a-updatepo -f $format $options "
+            "${execpath}/po4a-updatepo --no-deprecation -f $format $options "
           . "--master $basename.$ext --po $cwd/${tmpbase}.po_updated"
           . " > $cwd/tmp/$path/update.stderr 2>&1";
 
@@ -492,7 +504,7 @@ sub run_all_tests {
     # Change into test directory and create a temporary directory
     chdir "t" or die "Can't chdir to test directory t\n";
 
-    make_path("tmp");
+    remake_path("tmp");
 
   TEST: foreach my $test (@cases) {
         if ( exists $test->{'format'} ) {

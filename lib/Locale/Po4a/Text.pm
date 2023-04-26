@@ -58,6 +58,7 @@ use vars qw(@ISA @EXPORT);
 use Locale::Po4a::TransTractor;
 use Locale::Po4a::Common;
 use YAML::Tiny;
+use Syntax::Keyword::Try;
 
 =head1 OPTIONS ACCEPTED BY THIS MODULE
 
@@ -122,7 +123,7 @@ my $breaks;
 =item B<debianchangelog>
 
 Handle the header and footer of
-released versions, which only contain non translatable informations.
+released versions, which only contain non translatable information.
 
 =cut
 
@@ -148,13 +149,40 @@ my $markdown = 0;
 =item B<yfm_keys> (markdown-only)
 
 Comma-separated list of keys to process for translation in the YAML Front Matter
-section. All other keys are skipped. Keys are matched with a case-insensitive
-match. Array values are always translated, unless the B<yfm_skip_array> option
-is provided.
+section. All other keys are skipped. Keys are matched with a case-sensitive
+match. If B<yfm_paths> and B<yfm_keys> are used together, values are included if
+they are matched by at least one of the options. Array values are always translated,
+unless the B<yfm_skip_array> option is provided.
 
 =cut
 
 my %yfm_keys = ();
+
+=item B<yfm_lenient> (markdown only)
+
+Allow the YAML Front Matter parser to fail on malformated headers. This is
+particularly helpful when your file starts with a horizontal ruler instead
+of a YAML Front Matter, but you insist on using three dashes only for your
+ruler.
+
+=cut
+
+my $yfm_lenient = 0;
+
+=item B<yfm_paths> (markdown only)
+
+=item B<yfm_paths>
+
+Comma-separated list of hash paths to process for extraction in the YAML
+Front Matter section, all other paths are skipped. Paths are matched with a
+case-sensitive match. If B<yfm_paths> and B<yfm_keys> are used together,
+values are included if they are matched by at least one of the options.
+Arrays values are always returned unless the B<yfm_skip_array> option is
+provided.
+
+=cut
+
+my %yfm_paths = ();
 
 =item B<yfm_skip_array> (markdown-only)
 
@@ -200,6 +228,8 @@ sub initialize {
     $self->{options}{'fortunes'}        = 1;
     $self->{options}{'markdown'}        = 1;
     $self->{options}{'yfm_keys'}        = '';
+    $self->{options}{'yfm_lenient'}     = 0;
+    $self->{options}{'yfm_paths'}       = '';
     $self->{options}{'yfm_skip_array'}  = 0;
     $self->{options}{'nobullets'}       = 0;
     $self->{options}{'keyvalue'}        = 1;
@@ -229,11 +259,16 @@ sub initialize {
             $_ =~ s/^\s+|\s+$//g;    # Trim the keys before using them
             $yfm_keys{$_} = 1
         } ( split( ',', $self->{options}{'yfm_keys'} ) );
+        map {
+            $_ =~ s/^\s+|\s+$//g;    # Trim the keys before using them
+            $yfm_paths{$_} = 1
+        } ( split( ',', $self->{options}{'yfm_paths'} ) );
 
         #        map { print STDERR "key $_\n"; } (keys %yfm_keys);
         $yfm_skip_array = $self->{options}{'yfm_skip_array'};
+        $yfm_lenient    = $self->{options}{'yfm_lenient'};
     } else {
-        foreach my $opt (qw(yfm_keys yfm_skip_array)) {
+        foreach my $opt (qw(yfm_keys yfm_lenient yfm_skip_array)) {
             die wrap_mod( "po4a::text", dgettext( "po4a", "Option %s is only valid when parsing markdown files." ),
                 $opt )
               if exists $options{$opt};
@@ -301,12 +336,12 @@ sub parse_fallback {
         if (
             $markdown
             and (
-                $line =~ /\S  $/     # explicit newline
+                $line =~ /\S  $/       # explicit newline
                 or $line =~ /"""$/
             )
           )
-        {                            # """ textblock inside macro begin
-                                     # Markdown markup needing separation _after_ this line
+        {                              # """ textblock inside macro begin
+                                       # Markdown markup needing separation _after_ this line
             $end_of_paragraph = 1;
         } else {
             undef $self->{bullet};
@@ -576,18 +611,59 @@ sub parse_markdown_bibliographic_information {
 sub parse_markdown_yaml_front_matter {
     my ( $self, $line, $blockref ) = @_;
     my $yfm;
+    my @saved_ctn;
     my ( $nextline, $nextref ) = $self->shiftline();
+    push @saved_ctn, ( $nextline, $nextref );
     while ( defined($nextline) ) {
         last if ( $nextline =~ /^(---|\.\.\.)$/ );
         $yfm .= $nextline;
         ( $nextline, $nextref ) = $self->shiftline();
+        push @saved_ctn, ( $nextline, $nextref );
     }
-    die "Could not get the YAML Front Matter from the file." if ( length($yfm) == 0 );
-    my $yamlarray = YAML::Tiny->read_string($yfm)
-      || die "Couldn't read YAML Front Matter ($!)\n$yfm\n";
 
-    $self->handle_yaml( $blockref, $yamlarray, \%yfm_keys, $yfm_skip_array );
-    return;
+    my $yamlarray;    # the parsed YFM content
+    my $yamlres;      # containing the parse error, if any
+    try {
+        $yamlarray = YAML::Tiny->read_string($yfm);
+    } catch {
+        $yamlres = $@;
+    }
+
+    if ( defined($yamlres) ) {
+        if ($yfm_lenient) {
+            $yamlres =~ s/ at .*$//;    # Remove the error localisation in YAML::Tiny die message, if any (for our test)
+            warn wrap_mod(
+                "po4a::text",
+                dgettext(
+                    "po4a",
+                    "Proceeding even if the YAML Front Matter could not be parsed. Remove the 'yfm_lenient' option for a stricter behavior.\nIgnored error: %s"
+                ),
+                $yamlres
+            );
+            my $len = ( scalar @saved_ctn ) - 1;
+            while ( $len >= 0 ) {
+                $self->unshiftline( $saved_ctn[ $len - 1 ], $saved_ctn[$len] );
+
+                # print STDERR "Unshift ".$saved_ctn[ $len - 1] ." | ". $saved_ctn[$len] ."\n";
+                $len -= 2;
+            }
+            return 0;    # Not a valid YAML
+        } else {
+            die wrap_mod(
+                "po4a::text",
+                dgettext(
+                    "po4a",
+                    "Could not get the YAML Front Matter from the file. If you did not intend to add a YAML front matter "
+                      . "but an horizontal ruler, please use '----' instead, or pass the 'yfm_lenient' option.\nError: %s\nContent of the YFM: %s"
+                ),
+                $yamlres, $yfm
+            );
+        }
+    }
+
+    $self->handle_yaml( 1, $blockref, $yamlarray, \%yfm_keys, $yfm_skip_array, \%yfm_paths );
+    $self->pushline("---\n");
+    return 1;    # Valid YAML
 }
 
 sub parse_markdown {
@@ -602,8 +678,11 @@ sub parse_markdown {
             parse_markdown_bibliographic_information( $self, $line, $ref );
             return ( $paragraph, $wrapped_mode, $expect_header, $end_of_paragraph );
         } elsif ( $line =~ /^---$/ ) {
-            parse_markdown_yaml_front_matter( $self, $line, $ref );
-            return ( $paragraph, $wrapped_mode, $expect_header, $end_of_paragraph );
+            if ( parse_markdown_yaml_front_matter( $self, $line, $ref ) ) {    # successfully parsed
+                return ( $paragraph, $wrapped_mode, $expect_header, $end_of_paragraph );
+            }
+
+            # If it wasn't a YFM paragraph after all, stop expecting a header and keep going
         }
     }
     if (    ( $line =~ m/^(={4,}|-{4,})$/ )
@@ -682,6 +761,68 @@ sub parse_markdown {
         $self->pushline($nextline);
         $paragraph        = "";
         $end_of_paragraph = 1;
+    } elsif ( $line =~ /^([ ]{0,3})(([:])\3{2,})(\s*)([^`]*)\s*$/ ) {
+        my $fence_space_before  = $1;
+        my $fence               = $2;
+        my $fencechar           = $3;
+        my $fence_space_between = $4;
+        my @info_string         = ($5);
+
+        #        print STDERR "----------------\n";
+        #        print STDERR "line: $line\n";
+        #        print STDERR "fence: '$fence'; fencechar: '$fencechar'; info: '$info_string'\n";
+
+        # fenced div block (fenced with ::: where code blocks are fenced with ` or ~)
+        # https://pandoc.org/MANUAL.html#divs-and-spans
+        my $info = join( "|" , map {chomp $_;$_} @info_string );
+        my $type = "Fenced div block" . ( $info ? " ($info)" : "" );
+        do_paragraph( $self, $paragraph, $wrapped_mode );
+        $wrapped_mode = 0;
+        $paragraph    = "";
+        $self->pushline("$line\n");
+        do_paragraph( $self, $paragraph, $wrapped_mode );
+        $paragraph = "";
+
+        my $lvl = 1;
+        while ( $lvl > 0 ) {
+            my ( $nextline, $nextref ) = $self->shiftline();
+            die wrap_mod(
+                "po4a::text",
+                dgettext(
+                    "po4a", "Malformed fenced div block: Block starting at %s not closed before the end of the file."
+                ),
+                $ref
+            ) unless ( defined($nextline) );
+
+            #            print STDERR "within $lvl: $nextline";
+            if ( $nextline =~ /^\s*:::+\s*$/ ) {
+                my $info = join( "|" , map {chomp $_;$_} @info_string );
+                $type = "Fenced div block" . ( $info ? " ($info)" : "" );
+                if ($paragraph ne "") {
+                    do_paragraph( $self, $paragraph, $wrapped_mode, $type );
+                    $paragraph        = "";
+                }
+                $self->pushline($nextline);
+                $lvl--;
+                while (scalar @info_string > $lvl) {
+                    pop @info_string;
+                }
+            } elsif ( $nextline =~ /^([ ]{0,3})(([:])\3{2,})(\s*)([^`]*)\s*$/ ) {
+                if ($paragraph ne "") {
+                    do_paragraph( $self, $paragraph, $wrapped_mode, $type );
+                    $paragraph        = "";
+                }
+                $self->pushline($nextline);
+                push @info_string, $5;
+                $lvl++;
+            } else {
+                $paragraph .= $nextline;
+            }
+        }
+        $paragraph        = "";
+        $end_of_paragraph = 1;
+
+        #        print STDERR "Out now ------------\n";
     } elsif (
         $line =~ /^\s*\[\[\!\S+\s*$/       # macro begin
         or $line =~ /^\s*"""\s*\]\]\s*$/
@@ -698,8 +839,8 @@ sub parse_markdown {
         $paragraph        = "$line\n";
         $wrapped_mode     = 0;
         $end_of_paragraph = 1;
-    } elsif ( $line =~ /^"""/ ) {                          # """ textblock inside macro end
-                                                           # Markdown markup needing separation _before_ this line
+    } elsif ( $line =~ /^"""/ ) {    # """ textblock inside macro end
+                                     # Markdown markup needing separation _before_ this line
         do_paragraph( $self, $paragraph, $wrapped_mode );
         $paragraph    = "$line\n";
         $wrapped_mode = $defaultwrap;
@@ -787,15 +928,10 @@ sub do_paragraph {
     $wrap = 0 unless $defaultwrap;
 
     # DEBUG
-    #    my $b;
-    #    if (defined $self->{bullet}) {
-    #            $b = $self->{bullet};
-    #    } else {
-    #            $b = "UNDEF";
-    #    }
-    #    $type .= " verbatim: '".($self->{verbatim}||"NONE")."' bullet: '$b' indent: '".($self->{indent}||"NONE")."' type: '".($self->{type}||"NONE")."'";
+    # $type .= " verbatim: '".($self->{verbatim}//"NONE")."' bullet: '$bullets' wrap: '$wrap' indent: '".($self->{indent}//"NONE")."' type: '".($self->{type}//"NONE")."'";
+    # print STDERR "$type\n";
 
-    if ( $bullets and not $wrap and not defined $self->{verbatim} ) {
+    if ( $bullets and not defined $self->{verbatim} ) {
 
         # Detect bullets
         # |        * blah blah
@@ -803,7 +939,7 @@ sub do_paragraph {
         # |          ^-- aligned
         # <empty line>
         #
-        # Other bullets supported:
+        # The leading spaces are optional, and other bullets are supported:
         # - blah         o blah         + blah
         # 1. blah       1) blah       (1) blah
       TEST_BULLET:
@@ -896,3 +1032,7 @@ This program is free software; you may redistribute it and/or modify it
 under the terms of GPL (see the COPYING file).
 
 =cut
+
+__END__
+
+#  LocalWords: Charset charset po UTF gettext msgid nostrip GPL

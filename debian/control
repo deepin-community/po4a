@@ -5,13 +5,14 @@ Maintainer: Martin Quinson <mquinson@debian.org>
 Uploaders: Jonas Smedegaard <dr@jones.dk>,
            Denis Barbier <barbier@debian.org>,
            Dr. Tobias Quathamer <toddy@debian.org>
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Build-Depends-Indep: docbook,
                      docbook-xml,
                      docbook-xsl,
                      gettext,
                      libpod-parser-perl,
                      libsgmls-perl,
+                     libsyntax-keyword-try-perl,
                      libterm-readkey-perl,
                      libunicode-linebreak-perl,
                      libyaml-tiny-perl,
@@ -34,6 +35,7 @@ Multi-Arch: foreign
 Depends: gettext,
          libpod-parser-perl (>= 1.63),
          libsgmls-perl,
+         libsyntax-keyword-try-perl,
          libyaml-tiny-perl,
          opensp,
          ${misc:Depends},
@@ -51,6 +53,7 @@ Description: tools to ease the translation of documentation
  This package contains the main libraries of po4a, and the necessary
  sub-modules to handle the following formats:
  .
+   - Asciidoc: Asciidoc documentation format
    - Dia: uncompressed Dia diagrams.
    - INI: the INI format
    - KernelHelp: Help messages of each kernel compilation option.

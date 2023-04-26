@@ -107,16 +107,17 @@ Switch parsing rules to compatibility with different tools. Available options ar
 "asciidoc" or "asciidoctor". Asciidoctor has stricter parsing rules, such as
 equality of length of opening and closing block fences.
 
-=item B<yfm_keys>
-
-Comma-separated list of keys to process for translation in the YAML Front Matter
-section. All other keys are skipped. Keys are matched with a case-insensitive
-match. Array values are always translated, unless the B<yfm_skip_array> option
-is provided.
-
 =item B<nolinting>
 
 Disable linting messages. When the source code cannot be fixed for clearer document structure, these messages are useless.
+
+=item B<yfm_keys>
+
+Comma-separated list of keys to process for translation in the YAML Front Matter
+section. All other keys are skipped. Keys are matched with a case-sensitive
+match. If B<yfm_paths> and B<yfm_keys> are used together, values are included if
+they are matched by at least one of the options. Array values are always translated,
+unless the B<yfm_skip_array> option is provided.
 
 =cut
 
@@ -130,6 +131,19 @@ Do not translate array values in the YAML Front Matter section.
 
 my $yfm_skip_array = 0;
 
+=item B<yfm_paths>
+
+Comma-separated list of hash paths to process for extraction in the YAML
+Front Matter section, all other paths are skipped. Paths are matched with a
+case-sensitive match. If B<yfm_paths> and B<yfm_keys> are used together,
+values are included if they are matched by at least one of the options.
+Arrays values are always returned unless the B<yfm_skip_array> option is
+provided.
+
+=cut
+
+my %yfm_paths = ();
+
 =back
 
 =head1 INLINE CUSTOMIZATION
@@ -142,12 +156,12 @@ The following commands are recognized:
 
 =item B<//po4a: macro >I<name>B<[>I<attribute list>B<]>
 
-This permits to describe in detail the parameters of a B<macro>;
+This describes in detail the parameters of a B<macro>;
 I<name> must be a valid macro name, and it ends with an underscore
 if the target must be translated.
 
 The I<attribute list> argument is a comma separated list which
-contains informations about translatable arguments.  This list contains
+contains information about translatable arguments.  This list contains
 either numbers, to define positional parameters, or named attributes.
 
 If a plus sign (B<+>) is prepended to I<name>, then the macro and its
@@ -156,11 +170,11 @@ attribute list in this case, but brackets must be present.
 
 =item B<//po4a: style >B<[>I<attribute list>B<]>
 
-This permits to describe in detail which attributes of a style must
+This describes in detail which attributes of a style must
 be translated.
 
 The I<attribute list> argument is a comma separated list which
-contains informations about translatable arguments.  This list contains
+contains information about translatable arguments.  This list contains
 either numbers, to define positional parameters, or named attributes.
 The first attribute is the style name, it will not be translated.
 
@@ -205,6 +219,7 @@ sub initialize {
     $self->{options}{'compat'}         = 'asciidoc';
     $self->{options}{'yfm_keys'}       = '';
     $self->{options}{'yfm_skip_array'} = 0;
+    $self->{options}{'yfm_paths'}      = '';
     $self->{options}{'nolinting'}      = 0;
 
     foreach my $opt ( keys %options ) {
@@ -228,8 +243,11 @@ sub initialize {
         $_ =~ s/^\s+|\s+$//g;    # Trim the keys before using them
         $yfm_keys{$_} = 1
     } ( split( ',', $self->{options}{'yfm_keys'} ) );
+    map {
+        $_ =~ s/^\s+|\s+$//g;    # Trim the keys before using them
+        $yfm_paths{$_} = 1
+    } ( split( ',', $self->{options}{'yfm_paths'} ) );
 
-    #        map { print STDERR "key $_\n"; } (keys %yfm_keys);
     $yfm_skip_array = $self->{options}{'yfm_skip_array'};
 
     $self->{translate} = {
@@ -349,6 +367,7 @@ BEGIN {
     my $UnicodeGCString_available = 0;
     $UnicodeGCString_available = 1 if ( eval { require Unicode::GCString } );
     eval {
+
         sub chars($$$) {
             my $text    = shift;
             my $encoder = shift;
@@ -358,17 +377,34 @@ BEGIN {
             } else {
                 $text =~ s/\n$//s;
                 return length($text) if !( defined($encoder) && $encoder->name ne "ascii" );
+                eval { require Unicode::GCString };
                 die wrap_mod(
                     "po4a::asciidoc",
                     dgettext(
                         "po4a",
-                        "Detection of two line titles failed at %s\nPlease install the Unicode::GCString module."
+                        "Detection of two line titles failed at %s\nPlease install the Unicode::GCString module (error: %s)."
                     ),
-                    shift
+                    shift, $@
                 );
             }
         }
     };
+}
+
+sub translate {
+    my ( $self, $str, $ref, $type ) = @_;
+    my (%options) = @_;
+    if ( ($options{'wrap'}==1) && ($str =~ / \+\n/) ) {
+        $options{'wrap'} = 0;
+        $str =~ s/([^+])\n/$1 /g;
+	$str =~ s/ \+\n/\n/g;
+        $str = $self->SUPER::translate( $str, $ref, $type, %options);
+	$str =~ s/\n/ +\n/g;
+	$options{'wrap'} = 1;
+    } else {
+        $str = $self->SUPER::translate( $str, $ref, $type, %options );
+    }
+    return $str;
 }
 
 sub parse {
@@ -388,7 +424,8 @@ sub parse {
         my $yamlarray = YAML::Tiny->read_string($yfm)
           || die "Couldn't read YAML Front Matter ($!)\n$yfm\n";
 
-        $self->handle_yaml( $ref, $yamlarray, \%yfm_keys, $yfm_skip_array );
+        $self->handle_yaml( 1, $ref, $yamlarray, \%yfm_keys, $yfm_skip_array, \%yfm_paths );
+        $self->pushline("---\n");
 
         ( $line, $ref ) = $self->shiftline();    # Pass the final '---'
     }
@@ -437,7 +474,8 @@ sub parse {
         } elsif ( ( defined $self->{type} )
             and ( $self->{type} eq "Table" )
             and ( $line !~ m/^\|===/ )
-            and ( $self->{options}{"tablecells"} ) )
+            and ( $self->{options}{"tablecells"} )
+            and ( not defined $self->{disabletablecells} ) )
         {
             # inside a table, and we should split per cell
             my $new_line = "";
@@ -460,7 +498,11 @@ sub parse {
             shift @texts;
             my @parts = map { ( $_, shift @texts ) } @seps;
             foreach my $part (@parts) {
-                if ( !$part ) { next }
+                if ( not defined $part ) {
+
+                    # allows concatenation and will be stripped anyway
+                    $part = " ";
+                }
                 if ( $part =~ /\|$/ ) {
 
                     # this is a cell separator. End the previous cell
@@ -691,6 +733,18 @@ sub parse {
                 }
                 print STDERR "Starting verse\n" if $debug{parse};
             }
+            if ( ( ( $line =~ m/^\[format=(['"]?)(csv|tsv|dsv)\1,/ ) || ( $line =~ m/^\[separator=[^\|]/ ) )
+                && $self->{options}{'tablecells'} )
+            {
+                warn wrap_mod(
+                    "$ref",
+                    dgettext(
+                        "po4a",
+                        "Po4a's tablecells mode only supports PSV formatted tables with '|' separators. Disabling tablecells and falling back to block mode for this table."
+                    )
+                );
+                $self->{disabletablecells} = 1;
+            }
             undef $self->{bullet};
             undef $self->{indent};
         } elsif ( not defined $self->{verbatim}
@@ -771,7 +825,7 @@ sub parse {
             }
             @comments = ();
         } elsif ( not defined $self->{verbatim}
-            and ( $line =~ m/^([\w\d][\w\d-]*)(::)(\S*)\[(.*)\]$/ ) )
+            and ( $line =~ m/^([\w\d][\w\d-]*)(::)(\S*|\S*\{.*\}\S*)\[(.*)\]$/ ) )
         {
             my $macroname   = $1;
             my $macrotype   = $2;
@@ -836,7 +890,7 @@ sub parse {
             $self->{indent} = $indent;
             $self->{bullet} = $bullet;
         } elsif ( not defined $self->{verbatim}
-            and ( $line =~ m/^((?:<?[0-9]+)?> +)(.*)$/ ) )
+            and ( $line =~ m/^((?:<?(?:[0-9]|\.)+)?> +)(.*)$/ ) )
         {
             my $bullet = $1;
             my $text   = $2;
@@ -950,7 +1004,9 @@ sub parse {
             } else {
 
                 # End the Table
-                if ( $self->{options}{'tablecells'} ) {
+                if ( $self->{options}{'tablecells'}
+                    and not defined $self->{disabletablecells} )
+                {
                     do_stripped_unwrapped_paragraph( $self, $paragraph, $wrapped_mode );
                     $self->pushline("\n");
                 } else {
@@ -958,6 +1014,7 @@ sub parse {
                 }
                 undef $self->{verbatim};
                 undef $self->{type};
+                undef $self->{disabletablecells};
                 $paragraph = "";
             }
             $self->pushline( $line . "\n" );
@@ -978,21 +1035,21 @@ sub parse {
                 $wrapped_mode = 0;
             }
 
-            if (   ( $paragraph ne "" && $self->{bullet} && length( $self->{indent} || "" ) == 0 )
-                && ( !$self->{options}{'nolinting'} ) )
+            if (   ( $paragraph ne "" && $self->{bullet} && length( $self->{indent} || "" ) == 0 ) )
             {
-
-                # Second line of an item block is not indented. It is unindented
-                # (and allowed) additional text or a new list item.
-                warn wrap_mod(
-                    "$ref",
-                    dgettext(
-                        "po4a",
-                        "It seems that you are adding unindented content to an item. "
-                          . "The standard allows this, but you may still want to change your document "
-                          . "to use indented text to provide better visual clues to writers."
-                    )
-                );
+		if ( !$self->{options}{'nolinting'} ) {
+		    # Second line of an item block is not indented. It is unindented
+		    # (and allowed) additional text or a new list item.
+		    warn wrap_mod(
+			"$ref",
+			dgettext(
+			    "po4a",
+			    "It seems that you are adding unindented content to an item. "
+			    . "The standard allows this, but you may still want to change your document "
+			    . "to use indented text to provide better visual clues to writers."
+			)
+			);
+		}
             } else {
                 undef $self->{bullet};
                 undef $self->{indent};
@@ -1038,7 +1095,7 @@ sub do_paragraph {
     #    }
     #    $type .= " verbatim: '".($self->{verbatim}||"NONE")."' bullet: '$b' indent: '".($self->{indent}||"NONE")."' type: '".($self->{type}||"NONE")."'";
 
-    if ( not $wrap and not defined $self->{verbatim} ) {
+    if ( not defined $self->{verbatim} ) {
 
         # Detect bullets
         # |        * blah blah
@@ -1103,8 +1160,10 @@ sub do_paragraph {
         "comment" => join( "\n", @comments ),
         "wrap"    => $wrap
     );
+    my $bullet = $self->{bullet} || "";
+    # print STDERR "translated: '$t', $bullet\n";
 
-    my $unwrap_result = !$self->{options}{'forcewrap'} && $wrap;
+    my $unwrap_result = !$self->{options}{'forcewrap'} && $wrap && (! ($t =~ /\+\n/) ) ;
     if ($unwrap_result) {
         $t =~ s/(\n| )+/ /g;
     }
@@ -1300,3 +1359,7 @@ Tested successfully on simple AsciiDoc files.
 
 This program is free software; you may redistribute it and/or modify it
 under the terms of GPL (see the COPYING file).
+
+__END__
+
+#  LocalWords: Charset charset AsciiDoc tablecells po UTF gettext msgid nostrip

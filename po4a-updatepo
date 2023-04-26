@@ -36,9 +36,8 @@ It is possible to give more than one PO file (if you want to update several
 languages at once), and several documentation files (if you want to store
 the translations of several documents in the same PO file).
 
-If the master document has non-ASCII characters, it will convert the PO files
-to UTF-8 (if they weren't already), in order to allow non-standard characters
-in a culture independent way.
+If the master document has non-ASCII characters, this script will convert the PO files
+to UTF-8 (if they weren't already), for a transparent handling of non-standard characters.
 
 =head1 OPTIONS
 
@@ -73,7 +72,7 @@ text parser would accept '-o tabs=split'.
 =item B<--no-previous>
 
 This option removes B<--previous> from the options passed to B<msgmerge>.
-This permits to support versions of B<gettext> earlier than 0.16.
+This helps supporting old versions of B<gettext> (before v0.16).
 
 =item B<--previous>
 
@@ -205,9 +204,9 @@ sub show_version {
 Getopt::Long::config( 'bundling', 'no_getopt_compat', 'no_auto_abbrev' );
 
 # Parse our options
-my ( @masterfiles, @pofiles );
-my ( $help, $help_fmt, $verbose, $debug, $format, @options );
-my ( $copyright_holder, $msgid_bugs_address, $package_name, $package_version );
+my ( @masterfiles,      @pofiles );
+my ( $help,             $help_fmt, $verbose, $debug, $format, @options );
+my ( $copyright_holder, $msgid_bugs_address, $package_name, $package_version, $no_deprecation );
 my $mastchar;
 my $previous;
 my $noprevious;
@@ -223,6 +222,9 @@ GetOptions(
     'format|f=s' => \$format,
 
     'master-charset|M=s' => \$mastchar,
+
+    # undocumented option to silence the warning about po4a-updatepo being deprecated
+    'no-deprecation' => \$no_deprecation,
 
     'option|o=s' => \@options,
 
@@ -241,7 +243,7 @@ GetOptions(
     'version|V' => \&show_version
 ) or pod2usage();
 
-$help && pod2usage( -verbose => 1, -exitval => 0 );
+$help     && pod2usage( -verbose => 1, -exitval => 0 );
 $help_fmt && Locale::Po4a::Chooser::list(0);
 pod2usage() if scalar @masterfiles < 1 || scalar @pofiles < 1;
 
@@ -268,6 +270,11 @@ foreach (@options) {
     }
 }
 
+unless ($no_deprecation) {
+    print wrap_msg(
+        gettext("po4a-updatepo is deprecated. The unified po4a(1) program is more convenient and less error prone.") );
+}
+
 # parser
 my $doc = Locale::Po4a::Chooser::new( $format, %options );
 
@@ -277,13 +284,13 @@ map { die wrap_msg( gettext("po4a-updatepo can't take the input PO from stdin.")
 my ($pot_filename);
 ( undef, $pot_filename ) = File::Temp::tempfile(
     "po4a-updatepoXXXX",
-    DIR    => $ENV{TMPDIR} || "/tmp",
+    DIR    => File::Spec->tmpdir(),
     SUFFIX => ".pot",
     OPEN   => 0,
     UNLINK => 0
 ) or die wrap_msg( gettext("Cannot create a temporary POT file: %s"), $! );
 
-print STDERR wrap_msg( gettext("Parse input files… ") ) if $verbose;
+print STDERR wrap_msg( gettext("Parse input files... ") ) if $verbose;
 
 $doc->{TT}{utf_mode} = 1;
 
@@ -315,7 +322,7 @@ while ( my $po_filename = shift @pofiles ) {
         print STDERR wrap_msg( gettext("Creating %s:"), $po_filename )
           if $verbose;
         copy( $pot_filename, $po_filename )
-          or die wrap_msg( gettext("Could not copy the PO file (%s → %s): %s"), $pot_filename, $po_filename, $! );
+          or die wrap_msg( gettext("Could not copy the PO file (%s -> %s): %s"), $pot_filename, $po_filename, $! );
     }
 }
 

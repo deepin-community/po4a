@@ -27,43 +27,24 @@ it decouples the translation of content from its document structure.
 Please refer to the page L<po4a(7)> for a gentle introduction to this
 project.
 
-When you run the B<po4a> program for the first time, with only a
-configuration file and the documents to translate (called master
-documents), it produces a POT file (also called translation template)
-that contains all of the translatable strings in the document in a form
-that eases the work of translators.
+Upon execution, B<po4a> parses all documentation files specified in its
+configuration file. It updates the PO files (containing the translation) to
+reflect any change to the documentation, and produce a translated documentation
+by injecting the content's translation (found in the PO files) into the
+structure of the original master document.
 
-Those POT files can either be translated with a specific editor such
-as the B<GNOME Translation Editor>, KDE's B<Lokalize> or B<poedit>,
-or they can be integrated in an online localization platform such as
-B<weblate> or B<pootle>.  The translation result is a set of PO files,
-one per language.
-
-When you run the B<po4a> program with both the master documents and
-the PO files, it produces the translated documents by injecting the
-content's translation (found in the PO files) into the structure of
-the original master document.
-
-If the master documents changed in the meanwhile, po4a will update the PO
-and POT files accordingly, so that the translators can easily detect the
-modifications and update their work. Depending on your settings, po4a will
-discard the partially translated documents, or produce a document mixing
-English (for the new or modified paragraphs) and the target language
-(for paragraphs where translation is already in the PO file).
-
-By default, the translated documents are produced when at least 80%
-of their content is translated (see the I<--keep> option below).
-Discarding translations as soon as they are not 100% may be
-discouraging for the translators, while showing "translations" that
-are too incomplete may be troubling for the end users.
-
-=head2 Graphical overview
-
+At first, the PO files only contain the strings to translate from the original
+documentation. This file format allows the translators to manually provide a
+translation for each paragraph extracted by B<po4a>. If the documentation is
+modified after translation, B<po4a> marks the corresponding translations as
+"fuzzy" in the PO file to request a manual review by the translators. The
+translators can also provide so-called "addendum", that are extra content
+stating for example who did the translation and how to report bugs.
 
  master documents ---+---->-------->---------+
   (doc authoring)    |                       |
-                     V   (po4a executions)   >-----+--> translations
-                     |                       |     |
+                     V   (po4a executions)   >-----+--> translated
+                     |                       |     |     documents
  existing PO files -->--> updated PO files >-+     |
       ^                            |               |
       |                            V               |
@@ -72,13 +53,100 @@ are too incomplete may be troubling for the end users.
                                                    |
  addendum -->--------------------------------------+
 
-The master documents are authored by the documentation writers. Any changes are
-automatically reflected by po4a in the PO files, that are then updated by the
-translators. All changes to the PO files (either manual or by po4a) are
-automatically reflected in translated documents. You can mimic this behavior
-using the L<po4a-updatepo(1)> and L<po4a-translate(1)> scripts in makefiles, but
-this quickly becomes bothersome and repetitive (see L<po4a(7)>). It is highly
-recommended to use the B<po4a> program in your build process.
+The workflow of B<po4a> is asynchronous, as suited to open-source projects. The
+documentation writers author the master documents at their own pace. The
+translators review and update the translations in the PO files. The maintainers
+rerun B<po4a> on need, to reflect any change to the original documentation to
+the PO files, and to produce updated documentation translations, by injecting
+the latest translation into the latest document structure.
+
+By default, a given translated document is produced when at least 80% of its
+content is translated. The untranslated text is kept in the original language.
+The produced documentation thus mixes languages if the translation is not
+complete. You can change the 80% threshold with the I<--keep> option described
+below. Note however that discarding translations as soon as they are not 100%
+may be discouraging for the translators whose work will almost never be shown to
+the users, while showing "translations" that are too incomplete may be troubling
+for the end users.
+
+Storing the translated documentation files in the version control system is
+probably a bad idea, since they are automatically generated. The precious files
+are the PO files, that contain the hard work of your fellow translators. Also,
+some people find it easier to interact with the translators through an online
+platform such as S<weblate>, but this is naturally fully optional.
+
+=head2 Quick start tutorial
+
+Let's assume you maintain a program named B<foo> which has a man page
+F<man/foo.1> written in English (the bridge language in most open-source
+projects, but B<po4a> can be used from or to any language). Some times ago,
+someone provided a German translation named F<man/foo.de.1> and disappeared.
+This is a problem because you just got a bug report saying that your
+documentation contains a gravely misleading information that must be fixed in
+all languages, but you don't speak German so you can only modify the original,
+not the translation. Now, another contributor wants to contribute a translation
+to Japanese, a language that you don't master either.
+
+It is time to convert your documentation to B<po4a> to solve your documentation
+maintenance nightmares. You want to update the doc when needed, you want to ease
+the work of your fellow translators, and you want to ensure that your users
+never see any outdated and thus misleading documentation.
+
+The conversion includes two steps: setup the po4a infrastructure, and convert
+the previous German translation to salvage the previous work. This latter part
+is done using S<po4a-gettextize>, as follows. As detailed in the documentation
+of L<po4a-gettextize(1)>, this process rarely fully automatic, but once it's
+done, the B<de.po> file containing the German translation can be integrated in
+your po4a workflow.
+
+  po4a-gettextize --format man --master foo.1 --localized foo.de.1 --po de.po
+
+Let's now configure po4a. With the appropriate file layout, your configuration
+file could be as simple as this:
+
+ [po_directory] man/po4a/
+
+ [type: man] man/foo.1 $lang:man/translated/foo.$lang.1
+
+It specifies that all PO files (containing the work of the translators) are the
+F<man/po4a/> directory, and that you have only one master file, F<man/foo.1>. If
+you had several master files, you would have several lines similar to the second
+one. Each such line also specify where to write the corresponding translation
+files. Here, the German translation of F<man/foo.1> is in
+F<man/translated/foo.de.1>.
+
+The last thing we need to complete the configuration of B<po4a> is a POT file
+containing the template material that should be used to start a new translation.
+Simply create an empty file with the S<.pot> extension in the specified
+S<po_directory> (e.g. F<man/po4a/foo.pot>), and B<po4a> will fill it with the
+expected content.
+
+Here is a recap of the files in this setup:
+
+  ├── man/
+  │   ├── foo.1        <- The original man page, in English.
+  │   ├── po4a/
+  │   │   ├── de.po    <- The German PO translation, from gettextization.
+  │   │   └── foo.pot  <- The POT template of future translations (empty at first)
+  │   └── translated/  <- Directory where the translations will be created
+  └── po4a.cfg         <- The configuration file.
+
+Once setup, executing B<po4a> will parse your documentation, update the POT
+template file, use it to update the PO translation files, and use them to update
+the documentation translation files. All in one command:
+
+        po4a --verbose po4a.cfg
+
+This it. B<po4a> is now fully configured. Once you've fixed your error in
+F<man/foo.1>, the offending paragraph in the German translation will be replaced by
+the fixed text in English. Mixing languages is not optimal, but it's the only
+way to remove errors in translations that you don't even understand, and ensure
+that the content presented to the users is never misleading. Updating the German
+translation is also much easier in the corresponding PO file, so the language
+mix-up may not last long. Finally, when the Japanese translator gives you a
+S<jp.po> translated file, just drop it in F<man/po4a/po/>. A translated page
+will appear as F<man/translated/foo.jp.1> (provided that enough content is
+translated) when you run B<po4a> again.
 
 =head1 OPTIONS
 
@@ -259,7 +327,7 @@ content. If set to B<newlines>, po4a will only split the msgid and msgstr after
 newlines in the content. If set to B<no>, po4a will not wrap the po file at all.
 The reference comments are always wrapped by the gettext tools that we use internally.
 
-Note that this option has no impact on how the msgid and msgstr are wrapped, ie
+Note that this option has no impact on how the msgid and msgstr are wrapped, i.e.
 on how newlines are added to the content of these strings.
 
 =item B<--master-language>
@@ -300,7 +368,7 @@ Note: B<$lang> will be extended to the current language.
 =item B<--no-previous>
 
 This option removes B<--previous> from the options passed to B<msgmerge>.
-This permits to support versions of B<gettext> earlier than 0.16.
+This is necessary to support versions of B<gettext> earlier than 0.16.
 
 =item B<--previous>
 
@@ -387,16 +455,20 @@ C<$master> in the name of your PO files on the C<[po4a_paths]> line, as follows.
 
  [po4a_paths] doc/$master/$master.pot $lang:doc/$master/$lang.po
 
-With this line, po4a will produce separate POT and PO files for each document to translate. 
-For example, if you have 3 documents and 5 languages, this will result in 3 POT files and 
-15 PO files. These files are named as specified on the C<po4a_paths> template, with 
-C<$master> substituted to the basename of each document to translate. In case of name 
-conflict, you can specify the POT file to use as follows, with the C<pot=> parameter. 
-This feature can also be used to group several translated files into the same POT file.
+With this line, po4a will produce separate POT and PO files for each document to translate.
+For example, if you have 3 documents and 5 languages, this will result in 3 POT files and
+15 PO files. These files are named as specified on the C<po4a_paths> template, with
+C<$master> substituted to the basename of each document to translate. In case of name
+conflict, you can specify the POT file to use as follows, with the C<pot=> parameter.
+
+This feature can also be used to group several translated files into the same
+POT file. The following example only produces 2 POT files: F<l10n/po/foo.pot>
+(containing the material from F<foo/gui.xml>) and F<l10n/po/bar.pot> (containing
+the material from both F<bar/gui.xml> and F<bar/cli.xml>).
 
  [po4a_langs] de fr ja
  [po4a_paths] l10n/po/$master.pot $lang:l10n/po/$master.$lang.po
- [type: xml] foo/gui.xml $lang:foo/gui.$lang.xml pot=foo-gui
+ [type: xml] foo/gui.xml $lang:foo/gui.$lang.xml pot=foo
  [type: xml] bar/gui.xml $lang:bar/gui.$lang.xml pot=bar
  [type: xml] bar/cli.xml $lang:bar/cli.$lang.xml pot=bar
 
@@ -404,7 +476,7 @@ In split mode, B<po4a> builds a temporary compendium during the PO update, to
 share the translations between all the PO files. If two PO files have different
 translations for the same string, B<po4a> will mark this string as fuzzy and
 will submit both translations in all the PO files containing this string. When
-unfuzzied by the translator, the translation is automatically used in every PO 
+unfuzzied by the translator, the translation is automatically used in every PO
 files.
 
 =head2 Specifying the documents to translate
@@ -599,67 +671,9 @@ these strings will be left unmodified when producing the translated documents.
 This naturally decreases the level of translation, so you may need the C<--keep>
 option to ensure that the document is produced anyway.
 
-=head2 CONFIGURATION EXAMPLE
-
-TODO: Is this section really useful?
-
-Let's assume you maintain a program named B<foo> which has a man page F<man/foo.1>
-which naturally is maintained in English only. Now you as the upstream or
-downstream maintainer want to create and maintain the translation.
-First you need to create the POT file necessary to send to translators
-using L<po4a-gettextize(1)>.
-
-So for our case we would call
-
- cd man && po4a-gettextize -f man -m foo.1 -p foo.pot
-
-You would then send this file to the appropriate language lists or offer
-it for download somewhere on your website.
-
-Now let's assume you received three translations before your next release:
-F<de.po> (including an addendum F<de.add>), F<sv.po> and F<pt.po>.
-Since you don't want to change your F<Makefile>(s) whenever a new translation
-arrives you can use B<po4a> with an appropriate configuration file in your F<Makefile>.
-Let's call it F<po4a.cfg>. In our example it would look like the following:
-
- [po_directory] man/po4a/po/
-
- [type: man] man/foo.1 $lang:man/translated/$lang/foo.1 \
-            add_$lang:?man/po4a/add_$lang/$lang.add opt:"-k 80"
-
-In this example we assume that your generated man pages (and all PO and addenda
-files) should be stored in F<man/translated/$lang/> (respectively in F<man/po4a/po/> and
-F<man/po4a/add_$lang/>) below the current directory. In our example
-the F<man/po4a/po/> directory would include F<de.po>, F<pt.po> and F<sv.po>,
-and the F<man/po4a/add_de/> directory would include F<de.add>.
-
-Note the use of the modifier B<?> as only the German translation (F<de.po>) is
-accompanied by an addendum.
-
-To actually build the translated man pages you would then (once!) add the
-following line in the B<build> target of the appropriate F<Makefile>:
-
-        po4a po4a.cfg
-
-Once this is set up you don't need to touch the F<Makefile> when a new
-translation arrives, i.e. if the French team sends you F<fr.po> and F<fr.add>
-then you simply drop them respectively in F<man/po4a/po/> and
-F<man/po4a/add_fr/> and the next time the program is built the
-French translation is automatically build as well in F<man/translated/fr/>.
-
-Note that you still need an appropriate target to install localized manual
-pages with English ones.
-
-Finally if you do not store generated files into your version control system,
-you will need a line in your B<clean> target as well:
-        -rm -rf man/translated
-
 =head1 SEE ALSO
 
 L<po4a-gettextize(1)>,
-L<po4a-normalize(1)>,
-L<po4a-translate(1)>,
-L<po4a-updatepo(1)>,
 L<po4a(7)>.
 
 =head1 AUTHORS
@@ -670,7 +684,7 @@ L<po4a(7)>.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2002-2020 by SPI, inc.
+Copyright 2002-2022 by SPI, inc.
 
 This program is free software; you may redistribute it and/or modify it
 under the terms of GPL (see the COPYING file).
@@ -950,7 +964,7 @@ my $config_file = shift(@ARGV) || pod2usage();
 
 # Parse the config file
 my (@langs);
-my (%aliases);    # module aliases ([po4a_alias:...]
+my (%aliases);                # module aliases ([po4a_alias:...]
 my $pot_filename     = "";    # In split mode, this is the temp file name for the big POT
 my $pot_filename_cfg = "";    # This is never modified, useful in split mode to find the cfg content
 my (%po_filename);            # po_files: '$lang'=>'$path'
@@ -1119,15 +1133,16 @@ while (<CONFIG>) {
                 next unless defined $basedir;
                 my $candidate = "$basedir/$po_directory";
                 if ( -e $candidate && -d $candidate ) {
-                    $found = 1;
-                    print STDERR wrap_msg( gettext("Using '%s' as a %s."), $candidate, "po_directory" )
-                      if $po4a_opts{"verbose"};
-
                     opendir PO_DIR,
                       $candidate
                       or die wrap_ref_mod( "$config_file:$nb", "", gettext("Cannot list directory '%s' in '%s' "),
                         $po_directory, $basedir );
                     map { push @po_files, "$po_directory/$_" if -e "$candidate/$_"; } ( sort readdir PO_DIR );
+
+                    # Only display the message the first time we find the right directory
+                    print STDERR wrap_msg( gettext("Using '%s' as a %s."), $candidate, "po_directory" )
+                        if $po4a_opts{"verbose"} && $found == 0 && scalar @po_files;
+                    $found = 1;
                 }
             }
             unless ($found) {
@@ -1359,7 +1374,7 @@ while (<CONFIG>) {
 
     $line = "";
 }
-close CONFIG;                                                                              # don't care about error here
+close CONFIG;    # don't care about error here
 die wrap_msg( gettext("'po4a_paths' is not defined in the configuration file. Where are the POT and PO files?") )
   unless ( length $pot_filename );
 
@@ -1419,7 +1434,7 @@ if ( $pot_filename =~ m/\$master/ ) {
 
         # Skip documents not specified, strings are read directly from POT file
         foreach my $master ( keys %document ) {
-            next unless length $master;
+            next                      unless length $master;
             delete $document{$master} unless exists $partial{'master'}{$master};
         }
 
@@ -1431,7 +1446,12 @@ if ( $pot_filename =~ m/\$master/ ) {
 
     if ( not scalar @{ $po4a_opts{"partial"} } ) {
         if ( -e find_input_file($pot_filename) ) {
-            my $modtime = ( stat find_input_file($pot_filename) )[9];
+            my @statfile =  stat find_input_file($pot_filename);
+            my $filesize = $statfile[7];
+            my $modtime = $statfile[9];
+
+            # The POT files needs to be generated if it's currently empty (first run?)
+            $update_pot_file = 1 if $filesize == 0;
 
             # The POT needs to be re-generated if a master document is more recent
             # than the POT.
@@ -1497,11 +1517,11 @@ if ($update_pot_file) {
 
         my %file_opts = %po4a_opts;
         my $options =
-          ( $document{''}{"options"}{"global"} // '' ) . ' ' .        # global options (if any) as default values
-          ( $document{$master}{"options"}{"global"} // '' ) . ' ';    # file's global options (if any) to override them
+          ( $document{''}{"options"}{"global"} // '' ) . ' ' .         # global options (if any) as default values
+          ( $document{$master}{"options"}{"global"} // '' ) . ' ';     # file's global options (if any) to override them
         $options =~ s/ *$//;
         print STDERR "Options for $master while generating pot: $options\n" if $po4a_opts{'debug'};
-        %file_opts = get_options( split_opts($options), @ORIGINAL_ARGV ) if ( length $options );
+        %file_opts = get_options( split_opts($options), @ORIGINAL_ARGV )    if ( length $options );
 
         my $doc = Locale::Po4a::Chooser::new( $document{$master}{'format'}, %{ $file_opts{"options"} } );
 
@@ -1535,7 +1555,7 @@ if ($update_pot_file) {
     if ( $po4a_opts{"split"} ) {
         ( undef, $pot_filename ) = File::Temp::tempfile(
             "po4a-temp-pot-XXXX",
-            DIR    => $ENV{TMPDIR} || "/tmp",
+            DIR    => File::Spec->tmpdir(),
             SUFFIX => ".pot",
             OPEN   => 0,
             UNLINK => 0
@@ -1583,7 +1603,7 @@ if ( $po4a_opts{"split"} ) {
             unless ( $po4a_opts{"force"} ) {
                 ( undef, $tmp_file ) = File::Temp::tempfile(
                     "po4aXXXX",
-                    DIR    => $ENV{TMPDIR} || "/tmp",
+                    DIR    => File::Spec->tmpdir(),
                     SUFFIX => ".pot",
                     OPEN   => 0,
                     UNLINK => 0
@@ -1616,7 +1636,7 @@ if ( $po4a_opts{"split"} ) {
         my $tmp_bigpo;
         ( undef, $tmp_bigpo ) = File::Temp::tempfile(
             "po4aXXXX",
-            DIR    => $ENV{TMPDIR} || "/tmp",
+            DIR    => File::Spec->tmpdir(),
             SUFFIX => "-$lang.po",
             OPEN   => 0,
             UNLINK => 0
@@ -1705,7 +1725,7 @@ if ( not $po4a_opts{"no-update"} ) {
                     # updated (unless --force was specified).
                     ( undef, $tmp_file ) = File::Temp::tempfile(
                         "po4aXXXX",
-                        DIR    => $ENV{TMPDIR} || "/tmp",
+                        DIR    => File::Spec->tmpdir(),
                         SUFFIX => ".po",
                         OPEN   => 0,
                         UNLINK => 0
@@ -1713,11 +1733,12 @@ if ( not $po4a_opts{"no-update"} ) {
 
                     my $cmd;
 
-                    # Pass msggrep to C (english), but not under windows as this syntax is not understood by the shell
-                    my $env = ( $^O =~ /Win/ ) ? "" : "LC_ALL=C.UTF-8";
-
                     # Create an empty PO or copy the original PO header (to keep the header)
                     if ( -f find_input_file( $split_po{$lang}{$master} ) ) {
+
+                        # Pass msggrep to C (english), but not under windows as this syntax is not understood by the shell
+                        my $env = ( $^O =~ /Win/ ) ? "" : "LC_ALL=C.UTF-8";
+
                         $cmd =
                             $env
                           . " msggrep$Config{_exe}"
@@ -1756,7 +1777,7 @@ if ( not $po4a_opts{"no-update"} ) {
                           find_output_file( $split_po{$lang}{$master} )
                           or die wrap_msg(
                             dgettext( "po4a", "Cannot move %s to %s: %s." ), $tmp_file,
-                            find_output_file( $split_po{$lang}{$master} ), $!
+                            find_output_file( $split_po{$lang}{$master} ),   $!
                           );
                     }
                 }
@@ -1834,12 +1855,12 @@ if ( not $po4a_opts{"no-translations"} ) {
 
             my %file_opts = %po4a_opts;
             my $options =
-              ( $document{''}{"options"}{"global"} // '' ) . ' ' .      # global options (if any) as default values
+              ( $document{''}{"options"}{"global"} // '' ) . ' ' .         # global options (if any) as default values
               ( $document{$master}{"options"}{"global"} // '' ) . ' '
               .                                                 # file's global options (if any) to override them
               ( $document{$master}{"options"}{$lang} // '' );   # file's language options (if any) overriding everything
             $options =~ s/ *$//;
-            print STDERR "Options for $master in $lang: $options\n" if $po4a_opts{'debug'};
+            print STDERR "Options for $master in $lang: $options\n"          if $po4a_opts{'debug'};
             %file_opts = get_options( split_opts($options), @ORIGINAL_ARGV ) if ( length $options );
 
             my $doc = Locale::Po4a::Chooser::new( $document{$master}{'format'}, %{ $file_opts{"options"} } );
@@ -1989,3 +2010,6 @@ sub is_older {
 }
 
 __END__
+
+#  LocalWords: Charset charset AsciiDoc tablecells po UTF gettext msgid nostrip
+#  LocalWords:  xml docbook
