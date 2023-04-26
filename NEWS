@@ -2,6 +2,296 @@ This file presents the major changes of each version, focusing on
 user-visible changes while the day to day changes are in the git logs.
 
 =======================================================================
+        ___   __   ___
+__   __/ _ \ / /_ / _ \
+\ \ / / | | | '_ \ (_) |          Happy New Year release.
+ \ V /| |_| | (_) \__, |
+  \_/  \___(_)___/  /_/           (Released on 2023/01/01)
+
+Markdown:
+ * Parts of a fenced divs are now translated separately (GitHub's #381)
+
+YAML and Yaml Front Matter:
+ * Use the implementation of YFM to parse YAML files too.
+   - This reduces the code dupplication, and brings the nice features over:
+     Numbers and arrays are not quoted anymore in Yaml files, as it should be.
+   - This adds the yfm_paths option to Markdown and Asciidoc YFM,
+     fixing GitHub's #392 along the way.
+   - Please note that '-o keys' is now case-sensitive in Yaml documents.
+ * Do not translate nor quote booleans, so that they are not treated as string.
+   Thanks Gissmo for GitHub's PR #393, even if I had to rework it quite a bit.
+
+XML:
+ * Correctly handle placeholders of empty elements (GitHub's #389)
+ * Translate attributes within attribute-folded inline and placeholder (GH #391)
+   alt attribute of <img> can be properly handled with:
+   -o 'attributes=<image>alt' -o 'inline=<image>' -o foldattributes
+ * Thanks k-yaegashi for the pull request fixing both issues
+
+Project organization:
+ * Do not leak the generation date in our manpages (GitHub's #387)
+   Thanks Arnout Engelen for the pull request.
+
+Translations:
+ * New translation: Georgian, thanks Temuri Doghonadze.
+ * Updated: Dutch, thanks Frans Spiesschaert.
+ * Updated: French, thanks Jérémie Tarot & Brandelune.
+ * Updated: Italian, thanks Marco Ciampa.
+ * Updated: Japanese, thanks gemmaro.
+ * Updated: Portuguese, thanks Hugo Carvalho.
+ * Updated: Portuguese (Brazil), thanks Rafael Fontenelle.
+ * Updated: Ukrainian, thanks Yuri Chornoivan (українська).
+
+Status of the binary translation:
+ * 100%: fr, it, nl, pt_BR, uk.
+ * >95%: eo (96%), nb (96%), pt (99%), sr_Cyrl (99%).
+ * >90%: de (94%), es (94%), hr (94%), hu (92%), ru (93%), zh_CN (94%), zh_Hant (94%).
+ * >70%: id (77%), sv (72%).
+ * >50%: cs (57%), da (62%), et (67%), eu (56%), ja (63%), pl (62%), sl (56%), vi (67%).
+ * >33%: ca (45%).
+ * Starting: ace (2%), af (7%), ar (14%), ka (16%), kn (7%), ko (18%), zh_HK (3%).
+
+Status of the documentation translation:
+ * 100%: it, uk.
+ * >95%: de (98%), fr (99%), ja (96%), nl (99%), sr_Cyrl (98%).
+ * >90%: pt (93%), pt_BR (94%), zh_CHS (94%), zh_Hant (94%).
+ * >80%: es (83%).
+ * >50%: pl (66%), ru (64%).
+ * >33%: ca (43%).
+ * Starting: eo (2%), hr (0%), hu (0%), nb (4%).
+
+=======================================================================
+        ___   __    ___
+__   __/ _ \ / /_  ( _ )
+\ \ / / | | | '_ \ / _ \          High Hopes release.
+ \ V /| |_| | (_) | (_) |
+  \_/  \___(_)___/ \___/          (Released on 2022/09/04)
+
+
+ This release dedication is here to remind you that Hope is always important.
+ Plus, the song of that name by Pink Floyd also deserves a dedication.
+
+Project organization:
+ * Add a deprecation warning to po4a-translate and po4a-updatepo stating
+   that po4a is the prefered interface.
+ * Rewrite the po4a-gettextize documentation (Debian's #1016695) [Mt].
+ * Rewrite the intro of po4a doc, and add a Quick start tutorial [Mt].
+
+gettextization:
+ * Rework completely the deduplication of msgids introduced in v0.67.
+   - Instead of adding spaces and require the users to merge them
+     manually after an extremely painful analysis of the produced file,
+     automatically merge the msgstr together.
+   - The result will look something like:
+
+     #, fuzzy
+     msgid "hello"
+     msgstr ""
+     "#-#-#-#-#  file reference 1 (type: Title #)  #-#-#-#-#\n"
+     "HELLO\n"
+     "#-#-#-#-#  file reference 2 (type: Title ##)  #-#-#-#-#\n"
+     "SUBTITLE\n"
+
+   - Closes Debian's #1017742, that was asking for help in the review [Mt].
+
+Markdown:
+ * Allow lists to start the line with no leading spaces before the '-'
+   sign (Github's #378). This uncovers a bug in our test suite that
+   was enforcing the buggy behavior :( [Mt]
+ * Properly deal with fenced div blocks (Github's #381) [Mt]
+
+Man:
+ * Bold text should never be wrapped as groff seems to reset the font
+   on new line (Debian's #1016753) [Mt].
+ * Properly deal with comments around macro definitions [Mt]
+   (Debian's #1017837).
+
+Translations:
+ * Updated: Croatian, thanks Milo Ivir.
+ * Updated: Esperanto, thanks Marco Ciampa.
+ * Updated: German, thanks Helge Kreutzmann.
+ * Updated: Italian, thanks Marco Ciampa.
+ * Updated: Japanese, thanks gemmaro.
+ * Updated: Portuguese, thanks Hugo Carvalho.
+ * Updated: Serbian (cyrillic), thanks Ivan Pesic.
+ * Updated: Ukrainian, thanks Yuri Chornoivan (українська) & Artem.
+
+Status of the binary translation:
+ * 100%: de, pt, sr_Cyrl, uk.
+ * >95%: eo (97%), es (95%), fr (97%), hr (95%), it (97%), nb (97%), 
+         nl (95%), pt_BR (97%), zh_CN (95%), zh_Hant (95%).
+ * >90%: hu (93%), ru (93%).
+ * >70%: id (78%), sv (72%).
+ * >50%: cs (58%), da (62%), et (68%), eu (56%), ja (62%), pl (62%), 
+         sl (56%), vi (67%).
+ * >33%: ca (45%).
+ * Starting: ace (2%), af (7%), ar (14%), kn (7%), ko (18%), zh_HK (3%).
+
+Status of the documentation translation:
+ * 100%: it, uk.
+ * >95%: de (99%), fr (95%), pt_BR (95%), sr_Cyrl (99%).
+ * >90%: nl (94%), pt (94%), zh_CHS (94%), zh_Hant (94%).
+ * >80%: es (83%).
+ * >70%: ja (72%).
+ * >50%: pl (66%), ru (64%).
+ * >33%: ca (43%).
+ * Starting: eo (2%), hr (0%), hu (0%), nb (4%).
+	
+
+=======================================================================
+        ___   __ _____
+__   __/ _ \ / /|___  |
+\ \ / / | | | '_ \ / /            The Maryna Viazovska Release.
+ \ V /| |_| | (_) / /
+  \_/  \___(_)___/_/              (Released on 2022/07/14)
+
+
+Maryna Viazovska was recently awarded a Fields Medal for her work on
+the sphere-packing problem in higher dimension.
+
+Asciidoc:
+ * Support Hugo shortcode on macros (GitHub's #352) [Danilo G. Baio]
+ * Support automatically numbered callouts (GitHub's #351) [J.N. Avila]
+ * Support line breaks (GitHub's #199) [J.N. Avila]
+
+gettextization:
+ * Deduplicate the msgids, to prevent the structure desynchronizations
+   when the same string is used at several locations, with mismatching types.
+   (GitHub's #334) [mquinson]
+ * Add some tests for the gettextization feature. [mquinson]
+
+po4a-translate:
+ * Do not check whether the po file is uptodate, as it's impossible to do
+   that correctly when several master files are merged in the same POT.
+   (GitHub's #156) [mquinson]
+
+Man:
+ * Improve the error message when using '.de', '.if', '.ie' to hint about
+   the option 'groff_code=verbatim|translate' (GitHub's #361) [mquinson]
+ * Implement '.el' (else branch) as translate_joined [mquinson]
+ * Implement '.de1' (define with no check) as '.de' [mquinson]
+ * Implement '.dei', '.dei1' (define with subst) (Debian's #710678) [MQ]
+ * Implement '.it' (input trap) as untranslated (GitHub's #339) [mquinson]
+ * Make a sensible warning when user-defined macros are not explained to po4a
+   with the 'untranslated' option and friends. [mquinson]
+
+Markdown:
+ * New option 'yfm_lenient' to proceed even if the YAML Front Matter parser fails.
+   Useful when your file starts with an horizontal ruler that is not a YFM.
+   (GitHub's #365) [mquinson]
+   This introduces a NEW DEPENDENCY: Syntax::Keyword::Try
+ * Do not quote the YFM lists to not break them (GitHub's #304) [mquinson].
+   Thanks @dbaio for the analysis and @ynojima for an initial patch in doc-l10n-kit.
+
+xHTML:
+ * Add a test for tables and stop claiming that they may be broken
+   (GitHub's #366, thanks Petter Reinholdtsen).
+
+Other bug fixes:
+ * Hide an ugly warning about uninitialized string (GitHub's #360) [mquinson]
+
+Translations:
+ * Updated: Chinese (simplified and traditional), thanks taotieren.
+ * Updated: Dutch, thanks Frans Spiesschaert.
+ * Updated: Esperanto, thanks Marco Ciampa.
+ * Updated: French, thanks jmichault and Jérémie Tarot.
+ * Updated: German, thanks Helge Kreutzmann.
+ * Updated: Italian, thanks Marco Ciampa.
+ * Updated: Norwegian Bokmål, thanks Petter Reinholdtsen.
+ * Updated: Portuguese, thanks Hugo Carvalho & Silvério Santos.
+ * Updated: Portuguese (Brazil), thanks Rafael Fontenelle and Luiz Fernando Ranghetti.
+ * Updated: Serbian (cyrillic), thanks Ivan Pesic.
+ * Updated: Spanish, thanks Francisco Serrador.
+ * Updated: Ukrainian, thanks Yuri Chornoivan (українська).
+ * Updated: Vietnamese, thanks Trần Ngọc Quân.
+
+Status of the binary translation:
+ *  5 languages = 100%: de, fr, nb, pt_BR, sr_Cyrl.
+ * 11 languages >= 95%: eo (97%), es (97%), hr (97%), hu (95%),
+                        it (97%), nl (97%), pt (97%), ru (96%),
+			uk (98%), zh_CN (97%), zh_Hant(97%).
+ *  1 language  >= 80%: id (80%).
+ *  1 language  >= 70%: sv (74%).
+ *  8 languages >= 50%: cs (59%), da (62%), et (69%), eu (58%),
+                        ja (64%), pl (64%), sl (57%), vi (69%).
+ *  1 language  >= 33%: ca (46%).
+ *  6 starting languages: ace (2%), af (7%), ar (14%), kn (7%),
+                          ko(19%), zh_HK (3%).
+
+Status of the documentation translation:
+ * 2 languages = 100%: fr, uk.
+ * 8 languages >= 95%: de (98%), it (99%), nl (98%), pt (97%), 
+                       pt_BR (99%), sr_Cyrl (99%), zh_CHS (98%),
+		       zh_Hant (98%).
+ * 1 language  >= 80%: es (87%).
+ * 1 language  >= 70%: ja (74%).
+ * 2 languages >= 50%: pl (67%), ru (68%).
+ * 1 language  >= 33%: ca (44%).
+ * 4 starting languages: eo (2%), hr (0%), hu (0%), nb (4%).
+
+=======================================================================
+        ___   __    __
+__   __/ _ \ / /_  / /_
+\ \ / / | | | '_ \| '_ \          The 2+1 times 22 are 66 release.
+ \ V /| |_| | (_) | (_) |
+  \_/  \___(_)___/ \___/          (Released on 2/1/22)
+
+
+Asciidoc:
+ * Support empty cells in tablecells mode (GitHub's #343) [J.N. Avila]
+ * Disable tablecells when table is not in PSV format (GitHub's #343 too)
+   [J.N. Avila]
+
+Yaml:
+ * New option "paths" to select the full paths to extract.
+   The old "key" option (that allows to select any path ending with
+   the given key) still works as previously (thanks Oliver Rahner).
+
+Tests:
+ * Make the SGML tests use valid input files to fix brekages on
+   paranoid OSes (GitHub's#327 -- thanks newbluemoon for report and fix).
+ * Add a new tests that fixes the weird permission settings of the
+   other tests, and prevent the users from running the tests as root.
+   (GitHub's #332 -- thanks Oliver Rahner for stepping on that trap)
+ * Fix the testsuite so that it works even if the source is checkouted
+   in an arbitrary directory (GitHub's #338).
+
+po4a-gettextize:
+ * Use UTF-8 by default for localized charset.
+
+Translations:
+ * Updated: Croatian, thanks Milo Ivir.
+ * Updated: Esperanto, thanks Marco Ciampa.
+ * Updated: French, thanks Martin Quinson & brandelune.
+ * Updated: Dutch, thanks Frans Spiesschaert.
+ * Updated: German, thanks Helge Kreutzmann.
+ * Updated: Italian, thanks Marco Ciampa.
+ * Updated: Norwegian Bokmål, thanks Petter Reinholdtsen.
+ * Updated: Portuguese (Brazil), thanks Rafael Fontenelle.
+ * Updated: Russian, thanks Azamat H. Hackimov.
+ * Updated: Serbian (cyrillic), thanks Ivan Pesic.
+ * Updated: Ukrainian, thanks Yuri Chornoivan (українська).
+
+Status of the binary translation:
+ 7 languages = 100%: fr, hr, it, nb, nl, pt_BR, uk.
+ 8 languages >= 95%: de (97%), eo (98%), es (97%), hu (97%), pt (97%), ru (98%), sr_Cyrl (99%), zh_CN (97%).
+ 1 language  >= 80%: id (81%).
+ 2 languages >= 70%: et (71%), sv (76%).
+ 7 languages >= 50%: cs (60%), da (62%), eu (59%), ja (65%), pl (65%), sl (58%), vi (65%).
+ 1 language  >= 33%: ca (47%).
+ 1 language  >= 20%: zh_Hant (22%).
+ 6 starting languages: ace (2%), af (7%), ar (14%), kn (7%), ko (19%), zh_HK (3%).
+
+Status of the documentation translation:
+ 3 languages = 100%: it, pt_BR, uk.
+ 4 languages >= 95%: de (99%), fr (96%), nl (99%), sr_Cyrl (99%).
+ 2 languages >= 90%: pt (94%), zh_CHS (93%).
+ 1 language  >= 70%: es (78%).
+ 3 languages >= 50%: ja (69%), pl (69%), ru (69%).
+ 1 language  >= 33%: ca (44%).
+ 4 starting languages: eo (2%), hr (0%), hu (0%), nb (3%).
+
+=======================================================================
         ___   __  ____
 __   __/ _ \ / /_| ___|
 \ \ / / | | | '_ \___ \           The Apollo 12 release.
@@ -105,7 +395,7 @@ Status of the documentation translation:
  2 languages >= 50%: it (69%), ru (61%).
  1 language  >= 33%: ca (46%).
  4 starting languages: eo (2%), hr (0%), hu (0%), nb (1%).
-     
+
 =======================================================================
         ___   __  _____
 __   __/ _ \ / /_|___ /
@@ -449,7 +739,7 @@ Status of the binary translation:
    1 language  >= 90%: sr_Cyrl (93%).
    7 languages >= 80%: et (89%), ja (87%), nb (89%), pl (89%),
                        pt (89%), sv (84%), vi (89%).
-   6 languages >= 70%: cs (77%), da (77%), eo (77%), eu (77%), 
+   6 languages >= 70%: cs (77%), da (77%), eo (77%), eu (77%),
                        id (79%), sl (77%).
    1 language  >= 50%: ca (60%).
    2 languages >= 20%: ko (27%), zh_CN (26%).
@@ -484,7 +774,7 @@ Markdown:
    content should not be translated.
  * Work around a bug in YAML::Tiny that quotes numbers (GitHub's #217)
  * Add gettext flag "markdown-text" for relevant entries (GitHub's #208)
- 
+
 Text:
  * Honor the (existing) --neverwrap option to handle every content verbatim.
 
@@ -503,7 +793,7 @@ XML and DocBook:
 
 Yaml:
  * Introduce option to skip array values. (GitHub's #187)
- 
+
 po4a tool:
  * Cleanups and fixups about options' parsing (now tested and documented)
      _
@@ -529,7 +819,7 @@ Core:
    underlying detection would fail, possibly for document containing
    UTF-8 chars composed on printable ascii chars only.
  * Add a --wrap-po option to control how the po file is wrapped, and
-   chose between either nicely wrapped files that tend to produce git 
+   chose between either nicely wrapped files that tend to produce git
    conflicts, or ugly files that are easy to automatically deal with.
 
 Tests:
@@ -567,7 +857,7 @@ AsciiDoc:
  * Fix a crash occuring when a cell is nothing.
 
 Translations:
- * New translation: Hungarian, thanks Balázs Úr. 
+ * New translation: Hungarian, thanks Balázs Úr.
  * Updated: French, thanks brandelune, Mattéo Rossillol‑‑Laruelle and
    Julien Lepiller.
  * Updated: German, thanks Helge Kreutzmann.

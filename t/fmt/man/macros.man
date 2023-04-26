@@ -51,3 +51,6 @@ does not contain punctuation after the ME macro.
 .YS
 .P
 More text.
+
+.B Note that long long long long long long long long long long long long long long long long long long BOLD text should not be wrapped.
+.I ITALIC long long long long long long long long long long long long long long long long long long text should not be wrapped either.

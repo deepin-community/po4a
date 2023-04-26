@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8BIT\n"
 
 #. type: Fenced code block
-#: PandocFencedCodeBlocks.md:1 PandocFencedCodeBlocks.md:23
+#: PandocFencedCodeBlocks.md:1 PandocFencedCodeBlocks.md:26
 #, no-wrap
 msgid ""
 "if (a > 3) {\n"
@@ -34,14 +34,17 @@ msgstr ""
 msgid ""
 "~~~~~~~~~~\n"
 "code including tildes\n"
+"line2\n"
 "~~~~~~~~~~\n"
 msgstr ""
 "~~~~~~~~~~\n"
 "CODE INCLUDING TILDES\n"
+"LINE2\n"
 "~~~~~~~~~~\n"
 
-#. type: Fenced code block ({#mycode .haskell .numberLines startFrom="100"})
-#: PandocFencedCodeBlocks.md:13 PandocFencedCodeBlocks.md:35
+#. type: Fenced code block (haskell)
+#: PandocFencedCodeBlocks.md:14 PandocFencedCodeBlocks.md:20
+#: PandocFencedCodeBlocks.md:39 PandocFencedCodeBlocks.md:45
 #, no-wrap
 msgid ""
 "qsort []     = []\n"
@@ -52,20 +55,62 @@ msgstr ""
 "QSORT (X:XS) = QSORT (FILTER (< X) XS) ++ [X] ++\n"
 "               QSORT (FILTER (>= X) XS)\n"
 
-#. type: Fenced code block (haskell)
-#: PandocFencedCodeBlocks.md:19 PandocFencedCodeBlocks.md:41
-#, no-wrap
-msgid "qsort [] = []\n"
-msgstr "QSORT [] = []\n"
-
 #. type: Fenced code block
-#: PandocFencedCodeBlocks.md:29
+#: PandocFencedCodeBlocks.md:32
 #, no-wrap
 msgid ""
 "``````````\n"
 "code including backticks\n"
+"line2\n"
 "``````````\n"
 msgstr ""
 "``````````\n"
 "CODE INCLUDING BACKTICKS\n"
+"LINE2\n"
 "``````````\n"
+
+#. type: Plain text
+#: PandocFencedCodeBlocks.md:52
+#, markdown-text
+msgid "This first pandoc fenced_div is non-nested."
+msgstr "tHIS FIRST PANDOC FENCED DIV IS NON-NESTED."
+
+#. type: Fenced div block ({#special .sidebar})
+#: PandocFencedCodeBlocks.md:53
+#, no-wrap
+msgid ""
+"Here is a paragraph.\n"
+"\n"
+"And another.\n"
+msgstr ""
+"hERE IS A PARAGRAPH.\n"
+"\n"
+"aND ANOTHER.\n"
+
+#. type: Plain text
+#: PandocFencedCodeBlocks.md:59
+#, markdown-text
+msgid "The second pandoc fenced div is nested."
+msgstr "tHE SECOND PANDOC FENCED DIV IS NESTED."
+
+#. type: Fenced div block (Warning ::::::)
+#: PandocFencedCodeBlocks.md:60
+#, no-wrap
+msgid ""
+"This is a warning.\n"
+"\n"
+msgstr ""
+"tHIS IS A WARNING.\n"
+"\n"
+
+#. type: Fenced div block (Warning ::::::|Danger)
+#: PandocFencedCodeBlocks.md:60
+#, no-wrap
+msgid "This is a warning within a warning.\n"
+msgstr "tHIS IS A WARNING WITHIN A WARNING.\n"
+
+#. type: Plain text
+#: PandocFencedCodeBlocks.md:68
+#, markdown-text
+msgid "Some extra text."
+msgstr "sOME EXTRA TEXT."

@@ -25,7 +25,7 @@
 
 =head1 NAME
 
-Locale::Po4a::TeX - convert TeX documents and derivates from/to PO files
+Locale::Po4a::TeX - convert TeX documents and derivatives from/to PO files
 
 =head1 DESCRIPTION
 
@@ -48,12 +48,11 @@ blocks, or even smaller like titles or indexes).
 
 There are some options (described in the next section) that can customize
 this behavior.  If this doesn't fit to your document format you're encouraged
-to write your own module derived from this, to describe your format's details.
-See the section B<WRITING DERIVATE MODULES> below, for the process description.
+to write your own derivative module from this, to describe your format's details.
+See the section B<WRITING DERIVATIVE MODULES> below, for the process description.
 
 This module can also be customized by lines starting with "% po4a:" in the
-TeX file.
-These customizations are described in the B<INLINE CUSTOMIZATION> section.
+TeX file. This process is described in the B<INLINE CUSTOMIZATION> section.
 
 =head1 OPTIONS ACCEPTED BY THIS MODULE
 
@@ -167,8 +166,7 @@ this environment does not take any parameters.
 
 =back
 
-Using these options permits to override the behaviour of the commands defined
-in the default lists.
+Use these options to override the default behavior of the defined commands.
 
 =head1 INLINE CUSTOMIZATION
 
@@ -185,7 +183,7 @@ treated as the arguments of the I<command2> command.
 
 =item B<% po4a: command> I<command1> I<parameters>
 
-This permit to describe in detail the parameters of the I<command1>
+This describes in detail the parameters of the I<command1>
 command.
 This information will be used to check the number of arguments and their
 types.
@@ -207,7 +205,7 @@ As for an asterisk, the command will be extracted if it appear at an
 extremity of a block, but the parameters won't be translated separately.
 The translator will have to translate the command concatenated to all its
 parameters.
-This permits to keep more context, and is useful for commands with small
+This keeps more context, and is useful for commands with small
 words in parameter, which can have multiple meanings (and translations).
 
 Note: In this case you don't have to specify which parameters are
@@ -245,9 +243,9 @@ command.
 
 =item B<% po4a: environment> I<env> I<parameters>
 
-This permits to define the parameters accepted by the I<env> environment.
+This defines the parameters accepted by the I<env> environment and specifies the ones to be translated.
 This information is later used to check the number of arguments of the
-\begin command, and permit to specify which one must be translated.
+\begin command.
 The syntax of the I<parameters> argument is the same as described for the
 others commands.
 The first parameter of the \begin command is the name of the environment.
@@ -265,7 +263,7 @@ Indicates that an environment should be split according to the given
 regular expression.
 
 The regular expression is delimited by quotes.
-It should not create any backreference.
+It should not create any back-reference.
 You should use (?:) if you need a group.
 It may also need some escapes.
 
@@ -273,7 +271,7 @@ For example, the LaTeX module uses the "(?:&|\\\\)" regular expression to
 translate separately each cell of a table (lines are separated by '\\' and
 cells by '&').
 
-The notion of environment is expended to the type displayed in the PO file.
+The notion of environment is expanded to the type displayed in the PO file.
 This can be used to split on "\\\\" in the first mandatory argument of the
 title command.  In this case, the environment is title{#1}.
 
@@ -711,9 +709,9 @@ sub translate_buffer {
     # early detection of verbatim environment
     if ( $buffer =~ /^($RE_VERBATIM\n?)(.*)$/s and length $2 ) {
         my ( $begin, $end ) = ( $1, $2 );
-        my ( $t1, $t2 ) = ( "", "" );
+        my ( $t1, $t2 )     = ( "", "" );
         ( $t1, @env ) = translate_buffer( $self, $begin, $no_wrap, @env );
-        ( $t2, @env ) = translate_buffer( $self, $end,   $no_wrap, @env );
+        ( $t2, @env ) = translate_buffer( $self, $end, $no_wrap, @env );
 
         print STDERR "($t1$t2,@env)\n"
           if ( $debug{'translate_buffer'} );
@@ -1122,7 +1120,7 @@ sub parse_definition_line {
         }
     } elsif ( $line =~ /^separator\s+(\w+(?:\[#[0-9]+\])?)\s+\"(.*)\"\s*$/ ) {
         my $env = $1;    # This is not necessarily an environment.
-                         # It can also be smth like 'title[#1]'.
+                         # It can also be something like 'title[#1]'.
         $env_separators{$env} = $2;
     } elsif ( $line =~ /^verbatim\s+environment\s+(\w+)\s+$/ ) {
         register_verbatim_environment($1);
@@ -1253,7 +1251,7 @@ sub docheader {
 #### DEFINITION OF THE COMMANDS ####
 ####################################
 
-=head1 INTERNAL FUNCTIONS used to write derivated parsers
+=head1 INTERNAL FUNCTIONS used to write derivative parsers
 
 Command and environment functions take the following arguments (in
 addition to the $self object):
@@ -1722,7 +1720,7 @@ attached to the following string.
 =item Some commands should be added to the environment stack
 
 These commands should be specified by couples.
-This could allow to specify commands beginning or ending a verbatim
+This can be used to specify commands beginning or ending a verbatim
 environment.
 
 =item Others
@@ -1755,3 +1753,7 @@ under the terms of GPL (see the COPYING file).
 =cut
 
 1;
+
+__END__
+
+#  LocalWords: Charset charset po UTF gettext msgid nostrip LaTeX

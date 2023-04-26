@@ -202,10 +202,10 @@ sub show_version {
 }
 
 Getopt::Long::Configure( 'no_auto_abbrev', 'no_ignore_case' );
-my ( $outfile, $width, $threshold ) = ( '-', 80, 80 );
-my ( $help, $help_fmt, @verbose, $debug, $wrappo, @addfiles, $format, @options );
+my ( $outfile,         $width,    $threshold ) = ( '-', 80, 80 );
+my ( $help,            $help_fmt, @verbose, $debug, $wrappo, @addfiles, $format, @options, $no_deprecation );
 my ( $master_filename, $po_filename );
-my ( $mastchar, $locchar, $addchar );
+my ( $mastchar,        $locchar, $addchar );
 GetOptions(
     'help|h'      => \$help,
     'help-format' => \$help_fmt,
@@ -223,6 +223,9 @@ GetOptions(
 
     'option|o=s' => \@options,
 
+    # undocumented option to silence the warning about po4a-translate being deprecated
+    'no-deprecation' => \$no_deprecation,
+
     'width|w=s' => \$width,
     'verbose|v' => \@verbose,
     'debug|d'   => \$debug,
@@ -231,11 +234,11 @@ GetOptions(
     'version|V' => \&show_version
 ) or pod2usage();
 
-$help && pod2usage( -verbose => 1, -exitval => 0 );
+$help     && pod2usage( -verbose => 1, -exitval => 0 );
 $help_fmt && Locale::Po4a::Chooser::list(0);
 
 ( defined($master_filename) && length($master_filename) ) || pod2usage();
-( defined($po_filename)     && length($po_filename) )     || pod2usage();
+( defined($po_filename) && length($po_filename) )         || pod2usage();
 -e $master_filename || die wrap_msg( gettext("File %s does not exist."), $master_filename );
 -e $po_filename     || die wrap_msg( gettext("File %s does not exist."), $po_filename );
 
@@ -254,6 +257,11 @@ foreach (@options) {
     } else {
         $options{$_} = 1;
     }
+}
+
+unless ($no_deprecation) {
+    print wrap_msg(
+        gettext("po4a-translate is deprecated. The unified po4a(1) program is more convenient and less error prone.") );
 }
 
 # parser
@@ -320,13 +328,6 @@ if ( $percent < $threshold ) {
         }
     }
     $doc->write($outfile);
-}
-
-my ( $ok, $msg ) = $doc->is_po_uptodate();
-unless ($ok) {
-    warn wrap_msg(
-        gettext("Your input po file %s seems outdated (%s). Please consider running po4a-updatepo to refresh it."),
-        $po_filename, $msg );
 }
 
 1;

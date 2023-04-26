@@ -12,7 +12,7 @@ use Testhelper;
 my @tests;
 
 foreach my $t (
-    qw(Titles BlockTitles BlockId Paragraphs DelimitedBlocks Lists Footnotes Callouts Comments Tables TablesImageText Attributes StyleMacro)
+    qw(Titles BlockTitles BlockId Paragraphs DelimitedBlocks Lists Footnotes Callouts Comments Tables TablesImageText Attributes StyleMacro MacroIncludesHugo)
   )
 {
     push @tests, { 'format' => 'asciidoc', 'input' => "fmt/asciidoc/$t.adoc" };
@@ -43,6 +43,11 @@ push @tests,
     'input'   => "fmt/asciidoc/CharsetUtf.adoc",
   },
   {
+    'format'  => 'asciidoc',
+    'options' => '-o nolinting=1',
+    'input'   => "fmt/asciidoc/LineBreak.adoc",
+  },
+  {
     'format' => 'asciidoc',
     'input'  => "fmt/asciidoc/CharsetLatin1.adoc",
   },
@@ -55,6 +60,12 @@ push @tests,
     'format'  => 'asciidoc',
     'options' => "-o yfm_skip_array -o yfm_keys='title , subtitle,paragraph'",
     'input'   => "fmt/asciidoc/YamlFrontMatter_Option.adoc",
+  },
+  {
+    'doc'     => "That the yfm_keys and yfm_paths options actually work",
+    'format'  => 'asciidoc',
+    'options' => "-o yfm_skip_array -o yfm_keys='subtitle  , paragraph' -o yfm_paths='people title'",
+    'input'   => "fmt/asciidoc/YamlFrontMatter_KeysPaths.adoc",
   };
 
 run_all_tests(@tests);
