@@ -50,7 +50,7 @@ It is a very simple module, but still young.
 
 package Locale::Po4a::BibTeX;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -143,4 +143,4 @@ sub do_paragraph {
  Copyright © 2006 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).

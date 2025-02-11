@@ -1,7 +1,7 @@
 # Locale::Po4a::Pod -- Convert POD data to PO file, for translation.
 #
 # This program is free software; you may redistribute it and/or modify it
-# under the terms of GPL (see COPYING file).
+# under the terms of GPL v2.0 or later (see COPYING file).
 #
 # This module converts POD to PO file, so that it becomes possible to
 # translate POD formatted documentation. See gettext documentation for
@@ -12,11 +12,11 @@
 ############################################################################
 
 use Pod::Parser;
-use Locale::Po4a::TransTractor qw(process new get_out_charset);
+use Locale::Po4a::TransTractor qw(process new get_in_charset get_out_charset);
 
 package Locale::Po4a::Pod;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -26,6 +26,8 @@ use vars qw(@ISA);
 @ISA = qw(Locale::Po4a::TransTractor Pod::Parser);
 
 use Carp qw(croak confess);
+
+use Locale::Po4a::Common;
 
 sub initialize { }
 
@@ -82,9 +84,28 @@ sub command {
     } elsif ( $command eq 'encoding' ) {
         my $charset = $paragraph;
         $charset =~ s/^\s*(.*?)\s*$/$1/s;
-        $self->detected_charset($charset)
 
-          # The =encoding line will be added by docheader
+        my $master_charset = $self->get_in_charset;
+
+        # in POD at least, there is no difference between utf8 and UTF-8. The major POD parsers handle "both encodings" in the exact same way.
+        # Despite https://perldoc.perl.org/Encode#UTF-8-vs.-utf8-vs.-UTF8
+        $master_charset = 'UTF-8' if $master_charset // '' =~ /utf-?8/i;
+        $charset        = 'UTF-8' if $charset              =~ /utf-?8/i;
+
+        if ( length( $master_charset // '' ) > 0 && uc($charset) ne uc($master_charset) ) {
+            croak wrap_mod(
+                "po4a::pod",
+                dgettext(
+                    "po4a",
+                    "The file %s declares %s as encoding, but you provided %s as master charset. Please change either setting."
+                ),
+                $self->{DOCPOD}{refname},
+                $charset,
+                $master_charset,
+            );
+        }
+
+        # The =encoding line will be added by docheader
     } else {
         $paragraph = $self->translate( $paragraph, $self->{DOCPOD}{refname} . ":$line_num", "=$command", "wrap" => 1 );
         $self->pushline("=$command $paragraph\n\n");
@@ -135,10 +156,12 @@ sub textblock {
 sub end_pod { }
 
 sub read {
-    my ( $self, $filename, $refname ) = @_;
-
-    push @{ $self->{DOCPOD}{infile} }, ( $filename, $refname );
-    $self->Locale::Po4a::TransTractor::read( $filename, $refname );
+    my ( $self, $filename, $refname, $charset ) = @_;
+    $charset ||= "UTF-8";
+    my $fh;
+    open $fh, "<:encoding($charset)", $filename;
+    push @{ $self->{DOCPOD}{infile} }, ( $fh, $refname );
+    $self->Locale::Po4a::TransTractor::read( $filename, $refname, $charset );
 }
 
 sub parse {
@@ -146,9 +169,10 @@ sub parse {
 
     my @list = @{ $self->{DOCPOD}{infile} };
     while ( scalar @list ) {
-        my ( $filename, $refname ) = ( shift @list, shift @list );
+        my ( $fh, $refname ) = ( shift @list, shift @list );
         $self->{DOCPOD}{refname} = $refname;
-        $self->parse_from_file($filename);
+        $self->parse_from_filehandle($fh);
+        close $fh;
     }
 }
 
@@ -197,7 +221,7 @@ Locale::Po4a::Pod - convert POD data from/to PO files
 =head1 SYNOPSIS
 
     use Locale::Po4a::Pod;
-    my $parser = Locale::Po4a::Pod->new (sentence => 0, width => 78);
+    my $parser = Locale::Po4a::Pod->new();
 
     # Read POD from STDIN and write to STDOUT.
     $parser->parse_from_filehandle;
@@ -220,11 +244,11 @@ pages, see below) which contains:
   C<" #n">
 
 Lack of luck, in the po4a version, this was split on the space by the
-wrapping. As result, in the original version, the man page contains
+wrapping. As result, in the original version, the man page contains:
 
  " #n"
 
-and mine contains
+and mine contains:
 
  "" #n""
 
@@ -232,14 +256,15 @@ which is logic since CE<lt>foobarE<gt> is rewritten "foobar".
 
 Complete list of pages having this problem on my box (from 564 pages; note
 that it depends on the chosen wrapping column):
-/usr/lib/perl5/Tk/MainWindow.pod
-/usr/share/perl/5.8.0/overload.pod
-/usr/share/perl/5.8.0/pod/perlapi.pod
-/usr/share/perl/5.8.0/pod/perldelta.pod
-/usr/share/perl/5.8.0/pod/perlfaq5.pod
-/usr/share/perl/5.8.0/pod/perlpod.pod
-/usr/share/perl/5.8.0/pod/perlre.pod
-/usr/share/perl/5.8.0/pod/perlretut.pod
+
+ /usr/lib/perl5/Tk/MainWindow.pod
+ /usr/share/perl/5.8.0/overload.pod
+ /usr/share/perl/5.8.0/pod/perlapi.pod
+ /usr/share/perl/5.8.0/pod/perldelta.pod
+ /usr/share/perl/5.8.0/pod/perlfaq5.pod
+ /usr/share/perl/5.8.0/pod/perlpod.pod
+ /usr/share/perl/5.8.0/pod/perlre.pod
+ /usr/share/perl/5.8.0/pod/perlretut.pod
 
 
 
@@ -249,62 +274,6 @@ As a derived class from Pod::Parser, Locale::Po4a::Pod supports the same
 methods and interfaces.  See L<Pod::Parser> for all the details; briefly,
 one creates a new parser with C<< Locale::Po4a::Pod->new() >> and then
 calls either parse_from_filehandle() or parse_from_file().
-
-new() can take options, in the form of key/value pairs, that control the
-behavior of the parser.  The recognized options common to all Pod::Parser
-children are:
-
-=over 4
-
-=item B<alt>
-
-If set to a true value, selects an alternate output format that, among other
-things, uses a different heading style and marks B<=item> entries with a
-colon in the left margin.  Defaults to false.
-
-=item B<code>
-
-If set to a true value, the non-POD parts of the input file will be included
-in the output.  Useful for viewing code documented with POD blocks with the
-POD rendered and the code left intact.
-
-=item B<indent>
-
-The number of spaces to indent regular text, and the default indentation for
-B<=over> blocks.  Defaults to 4.
-
-=item B<loose>
-
-If set to a true value, a blank line is printed after a B<=head1> heading.
-If set to false (the default), no blank line is printed after B<=head1>,
-although one is still printed after B<=head2>.  This is the default because
-it's the expected formatting for manual pages; if you're formatting
-arbitrary text documents, setting this to true may result in more pleasing
-output.
-
-=item B<quotes>
-
-Sets the quote marks used to surround CE<lt>> text.  If the value is a
-single character, it is used as both the left and right quote; if it is two
-characters, the first character is used as the left quote and the second as
-the right quote; and if it is four characters, the first two are used as
-the left quote and the second two as the right quote.
-
-This may also be set to the special value B<none>, in which case no quote
-marks are added around CE<lt>> text.
-
-=item B<sentence>
-
-If set to a true value, Locale::Po4a::Pod will assume that each sentence
-ends in two spaces, and will try to preserve that spacing.  If set to
-false, all consecutive whitespace in non-verbatim paragraphs is compressed
-into a single space.  Defaults to true.
-
-=item B<width>
-
-The column at which to wrap text on the right-hand side.  Defaults to 76.
-
-=back
 
 =head1 SEE ALSO
 
@@ -323,6 +292,6 @@ L<po4a(7)|po4a.7>
 Copyright © 2002 SPI, Inc.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut

@@ -1,0 +1,23 @@
+From 28fe52651eb8096d97d6bd3a97b3168522ba5306 Mon Sep 17 00:00:00 2001
+From: Martin Quinson <martin.quinson@ens-rennes.fr>
+Date: Fri, 12 Jul 2024 10:21:34 +0200
+Subject: Fix failures with DynaLoader on Perl 5.40
+
+Thanks to dstoecker for the patch provided in the OpenSuse package,
+and to ana for pointing me to it.
+
+Fixes https://github.com/mquinson/po4a/issues/508
+
+diff --git a/lib/Locale/Po4a/TransTractor.pm b/lib/Locale/Po4a/TransTractor.pm
+index 7bf59ef0..7b611243 100644
+--- a/lib/Locale/Po4a/TransTractor.pm
++++ b/lib/Locale/Po4a/TransTractor.pm
+@@ -5,6 +5,8 @@ require Exporter;
+ package Locale::Po4a::TransTractor;
+ use DynaLoader;
+ 
++sub import { }
++
+ use 5.16.0;
+ use strict;
+ use warnings;

@@ -1,0 +1,24 @@
+po4a (0.73-1) unstable; urgency=medium
+
+    Starting with v0.70, po4a enforces stricter rules regarding encodings.
+    Before, it was relying on the default Perl behavior to do "the right
+    thing", happily parsing latin-1 or UTF-8 files and converting to the Perl
+    internal string representation. The drawback was that this setup forced
+    po4a to convert back and forth internally after reading and before
+    writing.
+
+    The v0.70 code uses PerlIO to handle all encoding issues automatically,
+    removing all manual conversions in the code of po4a. However, this
+    requires users to specify the used encoding more precisely.
+
+    This new behavior broke the build of several Debian packages. In some
+    cases, it was just the result of po4a being less forgiving about user
+    configuration (e.g. Debian's #1072643). In Debian's #1073038, it was that
+    po4a made a difference between utf8 and UTF-8 in the encoding
+    specification embedded in a POD file. There is no such difference in this
+    context, only in Perl internals: utf8 is lax parsing while UTF-8 is picky
+    parsing, but both lead to the same result if the file is correctly
+    encoded following the UTF-8 standard. po4a now takes UTF-8 (picky parsing)
+    in both cases for POD files.
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sat, 22 Jun 2024 23:06:43 +0200

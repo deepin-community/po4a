@@ -42,8 +42,20 @@ Only the comments starting with 'TRANSLATORS' are added to the PO files to guide
 
 =head1 STATUS OF THIS MODULE
 
-This module is still beta.
-Please send feedback and feature requests.
+This module is still beta and not ready for production use.
+Please send patches to contribute, not bug reports as we don't know how to deal with them.
+
+=head1 OPTIONS ACCEPTED BY THIS MODULE
+
+These are this module's particular options:
+
+=over 4
+
+=item no-warn
+
+Do not warn about the current state of this module.
+
+=back
 
 =head1 SEE ALSO
 
@@ -60,13 +72,13 @@ L<po4a(7)|po4a.7>
 Copyright © 2004-2007 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut
 
 package Locale::Po4a::Texinfo;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -173,6 +185,10 @@ sub parse {
     my $t         = "";
     $docheader_pushed = 0;
 
+    print STDERR "The TexInfo module of po4a is not ready for production use, and needs a new maintainer.\n"
+      . "Please contact the po4a team if you want to help: send us patches, not bug reports.\n"
+      . "(use -o no-warn to remove this message)\n"
+      unless $self->{options}{'no-warn'};
   LINE:
     undef $self->{type};
     ( $line, $ref ) = $self->shiftline();
@@ -336,7 +352,7 @@ sub translate_buffer_menuentry {
 
     my $translated_buffer = "";
 
-    if (   $buffer =~ m/^(.*?)(::)\s+(.*)$/s
+    if (   $buffer =~ m/^(.*?)(::)(?:\s+(.*))?$/s
         or $buffer =~ m/^(.*?: .*?)(\.)\s+(.*)$/s )
     {
         my ( $name, $sep, $description ) = ( $1, $2, $3 );
@@ -347,7 +363,9 @@ sub translate_buffer_menuentry {
             $translated_buffer .= ' ' x ( $menu_sep_width - 1 - $l );
             $l = $menu_sep_width - 1;
         }
-        ( $t, @e ) = $self->translate_buffer( $description, $no_wrap, @env );
+        if ($description) {
+            ( $t, @e ) = $self->translate_buffer( $description, $no_wrap, @env );
+        }
 
         # Replace newlines with space for proper wrapping
         # See https://github.com/mquinson/po4a/issues/122

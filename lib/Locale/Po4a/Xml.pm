@@ -48,7 +48,7 @@ XML-based documents.
 
 package Locale::Po4a::Xml;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -71,6 +71,7 @@ my %entities;
 
 my @comments;
 my %translate_options_cache;
+my $input_charset;
 
 # This shiftline function returns the next line of the document being parsed
 # (and its reference).
@@ -115,7 +116,7 @@ sub shiftline {
                 }
                 next if ($tmp_in_comment);
 
-                open( my $in, $entities{$k} )
+                open( my $in, '<:encoding(' . ( $input_charset // 'UTF-8' ) . ')', $entities{$k} )
                   or croak wrap_mod( "po4a::xml::shiftline", dgettext( "po4a", "%s: Cannot read from %s: %s" ),
                     $ref, $entities{$k}, $! );
                 while ( defined( my $textline = <$in> ) ) {
@@ -158,14 +159,18 @@ sub shiftline {
 }
 
 sub read {
-    my ( $self, $filename, $refname ) = @_;
+    my ( $self, $filename, $refname, $charset ) = @_;
+    croak wrap_mod( "po4a::xml", dgettext( "po4a", "Cannot have more than one input charset in XML files (%s and %s)" ),
+        $input_charset, $charset )
+      if ( defined $input_charset && $input_charset ne $charset );
+    $input_charset = $charset;
     push @{ $self->{DOCPOD}{infile} }, $filename;
-    $self->Locale::Po4a::TransTractor::read( $filename, $refname );
+    $self->Locale::Po4a::TransTractor::read( $filename, $refname, $charset );
 }
 
 sub parse {
     my $self = shift;
-    map { $self->parse_file($_) } @{ $self->{DOCPOD}{infile} };
+    map { $self->{'current_file'} = $_; $self->parse_file($_) } @{ $self->{DOCPOD}{infile} };
 }
 
 # @save_holders is a stack of references to ('paragraph', 'translation',
@@ -890,11 +895,38 @@ sub tag_trans_xmlhead {
     # We don't have to translate anything from here: throw away references
     my $tag = $self->join_lines(@tag);
     $tag =~ /encoding=(("|')|)(.*?)(\s|\2)/s;
-    my $in_charset = $3;
-    $self->detected_charset($in_charset);
+    my $in_charset  = $3;
     my $out_charset = $self->get_out_charset;
 
     if ( defined $in_charset ) {
+        if ( length( $input_charset // '' ) > 0 && uc($in_charset) ne uc($input_charset) ) {
+            if (   ( $in_charset eq 'UTF-8' || lc($in_charset) eq 'utf8' )
+                && ( $input_charset eq 'UTF-8' || lc($input_charset) eq 'utf8' ) )
+            {
+                croak wrap_mod(
+                    "po4a::pod",
+                    dgettext(
+                        "po4a",
+                        "The file %s declares %s as encoding, but you provided %s as master charset. Please change either setting because they really are different encoding in Perl. See https://perldoc.perl.org/Encode#UTF-8-vs.-utf8-vs.-UTF8"
+                    ),
+                    $self->{DOCPOD}{refname},
+                    $in_charset,
+                    $input_charset,
+                );
+            } else {
+                croak wrap_mod(
+                    "po4a::pod",
+                    dgettext(
+                        "po4a",
+                        "The file %s declares %s as encoding, but you provided %s as master charset. Please change either setting."
+                    ),
+                    $self->{DOCPOD}{refname},
+                    $in_charset,
+                    $input_charset,
+                );
+            }
+        }
+
         $tag =~ s/$in_charset/$out_charset/;
     } else {
         if ( $tag =~ m/standalone/ ) {
@@ -1043,9 +1075,7 @@ sub tag_trans_close {
             warn wrap_ref_mod(
                 $tag[1],
                 "po4a::xml",
-                dgettext(
-                    "po4a", "Unexpected closing tag </%s> found. The main document may be wrong.  Continuing…"
-                ),
+                dgettext( "po4a", "Unexpected closing tag </%s> found. The main document may be wrong.  Continuing…" ),
                 $name
             );
         } elsif ( $ontagerror ne "silent" ) {
@@ -1218,9 +1248,9 @@ $self->unshiftline($$) >>.
 =cut
 
 sub extract_tag {
-    my ( $self, $type, $remove ) = ( shift, shift, shift );
+    my ( $self,   $type, $remove ) = ( shift, shift, shift );
     my ( $match1, $match2 ) = ( $tag_types[$type]->{beginning}, $tag_types[$type]->{end} );
-    my ( $eof, @tag );
+    my ( $eof,    @tag );
     if ( defined( $tag_types[$type]->{f_extract} ) ) {
 
         # <!--# ... -->, <!-- ... -->, <!DOCTYPE ... >, or <![CDATA[ ... ]]>
@@ -1437,7 +1467,7 @@ sub treat_attributes {
                                 $ref, $value,
                                 $self->get_path . $name
                             ) if $self->{options}{'debug'};
-                            $text .= $self->recode_skipped_text($value);
+                            $text .= $value;
                         }
                         $text .= $quot;
                     }
@@ -1701,16 +1731,17 @@ sub treat_content {
             # Append or remove the opening/closing tag from the tag path
             if ( $tag_types[$type]->{'end'} eq "" ) {
                 if ( $tag_types[$type]->{'beginning'} eq "" ) {
-                    $self->treat_content_open_tag(\@tag, \@paragraph, \@text);
+                    $self->treat_content_open_tag( \@tag, \@paragraph, \@text );
                 } elsif ( $tag_types[$type]->{'beginning'} eq "/" ) {
-                    $self->treat_content_close_tag(\@tag, \@paragraph, \@text);
+                    $self->treat_content_close_tag( \@tag, \@paragraph, \@text );
                 }
             } elsif ( $tag_types[$type]->{'beginning'} eq ""
-                && $tag_types[$type]->{'end'} eq "/" ) {
+                && $tag_types[$type]->{'end'} eq "/" )
+            {
                 # As for empty-element tag,
                 # treat as if both open and close tags exist
-                $self->treat_content_open_tag(\@tag, \@paragraph, \@text);
-                $self->treat_content_close_tag(\@tag, \@paragraph, \@text);
+                $self->treat_content_open_tag( \@tag, \@paragraph, \@text );
+                $self->treat_content_close_tag( \@tag, \@paragraph, \@text );
             }
             push @paragraph, @text;
         }
@@ -1788,7 +1819,7 @@ sub treat_content {
 # Performs special process for placeholder and attribute folding.
 sub treat_content_open_tag {
     my $self = shift;
-    my ($tag, $paragraph, $text) = @_;
+    my ( $tag, $paragraph, $text ) = @_;
 
     # tag is <tag >
     my $cur_tag_name = $self->get_tag_name(@$tag);
@@ -1803,9 +1834,9 @@ sub treat_content_open_tag {
         my $last_holder = $save_holders[$#save_holders];
         my $placeholder_str =
             "<placeholder type=\""
-            . $cur_tag_name
-            . "\" id=\""
-            . ( $#{ $last_holder->{'sub_translations'} } + 1 ) . "\"/>";
+          . $cur_tag_name
+          . "\" id=\""
+          . ( $#{ $last_holder->{'sub_translations'} } + 1 ) . "\"/>";
         push @$paragraph, ( $placeholder_str, $text->[1] );
         my @saved_paragraph = @$paragraph;
 
@@ -1813,13 +1844,12 @@ sub treat_content_open_tag {
 
         # make attributes be able to be translated
         my $open_tag = $self->join_lines(@$text);
-        if ($open_tag =~ m/^<(\s*)(\S+\s+\S.*)>$/s) {
-            my ($ws, $tag_inner) = ($1, $2);
+        if ( $open_tag =~ m/^<(\s*)(\S+\s+\S.*)>$/s ) {
+            my ( $ws, $tag_inner ) = ( $1, $2 );
             $tag_inner =~ s|(\s*/)$||;
             my $postfix = $1;
             push @path, $cur_tag_name;
-            $open_tag = "<" . $ws . $self->treat_attributes($tag_inner)
-                . $postfix . ">";
+            $open_tag = "<" . $ws . $self->treat_attributes($tag_inner) . $postfix . ">";
             pop @path;
         }
 
@@ -1851,7 +1881,7 @@ sub treat_content_open_tag {
         my $tag_full = $self->join_lines(@$text);
         my $tag_ref  = $text->[1];
         if ( $tag_full =~ m/^<(\s*)(\S+\s+\S.*)>$/s ) {
-            my ($ws, $tag_inner) = ($1, $2);
+            my ( $ws, $tag_inner ) = ( $1, $2 );
             my $holder = $save_holders[$#save_holders];
             my $id     = 0;
             foreach ( keys %{ $holder->{folded_attributes} } ) {
@@ -1862,9 +1892,7 @@ sub treat_content_open_tag {
             $tag_inner =~ s|(\s*/)$||;
             my $postfix = $1;
             push @path, $cur_tag_name;
-            $holder->{folded_attributes}->{$id} =
-                "<" . $ws . $self->treat_attributes($tag_inner)
-                . $postfix . ">";
+            $holder->{folded_attributes}->{$id} = "<" . $ws . $self->treat_attributes($tag_inner) . $postfix . ">";
             pop @path;
 
             @$text = ( "<$cur_tag_name po4a-id=$id>", $tag_ref );
@@ -1881,7 +1909,7 @@ sub treat_content_open_tag {
 # Performs special process for placeholder.
 sub treat_content_close_tag {
     my $self = shift;
-    my ($tag, $paragraph, $text) = @_;
+    my ( $tag, $paragraph, $text ) = @_;
 
     # tag is </tag>
 
@@ -1897,21 +1925,12 @@ sub treat_content_close_tag {
             warn wrap_ref_mod(
                 $tag->[1],
                 "po4a::xml",
-                dgettext(
-                    "po4a",
-                    "Unexpected closing tag </%s> found. The main document may be wrong.  Continuing…"
-                ),
+                dgettext( "po4a", "Unexpected closing tag </%s> found. The main document may be wrong.  Continuing…" ),
                 $name
             );
         } elsif ( $ontagerror ne "silent" ) {
-            die wrap_ref_mod(
-                $tag->[1],
-                "po4a::xml",
-                dgettext(
-                    "po4a", "Unexpected closing tag </%s> found. The main document may be wrong."
-                ),
-                $name
-            );
+            die wrap_ref_mod( $tag->[1], "po4a::xml",
+                dgettext( "po4a", "Unexpected closing tag </%s> found. The main document may be wrong." ), $name );
         }
     }
 
@@ -1950,7 +1969,6 @@ sub treat_content_close_tag {
         @$paragraph = @{ $previous_holder->{'paragraph'} };
     }
 }
-
 
 # Translate a @paragraph array of (string, reference).
 # The $translate argument indicates if the strings must be translated or
@@ -2036,7 +2054,7 @@ sub translate_paragraph {
                 "%s: path='%s', translation option='%s' (no translation)",
                 $paragraph[1], $self->get_path, $translate
             ) if $self->{options}{'debug'};
-            $self->pushline( $self->recode_skipped_text($para) );
+            $self->pushline($para);
         }
     }
 
@@ -2401,7 +2419,7 @@ sub get_string_until {
     if ( defined( $options->{unquoted} ) ) { $unquoted = $options->{unquoted}; }
     if ( defined( $options->{regex} ) )    { $regex    = $options->{regex}; }
 
-    my ( $line, $ref )   = $self->shiftline();
+    my ( $line, $ref ) = $self->shiftline();
     my ( @text, $paragraph );
     my ( $eof,  $found ) = ( 0, 0 );
 
@@ -2531,7 +2549,7 @@ L<po4a(7)|po4a.7>
  Copyright © 2008-2009 Nicolas François <nicolas.francois@centraliens.net>
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut
 

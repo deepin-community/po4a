@@ -46,7 +46,7 @@ paragraph won't be rewrapped.
 
 package Locale::Po4a::Text;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -68,10 +68,11 @@ These are this module's particular options:
 
 =item B<keyvalue>
 
-Treat paragraphs that look like a key value pair as verbatim (with the no-wrap flag in the PO file).
-Key value pairs are defined as a line containing one or more non-colon
-and non-space characters followed by a colon followed by at least one
-non-space character before the end of the line.
+Treat paragraphs that look like a colon-separated key-value pair as verbatim
+(with the C<no-wrap> flag in the PO file). A key-value pair string is a string
+like C<key: value>, containing one or more non-colon and non-space characters 
+followed by a colon followed by at least one non-space character before the
+end of the line.
 
 =cut
 
@@ -82,7 +83,7 @@ my $keyvalue = 0;
 Deactivate the detection of bullets.
 
 By default, when a bullet is detected, the bullet paragraph is not considered
-as a verbatim paragraph (with the no-wrap flag in the PO file). Instead, the
+as a verbatim paragraph (with the C<no-wrap> flag in the PO file). Instead, the
 corresponding paragraph is rewrapped in the translation.
 
 =cut
@@ -192,10 +193,10 @@ Do not translate array values in the YAML Front Matter section.
 
 my $yfm_skip_array = 0;
 
-=item B<control>[B<=>I<taglist>]
+=item B<control>[B<=>I<field_list>]
 
-Handle control files.
-A comma-separated list of tags to be translated can be provided.
+Handle Debian's control files.
+A comma-separated list of fields to be translated can be provided.
 
 =cut
 
@@ -618,6 +619,18 @@ sub parse_markdown_yaml_front_matter {
         last if ( $nextline =~ /^(---|\.\.\.)$/ );
         $yfm .= $nextline;
         ( $nextline, $nextref ) = $self->shiftline();
+        if ( $nextline =~ /: [\[\{]/ ) {
+            die wrap_mod(
+                "po4a::text",
+                dgettext(
+                    "po4a",
+                    "Inline lists and dictionaries on a single line are not correctly handled the parser we use (YAML::Tiny): they are interpreted as regular strings. "
+                      . "Please use multi-lines definitions instead. Offending line:\n %s"
+                ),
+                $nextline
+            );
+
+        }
         push @saved_ctn, ( $nextline, $nextref );
     }
 
@@ -736,6 +749,24 @@ sub parse_markdown {
         $self->pushline( $line . "\n" );
         $paragraph        = "";
         $end_of_paragraph = 1;
+    } elsif ( $line =~ /^([ ]{0,3})(\[[^\]]+\]:[ \t]?.+)$/ ) {
+        my $indentation   = $1;
+        my $linkreference = $2;
+
+        # Link reference
+        # TODO: support multiline link reference definition
+        # TODO: treat link title properly
+        # https://spec.commonmark.org/0.30/#link-reference-definitions
+        do_paragraph( $self, $paragraph, $wrapped_mode );
+        $wrapped_mode = 0;
+        $paragraph    = "";
+        my $t = $self->translate(
+            $linkreference, $self->{ref}, "Link reference",
+            "wrap"  => 0,
+            "flags" => "link-reference"
+        );
+        $self->pushline( $indentation . $t . "\n" );
+        $wrapped_mode = $defaultwrap;
     } elsif ( $line =~ /^([ ]{0,3})(([~`])\3{2,})(\s*)([^`]*)\s*$/ ) {
         my $fence_space_before  = $1;
         my $fence               = $2;
@@ -774,7 +805,7 @@ sub parse_markdown {
 
         # fenced div block (fenced with ::: where code blocks are fenced with ` or ~)
         # https://pandoc.org/MANUAL.html#divs-and-spans
-        my $info = join( "|" , map {chomp $_;$_} @info_string );
+        my $info = join( "|", map { chomp $_; $_ } @info_string );
         my $type = "Fenced div block" . ( $info ? " ($info)" : "" );
         do_paragraph( $self, $paragraph, $wrapped_mode );
         $wrapped_mode = 0;
@@ -796,21 +827,21 @@ sub parse_markdown {
 
             #            print STDERR "within $lvl: $nextline";
             if ( $nextline =~ /^\s*:::+\s*$/ ) {
-                my $info = join( "|" , map {chomp $_;$_} @info_string );
+                my $info = join( "|", map { chomp $_; $_ } @info_string );
                 $type = "Fenced div block" . ( $info ? " ($info)" : "" );
-                if ($paragraph ne "") {
+                if ( $paragraph ne "" ) {
                     do_paragraph( $self, $paragraph, $wrapped_mode, $type );
-                    $paragraph        = "";
+                    $paragraph = "";
                 }
                 $self->pushline($nextline);
                 $lvl--;
-                while (scalar @info_string > $lvl) {
+                while ( scalar @info_string > $lvl ) {
                     pop @info_string;
                 }
             } elsif ( $nextline =~ /^([ ]{0,3})(([:])\3{2,})(\s*)([^`]*)\s*$/ ) {
-                if ($paragraph ne "") {
+                if ( $paragraph ne "" ) {
                     do_paragraph( $self, $paragraph, $wrapped_mode, $type );
-                    $paragraph        = "";
+                    $paragraph = "";
                 }
                 $self->pushline($nextline);
                 push @info_string, $5;
@@ -877,11 +908,14 @@ sub parse {
           &$parse_func( $self, $line, $ref, $paragraph, $wrapped_mode, $expect_header, $end_of_paragraph );
 
         # paragraphs starting by a bullet, or numbered
-        # or paragraphs with a line containing many consecutive spaces
-        # (more than 3)
+        # or paragraphs with a line containing more than 3 consecutive spaces
         # are considered as verbatim paragraphs
         $wrapped_mode = 0 if ( $paragraph =~ m/^(\*|[0-9]+[.)] )/s
             or $paragraph =~ m/[ \t][ \t][ \t]/s );
+
+        # Paragraphs starting with a table formating (GH extension) are also considered verbatim
+        $wrapped_mode = 0 if ( $paragraph =~ m/^\|/ );
+
         $wrapped_mode = 0 if ( $tabs eq "verbatim"
             and $paragraph =~ m/\t/s );
 
@@ -1029,7 +1063,7 @@ Tested successfully on simple text files and NEWS.Debian files.
  Copyright © 2020 Martin Quinson <mquinson#debian.org>.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut
 

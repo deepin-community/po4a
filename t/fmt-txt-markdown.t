@@ -26,6 +26,13 @@ push @tests,
     'format'  => 'text',
     'options' => '-o markdown',
     'input'   => "fmt/txt-markdown/NestedLists.md",
+  },
+  {
+    'doc'     => "Rewrap output of a Markdown file to the given width",
+    'format'  => 'text',
+    'options' => '-o markdown -w 40',
+    'input'   => "fmt/txt-markdown/Width.md",
+    'skip'    => { 'updatepo' => 1 }
   };
 
 # Some tests specific to the Pandoc dialect of Markdown
@@ -64,6 +71,13 @@ push @tests,
     'format'  => 'text',
     'options' => "-o markdown -o yfm_lenient ",
     'input'   => "fmt/txt-markdown/YamlFrontMatter_fake.md",
+  },
+  {
+    'doc'     => "Handle tables in markdown files, even if it's a GitHub extension.",
+    'skip'    => { 'updatepo' => 1 },
+    'format'  => 'text',
+    'options' => "-o markdown ",
+    'input'   => "fmt/txt-markdown/Tables.md",
   };
 
 run_all_tests(@tests);

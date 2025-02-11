@@ -4,10 +4,10 @@ eval 'exec perl -S $0 ${1+"$@"}'
 
 # po4a-normalize -- normalize documentation files
 #
-# Copyright 2002-2020 by SPI, inc.
+# Copyright 2002-2023 by SPI, inc.
 #
 # This program is free software; you can redistribute it and/or modify it
-# under the terms of GPL (see COPYING).
+# under the terms of GPL v2.0 or later (see COPYING).
 
 =encoding UTF-8
 
@@ -44,13 +44,30 @@ plugin for more information about the valid options and their meanings. For
 example, you could pass '-o tablecells' to the AsciiDoc parser, while the 
 text parser would accept '-o tabs=split'.
 
+=item B<-w>, B<--width>
+
+Column at which we should wrap the resulting file if the format supports it
+(default: 76).
+
 =item B<-b>, B<--blank>
 
-Create an blank translated document.
+Create a blank translated document.
 The generated translated document will be generated assuming all messages
 are translated by a space or new line.
 
 This is useful to check what parts of the document cannot be translated.
+
+Both B<--blank> and B<--capitalize> can't be specified at the same time.
+
+=item B<-C>, B<--capitalize>
+
+Create a translated document and corresponding po-file with original strings
+translated as their capitalized versions.
+
+This is useful to check what parts of the document cannot be translated and
+generate test data for po4a.
+
+Both B<--blank> and B<--capitalize> can't be specified at the same time.
 
 =item B<-h>, B<--help>
 
@@ -98,14 +115,14 @@ L<po4a(7)>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2002-2020 by SPI, inc.
+Copyright 2002-2023 by SPI, inc.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -124,9 +141,10 @@ sub show_version {
     exit 0;
 }
 
-my ( $blank, $help_fmt, $help, $type, $debug, $verbose, $quiet, $wrappo, @options, $no_deprecation );
+my ( $help_fmt, $help, $type, $debug, $verbose, $quiet, $wrappo, @options, $no_deprecation );
+my ( $blank, $capitalize );
 my ($mastchar);
-my ( $localized, $potfile ) = ( 'po4a-normalize.output', 'po4a-normalize.po' );
+my ( $localized, $potfile, $width ) = ( 'po4a-normalize.output', 'po4a-normalize.po', 76 );
 Getopt::Long::Configure( 'no_auto_abbrev', 'no_ignore_case' );
 GetOptions(
     'help|h'        => \$help,
@@ -135,7 +153,8 @@ GetOptions(
     'localized|l=s' => \$localized,
     'pot|p=s'       => \$potfile,
 
-    'blank|b' => \$blank,
+    'blank|b'      => \$blank,
+    'capitalize|C' => \$capitalize,
 
     'master-charset|M=s' => \$mastchar,
 
@@ -145,6 +164,7 @@ GetOptions(
     'option|o=s' => \@options,
     'wrap-po=s'  => \$wrappo,
 
+    'width|w=s' => \$width,
     'verbose|v' => \$verbose,
     'quiet|q'   => \$quiet,
     'debug|d'   => \$debug,
@@ -158,7 +178,11 @@ pod2usage() unless scalar @ARGV == 1;
 my %options = (
     "verbose" => $verbose,
     "debug"   => $debug,
+    "wrapcol" => $width
 );
+if ($blank and $capitalize) {
+    die wrap_msg( gettext("Both B<--blank> and B<--capitalize> can't be specified at the same time."));
+}
 foreach (@options) {
     if (m/^([^=]*)=(.*)$/) {
         $options{$1} = "$2";
@@ -175,42 +199,39 @@ unless ($no_deprecation) {
         )
     );
 }
-
 my $parser = Locale::Po4a::Chooser::new( $type, %options );
-if ( length $mastchar && $mastchar !~ /ascii/i && $mastchar ne "CHARSET" ) {
-    $parser->{TT}{ascii_input} = 0;
-    $parser->detected_charset($mastchar);
-}
-$parser->{TT}{utf_mode}        = 1;
-$parser->{TT}{file_in_charset} = $mastchar;
 
 my $filename = shift || pod2usage(1);
 $filename eq '-' || -e $filename || die wrap_msg( gettext("File %s does not exist."), $filename );
 die wrap_msg( gettext("Options %s and %s cannot be provided together"), "quiet", "verbose" ) if $verbose && $quiet;
 
-$parser->read( $filename, $filename );
+$parser->read( $filename, $filename, $mastchar // '' );
 my %pot_options = ( 'wrap-po' => $wrappo );
 $parser->setpoout( Locale::Po4a::Po->new( \%pot_options ) );
 $parser->parse();
-if ($blank) {
+if ($blank or $capitalize) {
     foreach my $msgid ( keys %{ $parser->{TT}{po_out}{po} } ) {
-        if ( $msgid =~ m/\n$/s ) {
-            $parser->{TT}{po_out}{po}{$msgid}{'msgstr'} = "\n";
-        } else {
-            $parser->{TT}{po_out}{po}{$msgid}{'msgstr'} = " ";
+        if ( $blank ) {
+            if ( $msgid =~ m/\n$/s ) {
+                $parser->{TT}{po_out}{po}{$msgid}{'msgstr'} = "\n";
+            } else {
+                $parser->{TT}{po_out}{po}{$msgid}{'msgstr'} = " ";
+            }
+        } else { # $capitalize
+            ($parser->{TT}{po_out}{po}{$msgid}{'msgstr'} = $msgid) =~ s/(?<!\\)(.)/\U$1/g;
         }
     }
-    my $empty_po = $parser->{TT}{po_out};
+    my $modified_po = $parser->{TT}{po_out};
     $parser = Locale::Po4a::Chooser::new( $type, %options );
-    $parser->{TT}{po_in} = $empty_po;
-    $parser->read($filename);
-    $parser->{TT}{utf_mode}        = 1;
+    $parser->{TT}{po_in} = $modified_po;
+    $parser->read($filename, $filename, $mastchar // '' );
     $parser->{TT}{file_in_charset} = $mastchar;
     $parser->parse();
+    $parser->{TT}{po_out} = $modified_po;
 }
 print wrap_msg( dgettext( "po4a", "Write the normalized document to %s." ), $localized )
   unless $quiet;
-$parser->write($localized);
+$parser->write( $localized, '' );
 print wrap_msg( dgettext( "po4a", "Write the normalized PO file to %s." ), $potfile )
   unless $quiet;
 $parser->writepo($potfile);
