@@ -1,3 +1,43 @@
+po4a (0.73-2) unstable; urgency=medium
+
+  * Fix a FTBFS with Perl 5.40 by cherry-picking a patch from upstream
+    Closes: #1078042
+
+ -- Martin Quinson <mquinson@debian.org>  Tue, 06 Aug 2024 12:35:53 +0200
+
+po4a (0.73-1) unstable; urgency=medium
+
+  * New upstream version 0.73
+    - Fix undefined subroutine Locale::Po4a::Pod::dgettext.
+      Closes: #1073038
+  * Add d/NEWS with an explanation about the stricter encoding rules
+    since v0.70. Closes: #1072643
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Sun, 23 Jun 2024 17:05:19 +0200
+
+po4a (0.72-1) unstable; urgency=medium
+
+  * New upstream version 0.72
+    - po4a-updatepo:
+      Do not pass empty PO files to msgmerge, as it stumbles on such things
+      when the POT file has UTF chars in the msgids. (Closes: #1022216)
+    - Documentation:
+      Revamp the po4a(7) document now that the po4a-scripts are deprecated.
+      Explain why they are, and don't mention them in the described
+      workflow. (Closes: #1036824)
+    - Man/Groff:
+      Properly handle \c escape sequence in .TP parameters (Closes: #1036826)
+  * Update d/copyright
+  * debian/copyright: use spaces rather than tabs to start continuation lines.
+    Changes-By: lintian-brush
+    Fixes: lintian: tab-in-license-text
+    See-also: https://lintian.debian.org/tags/tab-in-license-text.html
+  * Add upstream metadata
+  * Update Standards-Version to 4.7.0, no changes needed
+  * Fix double slash in d/watch URL
+
+ -- Dr. Tobias Quathamer <toddy@debian.org>  Thu, 30 May 2024 14:14:41 +0200
+
 po4a (0.69-1) unstable; urgency=medium
 
   [ Jean-Noël Avila ]

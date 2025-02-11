@@ -71,13 +71,13 @@ L<po4a(7)|po4a.7>
 Copyright © 2004-2008 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
 
 =cut
 
 package Locale::Po4a::Halibut;
 
-use 5.006;
+use 5.16.0;
 use strict;
 use warnings;
 

@@ -12,7 +12,7 @@ use Testhelper;
 my @tests;
 
 foreach my $t (
-    qw(Titles BlockTitles BlockId Paragraphs DelimitedBlocks Lists Footnotes Callouts Comments Tables TablesImageText Attributes StyleMacro MacroIncludesHugo)
+    qw(Titles BlockTitles BlockId Paragraphs DelimitedBlocks Lists Footnotes Callouts Comments Tables TablesImageText Attributes StyleMacro MacroIncludesHugo IndexEntries)
   )
 {
     push @tests, { 'format' => 'asciidoc', 'input' => "fmt/asciidoc/$t.adoc" };
@@ -39,17 +39,13 @@ push @tests,
   },
   {
     'format'  => 'asciidoc',
-    'options' => '-M UTF-8',
-    'input'   => "fmt/asciidoc/CharsetUtf.adoc",
-  },
-  {
-    'format'  => 'asciidoc',
     'options' => '-o nolinting=1',
     'input'   => "fmt/asciidoc/LineBreak.adoc",
   },
   {
-    'format' => 'asciidoc',
-    'input'  => "fmt/asciidoc/CharsetLatin1.adoc",
+    'format'  => 'asciidoc',
+    'options' => '-o cleanspaces=1',
+    'input'   => "fmt/asciidoc/CleanSpaces.adoc",
   },
   {
     'format' => 'asciidoc',

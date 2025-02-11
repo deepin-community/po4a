@@ -21,7 +21,7 @@ the AsciiDoc format.
 
 package Locale::Po4a::AsciiDoc;
 
-use 5.010;
+use 5.16.0;
 use strict;
 use warnings;
 
@@ -87,7 +87,7 @@ Note that not wrapping the files produced by po4a should not be a
 problem since those files are meant to be processed automatically.
 They should not be regarded as source files anyway.
 
-With this option, po4a will produce better-looking source files, that
+With this option, po4a will produce better-looking AsciiDoc files, but it
 may lead to possibly erroneous formatted outputs.
 
 =item B<noimagetargets>
@@ -110,6 +110,11 @@ equality of length of opening and closing block fences.
 =item B<nolinting>
 
 Disable linting messages. When the source code cannot be fixed for clearer document structure, these messages are useless.
+
+=item B<cleanspaces>
+
+Remove extra spaces from the source segments in no-wrap mode. This is useful when the
+translation tools are sensitive to the number of spaces.
 
 =item B<yfm_keys>
 
@@ -221,6 +226,7 @@ sub initialize {
     $self->{options}{'yfm_skip_array'} = 0;
     $self->{options}{'yfm_paths'}      = '';
     $self->{options}{'nolinting'}      = 0;
+    $self->{options}{'cleanspaces'}    = 0;
 
     foreach my $opt ( keys %options ) {
         die wrap_mod( "po4a::asciidoc", dgettext( "po4a", "Unknown option: %s" ), $opt )
@@ -262,6 +268,7 @@ sub initialize {
     $self->register_attributelist('[caption]');
     $self->register_attributelist('[-icons,caption]');
     $self->register_macro('image_[1,alt,title,link]') unless $self->{options}{'noimagetargets'};
+    $self->register_macro('indexterm[1,2,3]') unless $self->{options}{'noimagetargets'};
 
     if ( $self->{options}{'definitions'} ) {
         $self->parse_definition_file( $self->{options}{'definitions'} );
@@ -394,13 +401,20 @@ BEGIN {
 sub translate {
     my ( $self, $str, $ref, $type ) = @_;
     my (%options) = @_;
-    if ( ($options{'wrap'}==1) && ($str =~ / \+\n/) ) {
-        $options{'wrap'} = 0;
-        $str =~ s/([^+])\n/$1 /g;
-	$str =~ s/ \+\n/\n/g;
-        $str = $self->SUPER::translate( $str, $ref, $type, %options);
-	$str =~ s/\n/ +\n/g;
-	$options{'wrap'} = 1;
+    if ( $options{'wrap'} == 1 ) {
+	if ($str =~ / \+\n/) {
+	    $options{'wrap'} = 0;
+	    $str =~ s/([^+])\n/$1 /g;
+	    $str =~ s/ \+\n/\n/g;
+	    $str = $self->SUPER::translate( $str, $ref, $type, %options);
+	    $str =~ s/\n/ +\n/g;
+	    $options{'wrap'} = 1;
+	} else {
+	    if ( $self->{options}{'cleanspaces'} == 1 ) {
+		$str =~ s/[ \n]+/ /g;
+	    }
+	    $str = $self->SUPER::translate( $str, $ref, $type, %options);
+	}
     } else {
         $str = $self->SUPER::translate( $str, $ref, $type, %options );
     }
@@ -582,6 +596,8 @@ sub parse {
             do_paragraph( $self, $paragraph, $wrapped_mode );
             $wrapped_mode = 0;
             $paragraph    = "";
+	    $self->pushline( $titlelevel1 . $titlespaces);
+	    $title = $self->translate_indexterms($title);
             my $t = $self->translate(
                 $title,
                 $self->{ref},
@@ -589,7 +605,7 @@ sub parse {
                 "comment" => join( "\n", @comments ),
                 "wrap"    => 0
             );
-            $self->pushline( $titlelevel1 . $titlespaces . $t . $titlelevel2 . "\n" );
+            $self->pushline( $t . $titlelevel2 . "\n" );
             @comments     = ();
             $wrapped_mode = 1;
         } elsif ( ( $line =~ m/^(\/{4,}|\+{4,}|-{4,}|\.{4,}|\*{4,}|_{4,}|={4,}|~{4,})$/ )
@@ -687,9 +703,19 @@ sub parse {
         {
             # Found BlockId
             do_paragraph( $self, $paragraph, $wrapped_mode );
-            $paragraph    = "";
+	    my $block_id = $1;
+	    $paragraph    = "";
             $wrapped_mode = 1;
-            $self->pushline( $line . "\n" );
+	    if ($block_id =~ m/^([^,]+),(.+)$/) {
+		# Found BlockId with a xlabel
+		my $xlabel = $2;
+		$block_id = $1;
+		$self->pushline( "[[$block_id," );
+		do_paragraph( $self, $xlabel, 0);
+		$self->pushline( "]]\n" );
+	    } else {
+		$self->pushline( $line . "\n" );
+	    }
             undef $self->{bullet};
             undef $self->{indent};
         } elsif ( not defined $self->{verbatim}
@@ -718,7 +744,7 @@ sub parse {
             undef $self->{bullet};
             undef $self->{indent};
         } elsif ( not defined $self->{verbatim}
-            and ( $line =~ m/^\[.*\]$/ ) )
+            and ( $line =~ m/^\[[^\]]+\]$/ ) )
         {
             do_paragraph( $self, $paragraph, $wrapped_mode );
             $paragraph = "";
@@ -748,7 +774,7 @@ sub parse {
             undef $self->{bullet};
             undef $self->{indent};
         } elsif ( not defined $self->{verbatim}
-            and ( $line =~ m/^(\s*)([-%~\$[*_+`'#<>[:alnum:]\\"(].*?)((?::::?|;;|\?\?|:-)(?: *\\)?)$/ ) )
+            and ( $line =~ m/^(\s*)([-%~\$[*_+`'#<>[:alnum:]\\"(|\{].*?)((?::::?|;;|\?\?|:-)(?: *\\)?)$/ ) )
         {
             my $indent   = $1;
             my $label    = $2;
@@ -798,13 +824,18 @@ sub parse {
             my $attrname  = $1;
             my $attrsep   = $2;
             my $attrvalue = $3;
-            while ( $attrvalue =~ s/ \+$//s ) {
+	    my $linebreak = "";
+            while ( $attrvalue =~ s/ ([\\+])$//s ) {
+		$linebreak = $1;
+		# add a carriage return at the end of attrvalue if there is none
+		$attrvalue .= "\n" if $attrvalue !~ m/\n$/;
                 ( $line, $ref ) = $self->shiftline();
                 $ref  =~ m/^(.*):[0-9]+$/;
-                $line =~ s/^\s+//;
+                $line =~ s/^\s+|\s+$//;
+		print STDERR "appending attribute with $line" if $debug{parse};
                 $attrvalue .= $line;
             }
-
+	    print STDERR "attr definition: $attrvalue\n" if $debug{parse};
             # Found an Attribute entry
             do_paragraph( $self, $paragraph, $wrapped_mode );
             $paragraph    = "";
@@ -817,10 +848,12 @@ sub parse {
                     $self->{ref},
                     "Attribute :$attrname:",
                     "comment" => join( "\n", @comments ),
-                    "wrap"    => 0
+                    "wrap"    => 1
                 );
+		$t =~ s/\n/ \\\n/g;
                 $self->pushline(":$attrname$attrsep$t\n");
             } else {
+		$attrvalue =~ s/\n/ $linebreak\n/g;
                 $self->pushline(":$attrname$attrsep$attrvalue\n");
             }
             @comments = ();
@@ -858,6 +891,7 @@ sub parse {
                 @comments = ();
             }
         } elsif ( not defined $self->{verbatim}
+		  and ($paragraph =~ m/^\s*$/)
             and ( $line !~ m/^\.\./ )
             and ( $line =~ m/^\.(\S.*)$/ ) )
         {
@@ -879,7 +913,7 @@ sub parse {
             $self->pushline(".$t\n");
             @comments = ();
         } elsif ( not defined $self->{verbatim}
-            and ( $line =~ m/^(\s*)((?:[-*o+\.]+|(?:[0-9]+[.\)])|(?:[a-z][.\)])|\([0-9]+\))\s+)(.*)$/ ) )
+            and ( $line =~ m/^(\s*)((?:(?:[-*o+\.]+(?:\s+\[[ xX\*]\])?)|(?:[0-9]+[.\)])|(?:[a-z][.\)])|\([0-9]+\))\s+)(.*)$/ ) )
         {
             my $indent = $1 || "";
             my $bullet = $2;
@@ -898,6 +932,9 @@ sub parse {
             $paragraph      = $text . "\n";
             $self->{indent} = "";
             $self->{bullet} = $bullet;
+	} elsif ( not defined $self->{verbatim}
+		  and ( $line eq " +") ) {
+	    $paragraph .= $line . "\n";
         } elsif ( ( $line =~ /^\s*$/ ) and ( !defined( $self->{type} ) or ( $self->{type} ne "Table" ) ) ) {
 
             # When not in table, empty lines or lines containing only spaces do break paragraphs
@@ -1037,7 +1074,7 @@ sub parse {
 
             if (   ( $paragraph ne "" && $self->{bullet} && length( $self->{indent} || "" ) == 0 ) )
             {
-		if ( !$self->{options}{'nolinting'} ) {
+		if ( ( !$self->{options}{'nolinting'} ) && ($paragraph !~ m/ \+\n/ ) ) {
 		    # Second line of an item block is not indented. It is unindented
 		    # (and allowed) additional text or a new list item.
 		    warn wrap_mod(
@@ -1059,12 +1096,6 @@ sub parse {
             $paragraph .= $line . "\n";
         }
 
-        # paragraphs starting by a bullet, or numbered
-        # or paragraphs with a line containing many consecutive spaces
-        # (more than 3)
-        # are considered as verbatim paragraphs
-        $wrapped_mode = 0 if ( $paragraph =~ m/^(\*|[0-9]+[.)] )/s
-            or $paragraph =~ m/[ \t][ \t][ \t]/s );
         ( $line, $ref ) = $self->shiftline();
     }
     if ( length $paragraph ) {
@@ -1107,13 +1138,13 @@ sub do_paragraph {
         # - blah         o blah         + blah
         # 1. blah       1) blah       (1) blah
       TEST_BULLET:
-        if ( $paragraph =~ m/^(\s*)((?:[-*o+]|([0-9]+[.\)])|\([0-9]+\))\s+)([^\n]*\n)(.*)$/s ) {
+        if ( $paragraph =~ m/^(\s*)((?:(?:[-*o+](?:\s+\[[ Xx\*]\])?)|([0-9]+[.\)])|\([0-9]+\))\s+)([^\n]*\n)(.*)$/s ) {
             my $para    = $5;
             my $bullet  = $2;
             my $indent1 = $1;
             my $indent2 = "$1" . ( ' ' x length $bullet );
             my $text    = $4;
-            while ( $para !~ m/$indent2(?:[-*o+]|([0-9]+[.\)])|\([0-9]+\))\s+/
+            while ( $para !~ m/$indent2(?:(?:[-*o+](?:\\s+[[ Xx\*]\])?)|([0-9]+[.\)])|\([0-9]+\))\s+/
                 and $para =~ s/^$indent2(\S[^\n]*\n)//s )
             {
                 $text .= $1;
@@ -1149,9 +1180,15 @@ sub do_paragraph {
 
     my $end = "";
     if ($wrap) {
-        $paragraph =~ s/^(.*?)(\n*)$/$1/s;
-        $end = $2 || "";
+        $paragraph =~ s/(\n*)$//s;
+        $end = $1 || "";
     }
+    if ( defined $self->{bullet} ) {
+        my $bullet  = $self->{bullet};
+        my $indent1 = $self->{indent};
+	$self->pushline($indent1 . $bullet);
+    }
+    $paragraph = $self->translate_indexterms($paragraph);
 
     my $t = $self->translate(
         $paragraph,
@@ -1165,18 +1202,63 @@ sub do_paragraph {
 
     my $unwrap_result = !$self->{options}{'forcewrap'} && $wrap && (! ($t =~ /\+\n/) ) ;
     if ($unwrap_result) {
-        $t =~ s/(\n| )+/ /g;
+        $t =~ s/[\n ]+/ /g;
     }
 
     @comments = ();
-    if ( defined $self->{bullet} ) {
+    if ( ( defined $self->{bullet} ) && !($t =~ /\+\n/ ) ) {
         my $bullet  = $self->{bullet};
         my $indent1 = $self->{indent};
         my $indent2 = $indent1 . ( ' ' x length($bullet) );
-        $t =~ s/^/$indent1$bullet/s;
         $t =~ s/\n(.)/\n$indent2$1/sg;
     }
     $self->pushline( $t . $end );
+}
+
+sub translate_indexterms {
+    my ($self, $paragraph) = @_;
+    $paragraph = $self->translate_in_regex($paragraph, qr/\(\(\(([^\)]+)\)\)\)/);
+    return $self->translate_in_regex($paragraph, qr/indexterm:\[([^\]]+)\]/);
+}
+
+sub translate_in_regex {
+    # Detect index entries and translate them separately.
+    # They are moved in front of the paragraph, regardless of their original location,
+    #  but that's consistant with the specification.
+    my ($self, $paragraph, $pattern) = @_;
+    if ( my @indexes = ($paragraph =~ m/$pattern/g ) ) {
+	for my $index (@indexes) {
+	    my @terms = ();
+	    while (
+		$index =~ m/\G(
+       "(?:[^"\\])+"               # quoted term
+       |  (?:[^,\\])+                # unquoted term
+         )(,\s*+)?/gx
+      )
+	    {
+		my $term = $1;
+		if ( $term =~ /^"(.*)"$/ ) {
+		    push @terms, '"' . ($self->translate(
+				  $1,
+				  $self->{ref},
+				  "Index entry",
+				  "wrap" => 1,
+				  "wrapcol" => 0)) . '"';
+		} else {
+		    push @terms, $self->translate(
+				  $term,
+				  $self->{ref},
+				  "Index entry",
+				  "wrap" => 1,
+				  "wrapcol" => 0);
+		}
+	    }
+	    $self->pushline("(((" . join (",", @terms) . ")))");
+
+	}
+    }
+    $paragraph =~ s/$pattern\n?//g;
+    return $paragraph;
 }
 
 sub parse_style {
@@ -1340,8 +1422,6 @@ sub unquote_space {
     return $text;
 }
 
-1;
-
 =head1 STATUS OF THIS MODULE
 
 Tested successfully on simple AsciiDoc files.
@@ -1358,7 +1438,11 @@ Tested successfully on simple AsciiDoc files.
  Copyright © 2017 Martin Quinson <mquinson#debian.org>.
 
 This program is free software; you may redistribute it and/or modify it
-under the terms of GPL (see the COPYING file).
+under the terms of GPL v2.0 or later (see the COPYING file).
+
+=cut
+
+1;
 
 __END__
 

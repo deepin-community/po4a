@@ -1,5 +1,12 @@
+# Po4aBuilder -- tools and configs to build the po4a distribution when releasing
+#
+# This program is free software; you may redistribute it and/or modify it
+# under the terms of GPL v2.0 or later (see COPYING).
+
 package Po4aBuilder;
 
+use 5.16.0;
+use strict;
 use Module::Build;
 use File::Basename;
 use File::Path qw(mkpath rmtree);
@@ -7,7 +14,7 @@ use File::Spec;
 use File::Copy qw(copy);
 use File::stat;
 
-@ISA = qw(Module::Build);
+our @ISA = qw(Module::Build);
 
 sub ACTION_build {
     my $self = shift;
@@ -60,7 +67,7 @@ sub ACTION_binpo {
         chdir "../..";
 	
         if ( -e "po/bin/po4a.pot") {
-            $diff = qx(diff -q -I'#:' -I'POT-Creation-Date:' -I'PO-Revision-Date:' po/bin/po4a.pot po/bin/po4a.pot.new);
+            my $diff = qx(diff -q -I'#:' -I'POT-Creation-Date:' -I'PO-Revision-Date:' po/bin/po4a.pot po/bin/po4a.pot.new);
             if ( $diff eq "" ) {
                 unlink "po/bin/po4a.pot.new" || die;
                 # touch it
@@ -78,15 +85,15 @@ sub ACTION_binpo {
 
     foreach (@{$self->rscan_dir('po/bin',qr{\.po$})}) {
         my $lang = fileparse($_, qw{.po});
-      # DO NOT update languages. They are updated by the weblate robot directly
-      if (0) {
+      # Only update german languages. The others updated by the weblate robot directly
+      if ($lang eq 'de') {
         unless ($self->up_to_date("po/bin/po4a.pot", $_)) {
             print "XX Sync $_: ";
             system("msgmerge --previous $_ po/bin/po4a.pot -o $_.new") && die;
             # Typically all that changes was a date. I'd
             # prefer not to commit such changes, so detect
             # and ignore them.
-            $diff = qx(diff -q -I'#:' -I'POT-Creation-Date:' -I'PO-Revision-Date:' $_ $_.new);
+            my $diff = qx(diff -q -I'#:' -I'POT-Creation-Date:' -I'PO-Revision-Date:' $_ $_.new);
             if ($diff eq "") {
                 unlink "$_.new" || die;
                 # touch it
@@ -173,13 +180,13 @@ sub ACTION_man {
     # Translate binaries manpages
     my %options;
     $options{utf8} = 1;
-    my $parser = Pod::Man->new (%options);
+    my $parser = Pod::Man->new(%options);
 
-    my $manpath  = File::Spec->catdir( 'blib', 'man' );
-    File::Path::rmtree( $manpath, 0, 1);
+    my $manpath = File::Spec->catdir( 'blib', 'man' );
+    File::Path::rmtree( $manpath, 0, 1 );
 
-    my $cmd = "perl -Ilib po4a "; # Use this version of po4a
-    $cmd .= $ENV{PO4AFLAGS}." " if defined($ENV{PO4AFLAGS});
+    my $cmd = "perl -Ilib po4a ";    # Use this version of po4a
+    $cmd .= $ENV{PO4AFLAGS} . " " if defined( $ENV{PO4AFLAGS} );
     $cmd .= "--previous po/pod.cfg";
     system($cmd) and die;
 
@@ -191,19 +198,20 @@ sub ACTION_man {
     File::Path::mkpath( $man3path, 0, oct(755) ) or die;
     File::Path::mkpath( $man5path, 0, oct(755) ) or die;
     File::Path::mkpath( $man7path, 0, oct(755) ) or die;
-    copy ( File::Spec->catdir("doc", "po4a.7.pod"), $man7path) or die;
-    foreach $file (perl_scripts()) {
-        $file =~ m,([^/]*)$,;
-        copy($file, File::Spec->catdir($man1path, "$1.1p.pod")) or die "Cannot copy $file over";
-    }
-    foreach $file (@{$self->rscan_dir('lib',qr{\.pm$})}) {
-        $file =~ m,([^/]*).pm$,;
-        copy($file, File::Spec->catdir($man3path, "Locale::Po4a::$1.3pm.pod")) or die;
-    }
-    $self->delete_filetree( File::Spec->catdir("blib", "bindoc") );
-    $self->delete_filetree( File::Spec->catdir("blib", "libdoc") );
+    copy( File::Spec->catdir( "doc", "po4a.7.pod" ), $man7path ) or die;
 
-    foreach $file (@{$self->rscan_dir($manpath, qr{\.pod$})}) {
+    foreach my $file ( perl_scripts() ) {
+        $file =~ m,([^/]*)$,;
+        copy( $file, File::Spec->catdir( $man1path, "$1.1p.pod" ) ) or die "Cannot copy $file over";
+    }
+    foreach my $file ( @{ $self->rscan_dir( 'lib', qr{\.pm$} ) } ) {
+        $file =~ m,([^/]*).pm$,;
+        copy( $file, File::Spec->catdir( $man3path, "Locale::Po4a::$1.3pm.pod" ) ) or die;
+    }
+    $self->delete_filetree( File::Spec->catdir( "blib", "bindoc" ) );
+    $self->delete_filetree( File::Spec->catdir( "blib", "libdoc" ) );
+
+    foreach my $file ( @{ $self->rscan_dir( $manpath, qr{\.pod$} ) } ) {
         next if $file =~ m/^man7/;
         my $out = $file;
         $out =~ s/\.pod$//;
@@ -211,49 +219,52 @@ sub ACTION_man {
         $parser->{name} =~ s/^.*\///;
         $parser->{name} =~ s/^(.*).(1p|3pm|5|7)/$1/;
         $parser->{section} = $2;
-        if ($parser->{section} ne "3pm") {
+        if ( $parser->{section} ne "3pm" ) {
             $parser->{name} = uc $parser->{name};
         }
 
         my $lang = $out;
         $lang =~ s/^blib\/man\/([^\/]*)\/.*$/$1/;
 
-        if ($lang =~ m/man\d/) {
-                $parser->{release} = $parser->{center} = "Po4a Tools";
+        if ( $lang =~ m/man\d/ ) {
+            $parser->{release} = $parser->{center} = "Po4a Tools";
         } else {
-                my $command;
-                $command = "msggrep -K -E -e \"Po4a Tools\" po/pod/$lang.po |";
-                $command .= "msgconv -t UTF-8 | ";
-                $command .= "msgexec /bin/sh -c '[ -n \"\$MSGEXEC_MSGID\" ] ";
-                $command .= "&& cat || cat > /dev/null'";
+            my $command;
+            $command = "msggrep -K -E -e \"Po4a Tools\" po/pod/$lang.po |";
+            $command .= "msgconv -t UTF-8 | ";
+            $command .= "msgexec /bin/sh -c '[ -n \"\$MSGEXEC_MSGID\" ] ";
+            $command .= "&& cat || cat > /dev/null'";
 
-                my $title = `$command 2> /dev/null`;
-                $title = "Po4a Tools" unless length $title;
-                $title = Encode::decode_utf8($title);
-                $parser->{release} = $parser->{center} = $title;
+            my $title = `$command 2> /dev/null`;
+            $title             = "Po4a Tools" unless length $title;
+            $title             = Encode::decode_utf8($title);
+            $parser->{release} = $parser->{center} = $title;
         }
-        $parser->parse_from_file ($file, $out);
+        $parser->parse_from_file( $file, $out );
 
         system("gzip -9 -n -f $out") and die;
         unlink "$file" || die;
     }
 
-    if ($^O ne 'MSWin32') {
+    if ( $^O ne 'MSWin32' ) {
+
         # Install the manpages written in XML DocBook
-        foreach $file (qw(po4a-display-man.xml po4a-display-pod.xml)) {
-            copy ( File::Spec->catdir("share", "doc", $file), $man1path) or die;
+        foreach my $file (qw(po4a-display-man.xml po4a-display-pod.xml)) {
+            copy( File::Spec->catdir( "share", "doc", $file ), $man1path ) or die;
         }
-        foreach $file (@{$self->rscan_dir($manpath, qr{\.xml$})}) {
-            if ($file =~ m,(.*/man(.))/([^/]*)\.xml$,) {
-                my ($outdir, $section, $outfile) = ($1, $2, $3);
-            if (-e "/usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl") { # Location on Debian at least
-            print "Convert $outdir/$outfile.$section (local docbook.xsl file). ";
-            system("xsltproc -o $outdir/$outfile.$section --nonet /usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl $file") and die;
-            } else { # Not found locally, use the XSL file online
-            print "Convert $outdir/$outfile.$section (online docbook.xsl file). ";
-            system("xsltproc -o $outdir/$outfile.$section --nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $file") and die;
-            }
-                system ("gzip -9 -n -f $outdir/$outfile.$section") and die;
+        my $docbook_xsl_url   = "http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl";
+        my $local_docbook_xsl = `xmlcatalog --noout "" "$docbook_xsl_url"` =~ m,file://(.+\.xsl), && $1;
+        foreach my $file ( @{ $self->rscan_dir( $manpath, qr{\.xml$} ) } ) {
+            if ( $file =~ m,(.*/man(.))/([^/]*)\.xml$, ) {
+                my ( $outdir, $section, $outfile ) = ( $1, $2, $3 );
+                if ($local_docbook_xsl) {
+                    print "Convert $outdir/$outfile.$section (local docbook.xsl file). ";
+                    system("xsltproc -o $outdir/$outfile.$section --nonet $local_docbook_xsl $file") and die;
+                } else {    # Not found locally, use the XSL file online
+                    print "Convert $outdir/$outfile.$section (online docbook.xsl file). ";
+                    system("xsltproc -o $outdir/$outfile.$section --nonet $docbook_xsl_url $file") and die;
+                }
+                system("gzip -9 -n -f $outdir/$outfile.$section") and die;
             }
             unlink "$file" || die;
         }
@@ -281,8 +292,7 @@ sub postats {
     print "$dir (pot: $potsize)\n";
     my @files = @{$self->rscan_dir($dir,qr{\.po$})};
     my (@t100,@t95,@t90,@t80,@t70,@t50,@t33,@t20,@starting);
-    foreach (sort @files) {
-        $file = $_;
+    foreach my $file (sort @files) {
         my $lang = fileparse($file, qw{.po});
         my $stat = `msgfmt -o /dev/null -c --statistics $file 2>&1`;
 	my ($trans, $fuzz, $untr) = (0,0,0);
@@ -293,7 +303,7 @@ sub postats {
 	} elsif ($stat =~ /(\d+)/) {
 	  ($trans) = ($1);
 	} else {
-	  print "Unparsable content\n";
+	  print "Unparsable content: $stat\n";
 	}
         my $total = $trans+$fuzz+$untr;
 	my $ratio = $trans / $total * 100;

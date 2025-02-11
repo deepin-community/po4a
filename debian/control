@@ -5,7 +5,7 @@ Maintainer: Martin Quinson <mquinson@debian.org>
 Uploaders: Jonas Smedegaard <dr@jones.dk>,
            Denis Barbier <barbier@debian.org>,
            Dr. Tobias Quathamer <toddy@debian.org>
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 Build-Depends-Indep: docbook,
                      docbook-xml,
                      docbook-xsl,
@@ -20,7 +20,11 @@ Build-Depends-Indep: docbook,
                      perl,
                      texlive-binaries,
                      texlive-latex-base,
+		     libxml2-utils,
+		     docbook-xsl,
                      xsltproc
+# libxml2-utils brings xmlcatalog
+# docbook-xsl gives /usr/share/xml/docbook/stylesheet/docbook-xsl/manpages/docbook.xsl which is used to install the manpages written in XML DocBook
 Build-Depends:
  debhelper-compat (= 13),
  libmodule-build-perl
@@ -55,13 +59,22 @@ Description: tools to ease the translation of documentation
  .
    - Asciidoc: Asciidoc documentation format
    - Dia: uncompressed Dia diagrams.
+   - Docbook: DocBook XML.
+   - guide: Gentoo Linux's XML documentation format.
+   - halibut: Simon Tatham's documentation production system.
    - INI: the INI format
    - KernelHelp: Help messages of each kernel compilation option.
    - LaTeX: generic TeX or LaTeX format.
+   - Man: Good old manual page format (either roff or mdoc).
+   - markdown: MD documents (using the txt module).
    - Man: either roff or mdoc format.
    - POD: Perl documentation format.
+   - RubyDoc: RubyDoc (RD) format.
    - SGML: either DebianDoc or DocBook DTD.
-   - RubyDoc: Ruby documentation format.
-   - Texinfo: the info page format.
+   - Texinfo: the info page format (experimental).
+   - tex: generic TeX documents (see also latex).
+   - text: simple text document.
+   - wml: WML documents.
+   - xhtml: XHTML documents.
    - XML: very configurable (preconfigured for DocBook, XHTML, Guide, WML).
    - Yaml: Yaml documents.

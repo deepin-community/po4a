@@ -40,11 +40,6 @@ push @tests,
     'input'   => "fmt/yaml/skiparray.yaml",
   },
   {
-    'format'  => 'yaml',
-    'options' => "-M UTF-8",
-    'input'   => "fmt/yaml/utf8.yaml",
-  },
-  {
     'doc'     => "basic -o keys='Name' -o paths='Name,Level1 Dir,invoice,bill-to address city' -o skip_array",
     'format'  => 'yaml',
     'input'   => "fmt/yaml/basic.yaml",
@@ -61,6 +56,10 @@ push @tests,
     'potfile' => 'fmt/yaml/pathsoption1.pot',
     'pofile'  => 'fmt/yaml/pathsoption1.po',
     'trans'   => 'fmt/yaml/pathsoption1.trans',
+  },
+  {
+    'format' => "yaml",
+    'input'  => "fmt/yaml/arraylikestring.yaml",
   };
 
 run_all_tests(@tests);

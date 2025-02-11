@@ -4,8 +4,8 @@ Upstream-Contact: Martin Quinson <mquinson@debian.org>
 Source: https://po4a.org
 
 Files: *
-Copyright: © 2002-2023 Martin Quinson <mquinson@debian.org>
-           © 2002-2023 Software in the Public Interest, Inc.
+Copyright: © 2002-2024 Martin Quinson <mquinson@debian.org>
+           © 2002-2024 Software in the Public Interest, Inc.
            © 1995 David Megginson <dmeggins@aix1.uottawa.ca>
            © 2004 Jordi Vilalta  <jvprat@gmail.com>
            © 2005-2009 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>
@@ -16,8 +16,8 @@ License: GPL-2.0+
 
 Files: lib/Locale/Po4a/RubyDoc.pm
 Copyright: © 2016-2017 Francesco Poli <invernomuto@paranoici.org>
-					 © 2004 MoonWolf <moonwolf@moonwolf.com>
-					 © 2011-2012 Youhei SASAKI <uwabami@gfd-dennou.org>
+ 					 © 2004 MoonWolf <moonwolf@moonwolf.com>
+ 					 © 2011-2012 Youhei SASAKI <uwabami@gfd-dennou.org>
 License: GPL-2.0+
 
 Files: lib/Locale/Po4a/Yaml.pm
@@ -29,7 +29,7 @@ Copyright: © 2002-2023 Martin Quinson <mquinson@debian.org>
            © 2005-2009 Nicolas FRANÇOIS <nicolas.francois@centraliens.net>
            © 2009 Neil Williams <linux@codehelp.co.uk>
            © 2003-2013 Denis Barbier <barbier@debian.org>
-           © 2018-2023 Dr. Tobias Quathamer <toddy@debian.org>
+           © 2018-2024 Dr. Tobias Quathamer <toddy@debian.org>
 License: GPL-2.0+
 
 License: GPL-2.0+

@@ -1,5 +1,4 @@
-# Provides a common test routine to avoid repeating the same
-# code over and over again.
+# Provides common test routines to avoid repeating the same code over and over again.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -68,6 +67,9 @@
 #            If the file does not exist, the normalization is expected to not output anything
 #   - error (optional boolean -- default: false): whether the normalization is expected to fail
 #            If so, the translation is not attempted (and the translation files don't have to exist)
+#   - skip (optional): a set of stages that should be skipped, may contain 'normalize', 'translation' or 'updatepo'
+#                      in any combination
+#   - trans (default: $basename.trans): expected translated document (translated with provided PO file)
 #   - trans_stderr (optional -- default: $basename.trans.stderr): expected output of the translation
 #            If the file does not exist, the normalization is expected to not output anything
 #   - options (optional): options to pass to the translation, updatepo and normalization
@@ -78,6 +80,7 @@
 
 package Testhelper;
 
+use 5.16.0;
 use strict;
 use warnings;
 use Test::More 'no_plan';
@@ -269,7 +272,7 @@ sub run_one_po4aconf {
     pass("Change directory back to $cwd");
 
     my $expected_outfile = $t->{'expected_outfile'} // "$path/_output";
-    unless ( $t->{'diff_outfile'} ) {
+    unless ( -e $expected_outfile ) {
         $expected_outfile = "$path/$expected_outfile"
           if ( not -e $expected_outfile ) && ( -e "$path/$expected_outfile" );
         unless ( -e $expected_outfile ) {
@@ -293,11 +296,11 @@ sub run_one_po4aconf {
     }
 
     my %expected;
-    map { $expected{$_} = 1 } split / +/, $expected_files;
+    map { s/\\ / /g; $expected{$_} = 1 } split /(?<!\\) +/, $expected_files;
     if ( length $expected_files == 0 ) {
         note("Expecting no output file.");
     } else {
-        note( "Expecting " . ( scalar %expected ) . " output files: $expected_files" );
+        note( "Expecting " . ( scalar %expected ) . " output files: " . join( ":", keys %expected ) );
     }
     $expected{'output'}      = 1;
     $expected{'diff_output'} = 1;
@@ -312,12 +315,17 @@ sub run_one_po4aconf {
         } else {
             delete $expected{$file};
             next FILE if $file eq 'output' || $file eq 'diff_output';
+            next FILE if -d "$path/$file";
             if ( scalar grep { m{$tmppath/$file} } @tests ) {
                 note("Using the provided test to compare the content of $file");
             } elsif ( -e "$path/_$file" ) {
-                push @tests, ( $file =~ 'pot?$' ? "PODIFF -I#: " : "diff -u" ) . " $path/_$file $tmppath/$file";
+                push @tests,
+                  ( $file =~ 'pot?$' ? "PODIFF -I#: " : "diff -u --strip-trailing-cr" )
+                  . " \"$path/_$file\" \"$tmppath/$file\"";
             } elsif ( -e "$path/$file" ) {
-                push @tests, ( $file =~ 'pot?$' ? "PODIFF -I#: " : "diff -u" ) . " $path/$file $tmppath/$file";
+                push @tests,
+                  ( $file =~ 'pot?$' ? "PODIFF -I#: " : "diff -u --strip-trailing-cr" )
+                  . " \"$path/$file\" \"$tmppath/$file\"";
             } else {
                 teardown( \@teardown );
                 fail("Broken test $path: $path/_$file should be the expected content of produced file $file");
@@ -332,7 +340,7 @@ sub run_one_po4aconf {
 
         #        print STDERR "cmd: $tcmd\n";
         $tcmd =~ s/PATH/${execpath}/g;
-        $tcmd =~ s/PODIFF/diff -u $PODIFF /g;
+        $tcmd =~ s/PODIFF/diff -u --strip-trailing-cr $PODIFF /g;
         $tcmd =~ s/\$tmppath/$tmppath/g;
         $tcmd =~ s/\$path/$path/g;
         if ( system_failed( "$tcmd 2>&1 > $tmppath/_cmd_output", "" ) ) {
@@ -361,12 +369,12 @@ sub run_one_format {
 
     my %valid_options;
     map { $valid_options{$_} = 1 } qw(format input potfile pofile doc options todo
-      norm   norm_stderr   error
+      norm   norm_stderr   error   skip
       trans  trans_stderr );
     map { die "Invalid test " . $test->{'doc'} . ": invalid key '$_'\n" unless exists $valid_options{$_} }
       ( keys %{$test} );
 
-    die "Broken test: input file $input does not exist or not readable." unless -e $input && -r $input;
+    fail "Broken test: input file $input does not exist or not readable." unless -e $input && -r $input;
 
     my $format = $test->{'format'} // die "Broken test $input: no format provided\n";
 
@@ -404,45 +412,51 @@ sub run_one_format {
     my $cwd     = cwd();
     $execpath = defined $ENV{AUTOPKGTEST_TMP} ? "/usr/bin" : "perl $cwd/..";
 
-    # Normalize the document
-    my $real_stderr = "$cwd/tmp/$path/$basename.norm.stderr";
-    my $cmd =
-        "${execpath}/po4a-normalize --no-deprecation -f $format --quiet "
-      . "--pot $cwd/${tmpbase}.pot --localized $cwd/${tmpbase}.norm $options $basename.$ext"
-      . " > $real_stderr 2>&1";
+    unless (exists $test->{'skip'}{'normalize'}) {
+        # Normalize the document
+        my $real_stderr = "$cwd/tmp/$path/$basename.norm.stderr";
+        my $cmd =
+            "${execpath}/po4a-normalize --no-deprecation -f $format --quiet "
+          . "--pot $cwd/${tmpbase}.pot --localized $cwd/${tmpbase}.norm $options $basename.$ext"
+          . " > $real_stderr 2>&1";
 
-    chdir $path || fail "Cannot change directory to $path: $!";
-    note("Change directory to $path");
-    my $exit_status = system($cmd);
-    $cmd =~ s{$root_dir/}{}g;
-    $cmd =~ s{t/../po4a}{po4a};
+        chdir $path || fail "Cannot change directory to $path: $!";
+        note("Change directory to $path");
+        my $exit_status = system($cmd);
+        $cmd =~ s{$root_dir/}{}g;
+        $cmd =~ s{t/../po4a}{po4a};
 
-    if ( $error == 0 && $exit_status == 0 ) {
-        pass("Normalizing $doc");
-        note("  Pass: $cmd (retcode: $exit_status)");
-    } elsif ( $error != 0 && $exit_status != 0 ) {
-        pass("Expected error detected in $doc");
-        note("  Failing as expected: $cmd (retcode: $exit_status)");
-    } else {
-        fail("Normalizing $doc: $exit_status");
-        note("  FAIL: $cmd");
-        note("Produced output:");
-        open FH, $real_stderr || die "Cannot open output file that I just created, I'm puzzled";
-        while (<FH>) {
-            note("  $_");
+        if ( $error == 0 && $exit_status == 0 ) {
+            pass("Normalizing $doc");
+            note("  Pass: $cmd (retcode: $exit_status)");
+        } elsif ( $error != 0 && $exit_status != 0 ) {
+            pass("Expected error detected in $doc");
+            note("  Failing as expected: $cmd (retcode: $exit_status)");
+            note("Produced output:");
+            open FH, $real_stderr || die "Cannot open output file that I just created, I'm puzzled";
+            while (<FH>) {
+                note("  $_");
+            }
+            note("(end of command output)\n");
+        } else {
+            fail("Normalizing $doc: $exit_status");
+            note("  FAIL: $cmd");
+            note("Produced output:");
+            open FH, $real_stderr || die "Cannot open output file that I just created, I'm puzzled";
+            while (<FH>) {
+                note("  $_");
+            }
+            note("(end of command output)\n");
         }
-        note("(end of command output)\n");
 
+        push @tests, "diff -uNwB $norm_stderr $real_stderr";
+        push @tests, "PODIFF  $potfile  $tmpbase.pot"  unless $error;
+        push @tests, "diff -u $output   $tmpbase.norm" unless $error;
     }
 
-    push @tests, "diff -uNwB $norm_stderr $real_stderr";
-    push @tests, "PODIFF  $potfile  $tmpbase.pot"  unless $error;
-    push @tests, "diff -u $output   $tmpbase.norm" unless $error;
-
-    unless ($error) {
-
+    unless ($error or exists $test->{'skip'}{'traslate'}) {
         # Translate the document
-        $cmd =
+        my $cmd =
             "${execpath}/po4a-translate --no-deprecation -f $format $options --master $basename.$ext"
           . " --po $cwd/$pofile --localized $cwd/${tmpbase}.trans"
           . " > $cwd/$tmpbase.trans.stderr 2>&1";
@@ -457,10 +471,12 @@ sub run_one_format {
         }
         push @tests, "diff -uNwB $trans_stderr $tmpbase.trans.stderr";
         push @tests, "diff -uN $transfile $tmpbase.trans";
+    }
 
+    unless ($error or exists $test->{'skip'}{'updatepo'}) {
         # Update PO
         copy( "$cwd/$pofile", "$cwd/${tmpbase}.po_updated" ) || fail "Cannot copy $pofile before updating it";
-        $cmd =
+        my $cmd =
             "${execpath}/po4a-updatepo --no-deprecation -f $format $options "
           . "--master $basename.$ext --po $cwd/${tmpbase}.po_updated"
           . " > $cwd/tmp/$path/update.stderr 2>&1";
@@ -561,7 +577,6 @@ sub run_all_tests {
             $cmd =~ s/PATH/${execpath}/;
             my $exit_status = system($cmd);
             is( $exit_status, 0, "Executing " . $test->{'doc'} . " -- Command: $cmd" );
-            next TEST unless ( $exit_status == 0 );
 
             fail "Malformed test " . $test->{'doc'} . ": missing tests." unless scalar $test->{tests};
             for my $cmd ( @{ $test->{tests} } ) {
